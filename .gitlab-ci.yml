@@ -1,0 +1,46 @@
+stages:
+  - build
+  - test
+
+variables:
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+
+before_script:
+  - mvn $MAVEN_CLI_OPTS install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+build:
+  stage: build
+  script:
+    - mvn $MAVEN_CLI_OPTS clean install
+
+test_backend:
+  stage: test
+  script:
+    - mvn $MAVEN_CLI_OPTS test jacoco:report -pl backend
+  artifacts:
+    reports:
+      junit: "backend/target/surefire-reports/TEST-*.xml"
+      cobertura: "backend/target/site/cobertura/coverage.xml"
+
+spotbugs:
+  stage: test
+  script:
+    - mvn $MAVEN_CLI_OPTS spotbugs:check -pl backend
+
+checkstyle:
+  stage: test
+  script:
+    - mvn $MAVEN_CLI_OPTS checkstyle:check -pl backend
+  artifacts:
+    paths:
+      - backend/target/checkstyle-result.xml
+
+test_frontend:
+  stage: test
+  script:
+    - cd frontend
+    - npm install
+    - npm test -- --coverage
+  artifacts:
+    paths:
+      - frontend/coverage
