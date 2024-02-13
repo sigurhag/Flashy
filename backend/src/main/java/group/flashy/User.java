@@ -1,4 +1,4 @@
-package main.java.group.flashy;
+package group.flashy;
 
 public class User {
 
