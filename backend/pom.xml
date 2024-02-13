@@ -97,7 +97,17 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>3.2.0</version>
+		  <configuration>
+            <configLocation>backend/config/checkstyle/checkstyle-checker.xml</configLocation>
+            	<includeTestSourceDirectory>true</includeTestSourceDirectory>
+            	<encoding>UTF-8</encoding>
+            	<consoleOutput>true</consoleOutput>
+            	<failsOnError>true</failsOnError>
+            	<violationSeverity>warning</violationSeverity>
+            	<failOnViolation>true</failOnViolation>
+            	<linkXRef>false</linkXRef>
+            </configuration>
           <reportSets>
             <reportSet>
               <reports>
