@@ -37,7 +37,7 @@ public class User {
      */
     private boolean isValidUsername(String username) {
         if (username.length() < 5 || username.length() > 20) {
-            throw new IllegalArgumentException("Username length is shorter than 5 characters or longer than 20");
+            return false;
         }
         return true;
     }
@@ -49,7 +49,7 @@ public class User {
      */
     private boolean isValidPassword(String password) {
         if (password.length() < 7 || password.length() > 20) {
-            throw new IllegalArgumentException("Password length is shorter than 7 characters or longer than 20");
+            return false;
         }
         return true;
     }
@@ -63,7 +63,7 @@ public class User {
         if (!email.endsWith("@gmail.com")
             && !email.endsWith("@stud.ntnu.no")
             && !email.endsWith("@hotmail.com")) {
-                throw new IllegalArgumentException("Illegal email domain");
+                return false;
             }
         return true;
     }
