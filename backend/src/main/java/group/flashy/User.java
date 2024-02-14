@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class User {
 
-    // Fields for database connection
+    // Field for database connection
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
 
     // Fields for Users
@@ -151,12 +151,13 @@ public class User {
      */
     public void saveUserToDatabase() {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO users (username, password, email, isAdmin) VALUES(?,?,?,?)";
+            String query = "INSERT INTO users (userID, username, password, email, isAdmin) VALUES(?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, username);
-                preparedStatement.setString(2, password);
-                preparedStatement.setString(3, email);
-                preparedStatement.setBoolean(4, isAdmin);
+                preparedStatement.setString(1, userID);
+                preparedStatement.setString(2, username);
+                preparedStatement.setString(3, password);
+                preparedStatement.setString(4, email);
+                preparedStatement.setBoolean(5, isAdmin);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -171,7 +172,7 @@ public class User {
      */
     public Object getUserData(Object field) {
         Object value = null;
-        String query = "SELECT " + field + " FROM users WHERE userID = ?";
+        String query = "SELECT " + field + " FROM user WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, userID);
@@ -203,10 +204,10 @@ public class User {
                 this.isAdmin = (boolean) newValue;
                 break;
             default:
-                throw new IllegalArgumentException(field + " Is not a field which support updating!");
+                throw new IllegalArgumentException(field + " is not a field which support updating!");
         }
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "UPDATE users SET " + field + " = ? WHERE userID = ?";
+            String query = "UPDATE user SET " + field + " = ? WHERE userID = ?";
             try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
                 updateStatement.setObject(1, newValue);
                 updateStatement.setInt(2, userID);
