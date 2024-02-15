@@ -7,7 +7,7 @@ import LogOut from "./LogOut"
 
 const Sidebar = () => {
     return (
-        <div className="bg-color-navbar white flex flex-column items-center navbar-fixed">
+        <div className="bg-color-sidebar white flex flex-column items-center sidebar-fixed">
             <Home />
             <Search />
             <MySets />

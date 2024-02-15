@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBolt } from '@fortawesome/free-solid-svg-icons';
 
+
+
 const Home = () => {
     const [isHovered, setIsHovered] = useState(false);
     const hoverStyle = {
@@ -13,7 +15,7 @@ const Home = () => {
     };
     return (
         <Link
-            to="/"
+            to="/home"
             className="flex flex-column items-center pb3 nav-links"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}

@@ -12,7 +12,7 @@ const MySets = () => {
     };
     return (
         <Link
-            to="mySets"
+            to="/mySets"
             className="flex flex-column items-center pb3 nav-links"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
