@@ -8,14 +8,6 @@ const LogInForm = () => {
             <h1 className="f1 mb3">FLASHY</h1>
             <label className="mb3">
                 <input 
-                        style={{borderRadius: '90px'}}
-                        type="text" 
-                        className="grow pa2 font-color" 
-                        placeholder="Name" 
-                    />
-            </label>
-            <label className="mb3">
-                <input 
                     style={{borderRadius: '90px'}}
                     type="text" 
                     className="grow pa2 font-color" 

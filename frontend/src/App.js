@@ -19,33 +19,6 @@ import Welcome from './pages/Welcome';
 
 
 const App = () => {
-    const PageName = () => {
-        const location = useLocation();
-        const [pageName, setPageName] = useState('');
-
-        useEffect(() => {
-            const mapPathnameToPageName = (pathname) => {
-                switch (pathname) {
-                    case '/':
-                        return 'Home';
-                    case '/search':
-                        return 'Search';
-                    case '/mySets':
-                        return 'My sets';
-                    case '/favourites':
-                        return 'Favourites';
-                    case '/welcomePage':
-                        return 'Log Out';
-                    default:
-                        return 'Page';
-                }
-            };
-
-            setPageName(mapPathnameToPageName(location.pathname));
-        }, [location]);
-
-        return <h2>{pageName}</h2>;
-    };
     return (
     <BrowserRouter>
         <div>
