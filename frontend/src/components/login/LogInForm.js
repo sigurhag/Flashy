@@ -2,8 +2,29 @@ import React, { useState } from "react";
 import LogInButton from "./Button";
 import { Link } from "react-router-dom";
 import BackButton from "../registration/BackButton";
+import axios from "axios";
 
 const LogInForm = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleLoginPress = async () => {
+      try {
+      const response = await axios.post("", {
+          username: username,
+          password: password
+      });
+      if (response.data.sucess) {
+          console.log("Log in successful!");
+          //Save information about logged in user
+      } else {
+          console.log("error with loggin in")
+      } 
+  } catch(error) {
+          console.error("unexpected error: ", error);
+      }
+  }
+
     return (
         <div className='vh-100 flex flex-column justify-center items-center'>
             <h1 className="f1 mb3">FLASHY</h1>
@@ -13,6 +34,8 @@ const LogInForm = () => {
                     type="text" 
                     className="grow pa2 font-color" 
                     placeholder="Username" 
+                    value={username}
+                    onChange ={(e) => {setUsername(e.target.value)}}
                 />
             </label>
             <label className="mb3">
@@ -21,9 +44,11 @@ const LogInForm = () => {
                         type="password" 
                         className="grow pa2 font-color" 
                         placeholder="Password" 
+                        value={password}
+                        onChange={(e) => {setPassword(e.target.value)}}
                     />
             </label>
-            <Link to="/home"><LogInButton /></Link>
+            <Link to="/home"><LogInButton onClick={handleLoginPress} /></Link>
             <Link to="/"><BackButton /></Link>
         </div>
     );
