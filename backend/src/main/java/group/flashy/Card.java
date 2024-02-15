@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Class for the flashcards.
@@ -45,7 +46,7 @@ public class Card {
      * @param difficult boolean on is difficult
      */
     public void changeDifficult(boolean difficult) {
-        updateCardInfo(difficult, difficult);
+        updateCardInfo("difficult", difficult);
     }
 
     /**
@@ -54,7 +55,7 @@ public class Card {
      * @param answer The new answer to the question
      */
     public void editAnswer(String answer) {
-        updateCardInfo(answer, answer);
+        updateCardInfo("answer", answer);
     }
 
     /**
@@ -63,7 +64,7 @@ public class Card {
      * @param question the new question
      */
     public void editQuestion(String question) {
-        updateCardInfo(question, question);
+        updateCardInfo("question", question);
     }
 
     /**
@@ -72,7 +73,7 @@ public class Card {
      * @return the ID
      */
     public int getCardID() {
-        return (int) getCardInfo(cardID);
+        return (int) getCardInfo("cardID");
     }
 
     /**
@@ -81,7 +82,7 @@ public class Card {
      * @return the name
      */
     public String getCardName() {
-        return (String) getCardInfo(cardName);
+        return (String) getCardInfo("cardName");
     }
 
     /**
@@ -90,7 +91,7 @@ public class Card {
      * @return the question.
      */
     public String getQuestion() {
-        return (String) getCardInfo(question);
+        return (String) getCardInfo("question");
     }
 
     /**
@@ -99,7 +100,7 @@ public class Card {
      * @return the answer
      */
     public String getAnswer() {
-        return (String) getCardInfo(answer);
+        return (String) getCardInfo("answer");
     }
 
     /**
@@ -108,7 +109,7 @@ public class Card {
      * @return the userID
      */
     public int getCardUserID() {
-        return (int) getCardInfo(userID);
+        return (int) getCardInfo("userID");
     }
 
     /**
@@ -117,7 +118,7 @@ public class Card {
      * @return true or false on card is difficult
      */
     public boolean getIsDifficult() {
-        return (boolean) getCardInfo(isDifficult);
+        return (boolean) getCardInfo("Difficult");
     }
 
     /**
@@ -126,7 +127,7 @@ public class Card {
      * @param field which field to get data on
      * @return return the requested data
      */
-    public Object getCardInfo(Object field) {
+    public Object getCardInfo(String field) {
         Object value = null;
         String query = "SELECT " + field + " FROM card WHERE cardID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
@@ -169,7 +170,7 @@ public class Card {
      * @param field which field to update
      * @param newValue the new value of the field
      */
-    public void updateCardInfo(Object field, Object newValue) {
+    public void updateCardInfo(String field, Object newValue) {
         switch (field) {
             case "answer":
                 this.answer = (String) newValue;
@@ -178,7 +179,7 @@ public class Card {
                 this.question = (String) newValue;
                 break;
             case "difficult":
-                this.difficult = (boolean) newValue;
+                this.isDifficult = (boolean) newValue;
                 break;
             default:
                 throw new IllegalArgumentException(field + " is not a field which support updating!");

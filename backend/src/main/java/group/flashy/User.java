@@ -91,7 +91,7 @@ public class User {
      * @return userID.
      */
     public int getUserID() {
-        return (int) getUserData(userID);
+        return (int) getUserData("userID");
     }
 
     /**
@@ -100,7 +100,7 @@ public class User {
      * @return username.
      */
     public String getUsername() {
-        return (String) getUserData(username);
+        return (String) getUserData("username");
     }
 
     /**
@@ -109,7 +109,7 @@ public class User {
      * @return email.
      */
     public String getEmail() {
-        return (String) getUserData(email);
+        return (String) getUserData("email");
     }
 
     /**
@@ -118,7 +118,7 @@ public class User {
      * @return the password of the user.
      */
     public String getPassword() {
-        return (String) getUserData(password);
+        return (String) getUserData("password");
     }
 
     /**
@@ -127,14 +127,14 @@ public class User {
      * @return if the user is admin.
      */
     public boolean isAdmin() {
-        return (boolean) getUserData(isAdmin);
+        return (boolean) getUserData("isAdmin");
     }
 
     /**
      * Method for checking if a user is admin.
      */
     public void setIsAdmin() {
-        updateUserInfo(isAdmin, true);
+        updateUserInfo("isAdmin", true);
     }
 
     /**
@@ -143,7 +143,7 @@ public class User {
      * @param newUsername new username.
      */
     public void setUsername(String newUsername) {
-        updateUserInfo(username, newUsername);
+        updateUserInfo("username", newUsername);
     }
 
     /**
@@ -153,7 +153,7 @@ public class User {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             String query = "INSERT INTO users (userID, username, password, email, isAdmin) VALUES(?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, userID);
+                preparedStatement.setInt(1, userID);
                 preparedStatement.setString(2, username);
                 preparedStatement.setString(3, password);
                 preparedStatement.setString(4, email);
@@ -170,7 +170,7 @@ public class User {
      * @param field what to retrive
      * @return data
      */
-    public Object getUserData(Object field) {
+    public Object getUserData(String field) {
         Object value = null;
         String query = "SELECT " + field + " FROM user WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
@@ -193,11 +193,11 @@ public class User {
      * @param field which field to update
      * @param newValue the new value for the field
      */
-    public void updateUserInfo(Object field, Object newValue) {
+    public void updateUserInfo(String field, Object newValue) {
         switch (field) {
             case "username":
                 if (isValidUsername((String) newValue)) {
-                    this.username = newValue;
+                    this.username =  (String) newValue;
                 }
                 break;
             case "isAdmin":
