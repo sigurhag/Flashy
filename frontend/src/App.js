@@ -4,12 +4,19 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import 'tachyons';
 import CardList from './components/cards/CardList';
 import { cards } from './components/cards/Cards';
-import Sidebar from './components/sidebar/Sidebar';
+
+
+import UserProfileIcon from './components/profile/UserProfileIcon';
+
 import Homepage from './pages/Home';
 import Searchpage from './pages/Search';
 import Favouritespage from './pages/Favourites';
 import MySetspage from './pages/MySets';
-import LogOutpage from './pages/LogOut';
+import LogOutpage from './pages/Welcome';
+import Profile from './pages/Profile';
+import LogIn from './pages/LogIn';
+import Welcome from './pages/Welcome';
+
 
 const App = () => {
     const PageName = () => {
@@ -42,20 +49,16 @@ const App = () => {
     return (
     <BrowserRouter>
         <div>
-            <div className="fixed-top-middle">
-                <h1>FLASHY</h1>
-                <PageName />
-            </div>
-            <Sidebar />
-            <div className='main-content'>
                 <Routes>
-                    <Route path="/pages/home" element={<Homepage cards={cards} />} />
+                    <Route path="/home" element={<Homepage cards={cards} />} />
                     <Route path="/search" element={<Searchpage />} />
                     <Route path="/mySets" element={<MySetspage cards={cards}/>} />
                     <Route path="/favourites" element={<Favouritespage cards={cards}/>} />
-                    <Route path="/welcomePage" element={<LogOutpage />} />
+                    <Route path="/" element={<Welcome />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/login" element={<LogIn />} />
                 </Routes>
-            </div>
+
         </div>
     </BrowserRouter>
     )

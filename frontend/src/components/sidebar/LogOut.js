@@ -12,7 +12,7 @@ const LogOut = () => {
     };
     return (
         <Link
-            to="welcomePage"
+            to="/"
             className="flex flex-column items-center pb3 nav-links"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}

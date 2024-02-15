@@ -5,26 +5,25 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #FCD060;
-  background-color: #FCD060;
   position: relative;
 }
 
-
 @font-face {
   font-family: 'Cherry Bomb';
+
   src: url('./cherryBomb/cherrybomb-regular-webfont.woff2') format('woff2'),
   url('./cherryBomb/cherrybomb-regular-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  
-}
 
+  font-weight: normal;
+
+  font-style: normal;
+}
 
 .bg-color-card {
   background-color:#FFEFC5
 }
 
-.bg-color-navbar {
+.bg-color-sidebar {
   background-color: #34B8F0;
 }
 
@@ -32,15 +31,19 @@ body {
   color: #00489C
 }
 
-.navbar-fixed {
+.sidebar-fixed {
   position: fixed;
   bottom: 0;
   left: 5%;
-  padding: 10px; 
-  height: fit-content; 
+  padding: 10px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   padding-top: 3%;
   border-top-right-radius: 90px;
   border-top-left-radius: 90px;
+  width:-webkit-fit-content;
+  width:-moz-fit-content;
   width:fit-content;
   z-index: 1000;
 }
@@ -48,17 +51,19 @@ body {
 .fixed-top-middle {
   background-color: #FCD060;
   position: fixed;
-  top: 0; 
-  width: 100%; 
+  top: 0;
+  width: 100%;
   height: 20vh;
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
-
 }
 
+.fixed-top-middle h1{
+  font-size: 72px;
+}
 
 .nav-links{
   color: white;
