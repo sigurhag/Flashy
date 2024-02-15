@@ -1,6 +1,7 @@
 import React from "react";
 import LogInButton from "./Button";
 import { Link } from "react-router-dom";
+import BackButton from "../registration/BackButton";
 
 const LogInForm = () => {
     return (
@@ -22,7 +23,10 @@ const LogInForm = () => {
                         placeholder="Password" 
                     />
             </label>
-            <Link to="/home"><LogInButton /></Link>
+            <div className="flex flex-column justify-center items-center">
+                <Link to="/home"><LogInButton /></Link>
+                <Link to="/"><BackButton /></Link>
+            </div>    
         </div>
     );
 }
