@@ -7,16 +7,12 @@ const CardList = ( { cards } ) => {
             { 
             cards.map((card, i) => {
                 return (
-                    <div className="flex flex-row" key={i}>
-                    <Card
-                        name = {cards[i].name} 
-                        />
-                        <div className='pl4'>
-                        <h2>{cards[i].creator}</h2>
-                        <h3>{cards[i].theme}</h3>
-                        <h3>{cards[i].length} cards</h3>
-                        </div>
-                    </div>
+                    <Card 
+                        name = {cards[i].name}
+                        creator = {cards[i].creator}
+                        theme = {cards[i].theme}
+                        length = {cards[i].length}
+                     />
                 );
             })
         }
