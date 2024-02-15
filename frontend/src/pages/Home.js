@@ -18,7 +18,7 @@ const Homepage = ({ cards }) => {
       style={{marginTop: '25vh'}}>
         <Searchbar />
         <h1>Today's topic: Science</h1>
-        <div className='w-60'>
+        <div className='w-70'>
           <CardList cards={cards}/>
         </div>
       </div>

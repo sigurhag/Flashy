@@ -3,7 +3,7 @@ import Card from './Card'
 
 const CardList = ( { cards } ) => {
     return(
-        <div className="flex justify-content flex-column">
+        <div className="card-list">
             { 
             cards.map((card, i) => {
                 return (
