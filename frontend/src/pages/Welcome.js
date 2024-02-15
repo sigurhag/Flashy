@@ -9,8 +9,8 @@ const Welcome = () => {
         <h1 className='f1 mb3 '>WELCOME TO FLASHY</h1>
         <h2 className='f2  mt2 mb4'>World's best flashcard app!</h2>
         <div className='flex flex-row'>
-          <Link to="/login"><LogInButton/></Link>
-          <Link to="/register"><RegisterButton/></Link>
+          <Link to="/login" className='mr1'><LogInButton/></Link>
+          <Link to="/register" className='ml1'><RegisterButton/></Link>
         </div>
     </div>
 
