@@ -15,7 +15,9 @@ import MySetspage from './pages/MySets';
 import LogOutpage from './pages/Welcome';
 import Profile from './pages/Profile';
 import LogIn from './pages/LogIn';
+import UserRegister from './pages/UserRegister';
 import Welcome from './pages/Welcome';
+
 
 
 const App = () => {
@@ -30,6 +32,7 @@ const App = () => {
                     <Route path="/" element={<Welcome />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/login" element={<LogIn />} />
+                    <Route path="/register" element={<UserRegister />} />
                 </Routes>
 
         </div>
