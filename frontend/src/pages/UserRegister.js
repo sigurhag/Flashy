@@ -5,7 +5,6 @@ const Registration = ({ cards }) => {
     return (
       <div>
           <RegistrationForm />
-  
       </div>
     );
   };
