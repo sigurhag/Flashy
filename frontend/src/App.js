@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import 'tachyons';
+import CardList from './components/cards/CardList';
+import { cards } from './components/cards/Cards';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
-export default App;
+import UserProfileIcon from './components/profile/UserProfileIcon';
+
+import Homepage from './pages/Home';
+import Searchpage from './pages/Search';
+import Favouritespage from './pages/Favourites';
+import MySetspage from './pages/MySets';
+import LogOutpage from './pages/Welcome';
+import Profile from './pages/Profile';
+import LogIn from './pages/LogIn';
+import UserRegister from './pages/UserRegister';
+import Welcome from './pages/Welcome';
+
+
+
+const App = () => {
+    return (
+    <BrowserRouter>
+        <div>
+                <Routes>
+                    <Route path="/home" element={<Homepage cards={cards} />} />
+                    <Route path="/search" element={<Searchpage />} />
+                    <Route path="/mySets" element={<MySetspage cards={cards}/>} />
+                    <Route path="/favourites" element={<Favouritespage cards={cards}/>} />
+                    <Route path="/" element={<Welcome />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/login" element={<LogIn />} />
+                    <Route path="/register" element={<UserRegister />} />
+                </Routes>
+
+        </div>
+    </BrowserRouter>
+    )
+};
+
+export default App
