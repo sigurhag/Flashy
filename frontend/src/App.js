@@ -18,8 +18,8 @@ import LogIn from './pages/LogIn';
 import UserRegister from './pages/UserRegister';
 import Welcome from './pages/Welcome';
 import CardViewPage from './pages/CardView';
-
-
+import { user } from './components/profile/User';
+import MakeSetPage from './pages/MakeSet';
 
 const App = () => {
     return (
@@ -31,9 +31,10 @@ const App = () => {
                     <Route path="/mySets" element={<MySetspage cards={cards}/>} />
                     <Route path="/favourites" element={<Favouritespage cards={cards}/>} />
                     <Route path="/" element={<Welcome />} />
-                    <Route path="/profile" element={<Profile />} />
                     <Route path="/cardview" element={<CardViewPage />}/>
+                    <Route path="/profile" element={<Profile user={user} />} />
                     <Route path="/login" element={<LogIn />} />
+                    <Route path="/makeSet" element={<MakeSetPage />} />
                     <Route path="/register" element={<UserRegister />} />
                 </Routes>
 
