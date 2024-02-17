@@ -8,13 +8,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public final class FlashyApplication {
+public class FlashyApplication {
 /**
      * Private constructor to prevent instantiation.
      */
-    private FlashyApplication() {
+    /*private FlashyApplication() {
         // private constructor to prevent instantiation
-    }
+    }*/
 
 /**
      * Method for launching the application.
