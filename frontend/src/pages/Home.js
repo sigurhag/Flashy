@@ -3,6 +3,7 @@ import CardList from '../components/cards/CardList';
 import Searchbar from '../components/Searchbar';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
+import { Link } from 'react-router-dom';
 
 
 const Homepage = ({ cards }) => {
@@ -17,6 +18,7 @@ const Homepage = ({ cards }) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <Searchbar />
+        <Link to="/cardview"><h1>CardView</h1></Link>
         <h1>Today's topic: Science</h1>
         <div className='w-70'>
           <CardList cards={cards}/>
