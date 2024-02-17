@@ -3,6 +3,7 @@ import CardList from '../components/cards/CardList';
 import Searchbar from '../components/Searchbar';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
+import { Link } from 'react-router-dom';
 
 
 const Homepage = ({ cards }) => {
@@ -19,7 +20,7 @@ const Homepage = ({ cards }) => {
         <Searchbar />
         <h1>Today's topic: Science</h1>
         <div className='w-70'>
-          <CardList cards={cards}/>
+          <CardList cards={cards}/>  
         </div>
       </div>
     </div>
