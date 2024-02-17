@@ -10,12 +10,9 @@ body {
 
 @font-face {
   font-family: 'Cherry Bomb';
-
   src: url('./cherryBomb/cherrybomb-regular-webfont.woff2') format('woff2'),
   url('./cherryBomb/cherrybomb-regular-webfont.woff') format('woff');
-
   font-weight: normal;
-
   font-style: normal;
 }
 
@@ -34,7 +31,7 @@ body {
 .sidebar-fixed {
   position: fixed;
   bottom: 0;
-  left: 5%;
+  left: 3%;
   padding: 10px;
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -51,7 +48,7 @@ body {
 .user-icon-fixed {
   position: fixed;
   top: 0;
-  right: 5%;
+  right: 3%;
   padding: 10px;
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -59,6 +56,23 @@ body {
   padding-top: 2%;
   border-bottom-right-radius: 90px;
   border-bottom-left-radius: 90px;
+  width:-webkit-fit-content;
+  width:-moz-fit-content;
+  width:120px;
+  z-index: 1000;
+}
+
+.make-set-fixed {
+  position: fixed;
+  bottom: 300px;
+  right: 3%;
+  padding: 10px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  border-radius: 150px;
   width:-webkit-fit-content;
   width:-moz-fit-content;
   width:120px;
@@ -90,4 +104,12 @@ body {
   justify-content: center;
   flex-direction: column;
   padding-left: 20vw;
+}
+
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 10px; 
+  justify-content: center;
 }
