@@ -1,23 +1,23 @@
 import React from 'react';
-import CardList from '../components/cards/CardList';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
+import QuestionCard from '../components/cards/QuestionCard';
 
 
 
-const Favouritespage = ({ cards }) => {
+const CardViewPage = ({ cards }) => {
   return (
     <div>
       <UserProfileIcon />
       <Sidebar />
       <div className='flex flex-column items-center fixed-top-middle'>
         <h1 className='f1 mt3 mb1'>FLASHY</h1>
-        <h2 className='f2 mt1'>Favourites</h2>      
+        <h2 className='f2 mt1'>Title</h2>   {/* Title needs to be collected from CardSet.title*/}   
       </div>
       <div className='flex flex-column items-center'
-      style={{marginTop: '25vh'}}>
-        <div className='w-70'>
-          <CardList cards={cards}/>
+      style={{marginTop: '32vh'}}>
+        <div>
+          <QuestionCard/>
         </div>
       </div>
     </div>
@@ -25,4 +25,4 @@ const Favouritespage = ({ cards }) => {
   );
 };
 
-export default Favouritespage;
+export default CardViewPage;
