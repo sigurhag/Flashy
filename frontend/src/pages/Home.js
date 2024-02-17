@@ -18,6 +18,7 @@ const Homepage = ({ cards }) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <Searchbar />
+        <Link to="/cardview"><h1>CardView</h1></Link>
         <h1>Today's topic: Science</h1>
         <div className='w-70'>
           <CardList cards={cards}/>  
