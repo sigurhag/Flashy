@@ -71,4 +71,10 @@ public class MainController {
         ArrayList<Set> result = cardService.searchEngine(searchWord);
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/profile")
+    public ResponseEntity<ArrayList<String>> getProfileInfo() {
+        ArrayList<String> userInfo = userService.getUserInfo();
+        return ResponseEntity.ok(userInfo);
+    }
 }

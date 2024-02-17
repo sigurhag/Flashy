@@ -1,12 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
 import GeneralButton from '../components/GeneralButton';
-import { user } from '../components/profile/User';
+import axios from "axios";
 
 const Profile = (props) => {
   const { user } = props;
   const { username, email } = user;
+  const [userInfo, setUserInfo] = useState([]);
+
+  useEffect(() => {
+    const getUSerData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3500/flash/profile", {
+          params: {username, email}
+        });
+        if (response.data) {
+          setUserInfo(response.data);
+          console.log("fetched data successfully!");
+        } else {
+          console.log("error fetching userdata")
+      } 
+      } catch (error) {
+        console.error("Error fetching user info: ", error);
+      }
+    };
+    getUSerData();
+  }, [username, email])
+
   return (
     <div className='flex flex-column justify-center items-center'>   
       <UserProfileIcon />
@@ -16,8 +37,8 @@ const Profile = (props) => {
         <h2 className='f2 mt1'>My profile</h2>      
       </div>
       <div className="flex flex-column  pa3 bg-color-card" style={{ width: "500px", marginTop: '16%', padding:'5% 5% 2% 5%', borderRadius: '70px' }}>
-        <h2 className="f3 ">Username: {username}</h2>
-        <h2 className="f3 mb5 ">E-mail: {email}</h2>
+        <h2 className="f3 ">Username: {userInfo[0]}</h2>
+        <h2 className="f3 mb5 ">E-mail: {userInfo[1]}</h2>
         <GeneralButton name="Change Password" />
       </div>
     </div>

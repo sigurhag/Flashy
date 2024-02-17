@@ -1,11 +1,14 @@
 package group.flashy.Service;
 
 import javax.sql.DataSource;
+
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.springframework.stereotype.Service;
 
@@ -141,5 +144,13 @@ public class UserService {
             e.printStackTrace();
         }
         return myFavorites;
+    }
+
+    //This method need to be updated to request from the DB
+    public ArrayList<String> getUserInfo() {
+        ArrayList<String> testUser = new ArrayList<>(); //Just for testing
+        testUser.add("John doe"); //Test
+        testUser.add("johndoe@gmail.com"); //Test
+        return testUser;
     }
 }
