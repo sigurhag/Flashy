@@ -21,7 +21,7 @@ const Homepage = ({ cards }) => {
         <Link to="/cardview"><h1>CardView</h1></Link>
         <h1>Today's topic: Science</h1>
         <div className='w-70'>
-          <CardList cards={cards}/>
+          <CardList cards={cards}/>  
         </div>
       </div>
     </div>
