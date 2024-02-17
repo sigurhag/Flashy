@@ -17,6 +17,7 @@ import Profile from './pages/Profile';
 import LogIn from './pages/LogIn';
 import UserRegister from './pages/UserRegister';
 import Welcome from './pages/Welcome';
+import CardViewPage from './pages/CardView';
 
 
 
@@ -31,6 +32,7 @@ const App = () => {
                     <Route path="/favourites" element={<Favouritespage cards={cards}/>} />
                     <Route path="/" element={<Welcome />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/cardview" element={<CardViewPage />}/>
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/register" element={<UserRegister />} />
                 </Routes>
