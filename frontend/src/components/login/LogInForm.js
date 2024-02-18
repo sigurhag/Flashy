@@ -8,13 +8,10 @@ const LogInForm = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLoginPress = async () => {
+    const handleLoginPress = async () => {  
       try {
-      const response = await axios.post("", {
-          username: username,
-          password: password
-      });
-      if (response.data.sucess) {
+      const response = await axios.post("http://localhost:3500/flash/verify", username, password);
+      if (response.data) {
           console.log("Log in successful!");
           //Save information about logged in user
       } else {
