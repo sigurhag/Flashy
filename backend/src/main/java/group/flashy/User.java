@@ -1,5 +1,5 @@
 
-package main.java.group.flashy;
+package group.flashy;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
