@@ -113,3 +113,94 @@ body {
   gap: 10px; 
   justify-content: center;
 }
+
+.bg-color-card {
+  transform-style: preserve-3d;
+  height: 100%;
+  width: 100%;
+  position: relative; 
+  background-color:#FFEFC5;
+}
+
+.card-front,
+.card-back {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  /*Sizing*/
+  height: 100%;
+  width: 100%;
+
+  /*Content alignment*/
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+
+  /*Alignment*/
+  position: absolute; 
+}
+
+.card-front{
+  background-color: '#FFEFC5';
+}
+
+.card-back {
+  transform: rotateX(180deg);
+  background-color: '#FFEFC5';
+}
+
+.flippable-card-container {
+  height: 370px;
+  width: 600px;
+  
+  perspective: 1000px;
+  position: relative;
+}
+
+.question-card {
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  transform-style: preserve-3d;
+  
+}
+
+.flip-exit {
+  transform: rotateX(0deg);
+}
+
+.flip-exit-active {
+  transform: rotateX(180deg);
+  transition: transform 300ms;
+  transition-timing-function: cubic-bezier(0.57, 0.21, 0.69, 1.25);
+}
+
+.flip-exit-done {
+  transform: rotateX(180deg);
+}
+
+.flip-enter {
+  transform: rotateX(180deg);
+}
+
+.flip-enter-active {
+  transform: rotateX(0deg);
+  transition: transform 300ms;
+  transition-timing-function: cubic-bezier(0.57, 0.21, 0.69, 1.25);
+}
+
+.flip-enter-done {
+  transform: rotateX(0deg);
+}
+
+.icon {
+	color: #00489C;
+	background-color: #FCD060;
+	padding: 8px 16px;
+	  
+} 
+
+.icon:hover {
+	color: #00489C;
+	background-color: #FCD060;
+}
