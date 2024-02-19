@@ -149,7 +149,7 @@ public class UserService {
     //This method need to be updated to request from the DB
     public ArrayList<String> getUserInfo() {
         ArrayList<String> testUser = new ArrayList<>(); //Just for testing
-        testUser.add("John doe"); //Test
+        testUser.add("John Doe"); //Test
         testUser.add("johndoe@gmail.com"); //Test
         return testUser;
     }
