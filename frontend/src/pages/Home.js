@@ -17,7 +17,7 @@ const Homepage = ({ cards }) => {
       </div>
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
-        <Searchbar />
+        <Searchbar text={"What do you want to learn today? "} />
         <Link to="/cardview"><h1>CardView</h1></Link>{/*Needed a link to see CardView, remove once connected to sets*/}
         <h1>Today's topic: Science</h1>
         <div className='w-70'>

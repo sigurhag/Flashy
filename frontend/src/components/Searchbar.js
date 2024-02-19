@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const Searchbar = () => {
+const Searchbar = ({ text }) => {
     const [searchQuery, setSearchQuery] = useState("");
 
     const handleSubmit = async (event) => {
@@ -24,12 +24,12 @@ const Searchbar = () => {
                     size={32}
                     className="input-reset ba pa3 mb2 grow font-color"
                     style={{borderRadius: '90px', backgroundColor: '#FFEFC5', fontSize: '1.4rem' }}
-                    placeholder="What do you want to learn today?"
+                    placeholder={text}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <button type="submit" className="bg-transparent bn f4 pointer">
-                </button>
+                </button>   
                 </div>
         </form>
     );

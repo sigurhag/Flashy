@@ -3,9 +3,11 @@ import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
 import GeneralButton from '../components/GeneralButton';
 import axios from "axios";
+import Searchbar from '../components/Searchbar';
+import UserList from '../components/profile/List';
+import { users } from '../components/profile/Users';
 
-const Profile = (props) => {
-  const { user } = props;
+const Profile = ({ user = {} }) => {
   const { username, email } = user;
   const [userInfo, setUserInfo] = useState([]);
 
@@ -38,8 +40,13 @@ const Profile = (props) => {
       </div>
       <div className="flex flex-column  pa3 bg-color-card" style={{ width: "500px", marginTop: '16%', padding:'5% 5% 2% 5%', borderRadius: '70px' }}>
         <h2 className="f3 ">Username: {userInfo[0]}</h2>
-        <h2 className="f3 mb5 ">E-mail: {userInfo[1]}</h2>
-        <GeneralButton name="Change Password" />
+        <h2 className="f3 mb5 ">E-mail: {userInfo[1]}</h2>  
+        <GeneralButton text={"Change password"}/>
+      </div>
+      <div className='ma4'>
+        <h2 className='mb1'>Handle admin access</h2>
+        <Searchbar text={"Find user"}/>
+        <UserList users={users}/>
       </div>
     </div>
   );

@@ -1,11 +1,10 @@
 import React from 'react';
-import CardList from '../components/cards/CardList';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
 
 
 
-const MakeSetPage = ({ cards }) => {
+const MakeSetPage = () => {
   return (
     <div>
       <UserProfileIcon />
@@ -15,10 +14,8 @@ const MakeSetPage = ({ cards }) => {
         <h2 className='f2 mt1'>Make set</h2>      
       </div>
       <div className='flex flex-column items-center' style={{marginTop: '25vh'}}>
-
       </div>
     </div>
-
   );
 };
 

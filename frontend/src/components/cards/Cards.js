@@ -51,7 +51,7 @@ export const cards = [
     },
     {
         id: 8,
-        name: 'Olymic Winners',
+        name: 'Olympic Winners',
         theme: 'Sports',
         length: 18,
         creator: 'Gunnar'
