@@ -6,9 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 public class Set { 
 
     // Field for database connection
@@ -80,6 +77,7 @@ public class Set {
             System.err.println(e);
         }
         return value;
+    }
 
     public void saveSetToDatabase() {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
@@ -96,6 +94,47 @@ public class Set {
             System.err.println(e);
         }
     }
+
+    public void addCardToSet(Card card) {
+            // Validate that the provided setID exists in the Set table
+    boolean setExists = validateSetExists(card.getCardSetID());
+    
+    if (!setExists) {
+        System.err.println("Error: The specified setID does not exist.");
+        return; // Exit the method if the setID is invalid
+    }
+    
+    try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
+        String cardInsertQuery = "INSERT INTO card (setID) VALUES (?)";
+            try (PreparedStatement cardStatement = connection.prepareStatement(cardInsertQuery)) {
+                cardStatement.setInt(1, card.getCardSetID()); // Sets setID for the card to the provided setID
+                cardStatement.executeUpdate();
+            }
+        } 
+        catch (SQLException e) {
+            System.err.println("Error adding card to database: " + e.getMessage());
+        }
+    }
+
+    private boolean validateSetExists(int setID) {
+        boolean setExists = false;
+        try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
+            String query = "SELECT COUNT(*) FROM Set WHERE setID = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, setID);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        int count = resultSet.getInt(1);
+                        setExists = count > 0;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error validating set existence: " + e.getMessage());
+        }
+        return setExists;
+    }
+    
 
     public void updateSetInfo(String field, Object newValue) {
         switch (field) {

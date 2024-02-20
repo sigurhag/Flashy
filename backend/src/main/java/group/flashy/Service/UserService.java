@@ -107,7 +107,7 @@ public class UserService {
                     resultSet.getString("cardName"),
                     resultSet.getString("question"),
                     resultSet.getString("answer"));
-                    crtSet.addCard(crtCard);
+                    crtSet.addCardToSet(crtCard);
                 }
                 
             } catch (SQLException e) {
@@ -138,7 +138,7 @@ public class UserService {
                     resultSet.getString("cardName"),
                     resultSet.getString("question"),
                     resultSet.getString("answer"));
-                    crtSet.addCard(crtCard);
+                    crtSet.addCardToSet(crtCard);
             }
         } catch (SQLException e) {
             e.printStackTrace();
