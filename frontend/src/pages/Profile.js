@@ -10,6 +10,8 @@ import { users } from '../components/profile/Users';
 const Profile = ({ user = {} }) => {
   const { username, email } = user;
   const [userInfo, setUserInfo] = useState([]);
+  const [allUsers, setAllUsers] = useState(users); // Use fetched user list if dynamic
+  const [filteredUsers, setFilteredUsers] = useState(users);
 
   useEffect(() => {
     const getUSerData = async () => {
@@ -22,13 +24,25 @@ const Profile = ({ user = {} }) => {
           console.log("fetched data successfully!");
         } else {
           console.log("error fetching userdata")
-      } 
+        } 
       } catch (error) {
         console.error("Error fetching user info: ", error);
       }
     };
     getUSerData();
   }, [username, email])
+  
+  const handleSearch = (searchQuery) => {
+    if (!searchQuery) {
+      setFilteredUsers(allUsers);
+    } else {
+      const filtered = allUsers.filter(user =>
+        user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredUsers(filtered);
+    }
+  };
 
   return (
     <div className='flex flex-column justify-center items-center'>   
@@ -45,8 +59,7 @@ const Profile = ({ user = {} }) => {
       </div>
       <div className='mt4'>
         <h2 className='mb1'>Handle admin access</h2>
-        <Searchbar text={"Find user"}/>
-        <UserList/>
+        <UserList users={filteredUsers}/>   
       </div>
     </div>
   );

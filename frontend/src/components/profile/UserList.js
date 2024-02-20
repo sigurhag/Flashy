@@ -1,15 +1,30 @@
-import React from "react";
-import MakeAdmin from "./MakeAdmin";
-import { users } from "./Users"; 
+import React, { useState, useEffect } from 'react';
+import MakeAdmin from './MakeAdmin';
+import Searchbar from '../Searchbar';
+import { users } from './Users';
 
-const UserList = () => {
+const UserList = ({users}) => {
+    const [filteredUsers, setFilteredUsers] = useState(users);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    useEffect(() => {
+        const filtered = users.filter(user =>
+            user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredUsers(filtered);
+    }, [searchQuery]);
+
     return (
-        <div>
-            {users.map((user, index) => (
-                <MakeAdmin key={index} username={user.username} email={user.email}/>
+        <div className='flex flex-column justify-center items-center'>
+        <div style={{ width: '100%', maxWidth: '600px' }}> {/* Adjust maxWidth as needed */}
+            <Searchbar text="Find user" onSearch={setSearchQuery} />
+        </div>
+            {filteredUsers.map((user, index) => (
+                <MakeAdmin key={index} username={user.username} email={user.email} />
             ))}
         </div>
     );
-}
+};
 
 export default UserList;

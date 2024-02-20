@@ -2,6 +2,7 @@ import React from 'react';
 import Searchbar from '../components/Searchbar';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
+import CardList from '../components/cards/CardList';
 
 
 const Searchpage = () => {
@@ -14,10 +15,12 @@ const Searchpage = () => {
     	  <h2 className='f2 mt1'>Search</h2>    
     </div>
     <div 
-      className='flex flex-column items-center'
+      className='flex flex-column justify-center items-center'
       style={{marginTop: '25vh'}}
     >
-      	<Searchbar />
+      	<div className='w-70 '>
+          <CardList />  
+        </div>
     </div>
   </div>
   );
