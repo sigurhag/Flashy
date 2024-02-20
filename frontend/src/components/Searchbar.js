@@ -9,7 +9,7 @@ const Searchbar = ({ text, onSearch }) => {
   };
 
   return (
-    <div className='ma4'>
+    <div className='ma4 flex justify-center'>
     <input
         type="text"
         size={32}
