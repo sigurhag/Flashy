@@ -105,14 +105,19 @@ body {
   padding-left: 20vw;
 }
 
+
 .card-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 10px; 
   justify-content: center;
+  gap: 10px;
 }
 
+.card {
+  width: 200px; /* Fixed width ensures cards don't grow or shrink */
+  height: 300px; /* Optional: fixed height */
+  /* Add more styles for padding, background, etc. */
+}
 
 
 .bg-color-card {

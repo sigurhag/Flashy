@@ -149,7 +149,7 @@ export const cards = [
     },
     {
         id: 22,
-        name: 'Language Basics: Mandarin',
+        name: 'Mandarin',
         theme: 'Languages',
         length: 40,
         creator: 'Sebastian'

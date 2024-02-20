@@ -17,9 +17,9 @@ const CardList = () => {
     }, [searchQuery]);
 
     return (
-        <div className='flex flex-column justify-center items-center'>
-            <div style={{ width: '100%', maxWidth: '600px' }}> {/* Adjust maxWidth as needed */}
-                <Searchbar text="What do you want to learn today?" onSearch={setSearchQuery} />
+        <div className='flex flex-column justify-center '>
+            <div className='flex flex-column justify-center'>
+            <Searchbar className="flex flex-column justify-center align-center" text="What do you want to learn today?" onSearch={setSearchQuery} />
             </div>
             <div className="card-list">
                 {filteredCards.map((card, i) => (

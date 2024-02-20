@@ -7,7 +7,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 const FavouritesButton = () => {
     const [isHovered, setIsHovered] = useState(false);
     const hoverStyle = {
-        color: '#FFC7C7',
+        color: '#FFA5A5',
         transform: 'scale(1.05)',
         transition: 'transform 0.4s, color 0.4s'
     }
