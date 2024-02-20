@@ -1,4 +1,4 @@
-package main.java.group.flashy;
+package group.flashy;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,11 +9,13 @@ import java.sql.SQLException;
 public class User {
 
     // Field for database connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashy?username=gurokristensen&password=Flashy123";
+
+    private static final boolean True = false;
 
     // Fields for Users
-    private static int counter = 0;
-    private int userID = 0;
+    private static int counter = 5;
+    private int userID = 5;
     private String username;
     private String email;
     private String password;
@@ -150,18 +152,21 @@ public class User {
      * Method for saving new user to database.
      */
     public void saveUserToDatabase() {
+        
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO users (userID, username, password, email, isAdmin) VALUES(?,?,?,?,?)";
+            System.out.println("heihei");
+            String query = "INSERT INTO User (userID, username, password, email) VALUES(?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, userID);
                 preparedStatement.setString(2, username);
                 preparedStatement.setString(3, password);
                 preparedStatement.setString(4, email);
-                preparedStatement.setBoolean(5, isAdmin);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
+            
             System.err.println(e);
+            
         }
     }
 
@@ -224,5 +229,6 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
+        User Knut = new User("Knut123", "okidoki123", "knuterkul.123", True);
     }
 }
