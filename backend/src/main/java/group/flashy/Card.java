@@ -19,24 +19,24 @@ public class Card {
     private String cardName;
     private String question;
     private String answer;
-    private int userID;
+    private int setID;
     private boolean isDifficult;
 
     /**
      * Contructor for the card.
      *
-     * @param userID   key to the user which the card belongs to
+     * @param setID   key to the set which the card belongs to
      * @param cardName The name of the card
      * @param question The question on the card
      * @param answer   The answer to the question
      */
-    public Card(int userID, String cardName, String question, String answer) {
+    public Card(int setID, String cardName, String question, String answer) {
         this.cardID = nextCardID++;
         this.cardName = cardName;
         this.question = question;
         this.answer = answer;
         this.isDifficult = false;
-        this.userID = userID;
+        this.setID = setID;
         saveCardToDatabase();
     }
 
@@ -104,12 +104,12 @@ public class Card {
     }
 
     /**
-     * Method for retriving the UserID who own the card.
+     * Method for retriving the SetID who own the card.
      *
-     * @return the userID
+     * @return the setID
      */
-    public int getCardUserID() {
-        return (int) getCardInfo("userID");
+    public int getCardSetID() {
+        return (int) getCardInfo("setID");
     }
 
     /**
@@ -150,13 +150,13 @@ public class Card {
      */
     public void saveCardToDatabase() {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO card (cardID, cardName, question, answer, userID, isDifficult) VALUES(?,?,?,?,?,?)";
+            String query = "INSERT INTO card (cardID, cardName, question, answer, setID, isDifficult) VALUES(?,?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, cardID);
                 preparedStatement.setString(2, cardName);
                 preparedStatement.setString(3, question);
                 preparedStatement.setString(4, answer);
-                preparedStatement.setInt(5, userID);
+                preparedStatement.setInt(5, setID);
                 preparedStatement.setBoolean(6, isDifficult);
                 preparedStatement.executeUpdate();
             }
@@ -181,6 +181,9 @@ public class Card {
             case "difficult":
                 this.isDifficult = (boolean) newValue;
                 break;
+                case "setID":
+                this.setID = (int) newValue;
+                break;
             default:
                 throw new IllegalArgumentException(field + " is not a field which support updating!");
         }
@@ -202,7 +205,7 @@ public class Card {
     @Override
     public String toString() {
         return "Card [cardID= " + cardID + ", cardName= " + cardName + ", question= " + question + ", answer= " + answer
-                + ", isDifficult= " + isDifficult + ", userID= " + userID + "]";
+                + ", isDifficult= " + isDifficult + ", setID= " + setID + "]";
     }
 
     /**
