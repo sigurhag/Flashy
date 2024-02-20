@@ -1,5 +1,4 @@
 import React from 'react';
-import Searchbar from '../components/Searchbar';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
 import CardList from '../components/cards/CardList';

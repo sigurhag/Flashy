@@ -7,7 +7,7 @@ const ArrowButton= ({type}) => {
     const [isHovered, setIsHovered] = useState(false);
     const hoverStyle = {
         transform: 'scale(1.2)',
-        transition: 'transform 0.4s, color 0.4s'
+        transition: 'transform 0.4s,'
     };
     return (
             <FontAwesomeIcon
@@ -15,6 +15,7 @@ const ArrowButton= ({type}) => {
                 color='#00489C'
                 size="2x"
                 style={isHovered ? hoverStyle : {}}
+                className='pa3'
 
             />
     );
