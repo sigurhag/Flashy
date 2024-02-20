@@ -14,8 +14,8 @@ public class User {
     private static final boolean True = false;
 
     // Fields for Users
-    private static int counter = 5;
-    private int userID = 5;
+    private static int counter = 0;
+    private int userID = 0;
     private String username;
     private String email;
     private String password;
@@ -230,5 +230,6 @@ public class User {
      */
     public static void main(String[] args) {
         User Knut = new User("Knut123", "okidoki123", "knuterkul.123", True);
+        User Christina = new User("Tinna223", "jegerkul", "christinaerraa.123@gmail.com", True);
     }
 }
