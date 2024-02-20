@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; 
-import axios from 'axios'; // Ensure axios is imported
+import axios from 'axios'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { users } from './Users';
 
-// Assuming `userIdentifier` is a prop passed to this component that you can use to fetch user data
+
 const UserProfileIcon = ({ user = {} }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { username, email } = user;
@@ -49,7 +48,7 @@ const UserProfileIcon = ({ user = {} }) => {
               size="3x"
               style={isHovered ? hoverStyle : {}}
           />
-          <p className='f4'>{userInfo[0]}</p> {/* Display fetched user name */}
+          <p className='f4'>{userInfo[0]}</p> 
       </Link>
     </div>
   );
