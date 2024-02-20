@@ -43,10 +43,10 @@ const Profile = ({ user = {} }) => {
         <h2 className="f3 mb5 ">E-mail: {userInfo[1]}</h2>  
         <GeneralButton text={"Change password"}/>
       </div>
-      <div className='ma4'>
+      <div className='mt4'>
         <h2 className='mb1'>Handle admin access</h2>
         <Searchbar text={"Find user"}/>
-        <UserList users={users}/>
+        <UserList/>
       </div>
     </div>
   );
