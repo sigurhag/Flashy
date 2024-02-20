@@ -10,13 +10,6 @@ const ArrowButton= ({type}) => {
         transition: 'transform 0.4s, color 0.4s'
     };
     return (
-        <Link
-            to="/"
-            className="flex flex-column items-center pb3 nav-links"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            style={isHovered ? hoverStyle : {}}
-        >
             <FontAwesomeIcon
                 icon={type}
                 color='#00489C'
@@ -24,7 +17,6 @@ const ArrowButton= ({type}) => {
                 style={isHovered ? hoverStyle : {}}
 
             />
-        </Link>
     );
 };
 
