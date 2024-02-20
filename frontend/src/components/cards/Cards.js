@@ -56,5 +56,118 @@ export const cards = [
         length: 18,
         creator: 'Gunnar'
     },
+    {
+        id: 9,
+        name: 'Startup Pioneers',
+        theme: 'Business',
+        length: 22,
+        creator: 'Egil'
+    },
+    {
+        id: 10,
+        name: 'Coding Basics',
+        theme: 'Technology',
+        length: 32,
+        creator: 'Steffen'
+    },
+    {
+        id: 11,
+        name: 'Famous Inventions',
+        theme: 'Innovation',
+        length: 15,
+        creator: 'Mads'
+    },
+    {
+        id: 12,
+        name: 'Cybersecurity Essentials',
+        theme: 'Technology',
+        length: 20,
+        creator: 'Johannes'
+    },
+    {
+        id: 13,
+        name: 'Modernist Poets',
+        theme: 'Literature',
+        length: 24,
+        creator: 'Lars'
+    },
+    {
+        id: 14,
+        name: 'Renaissance Art',
+        theme: 'Art History',
+        length: 29,
+        creator: 'Balder'
+    },
+    {
+        id: 15,
+        name: 'Shakespeare Plays',
+        theme: 'Literature',
+        length: 37,
+        creator: 'Henrik'
+    },
+    {
+        id: 16,
+        name: 'Film Scores',
+        theme: 'Music',
+        length: 21,
+        creator: 'Håkon'
+    },
+    {
+        id: 17,
+        name: 'Nutrition Facts',
+        theme: 'Health',
+        length: 30,
+        creator: 'Emil'
+    },
+    {
+        id: 18,
+        name: 'Yoga Poses',
+        theme: 'Wellness',
+        length: 25,
+        creator: 'Olav'
+    },
+    {
+        id: 19,
+        name: 'Meditation Techniques',
+        theme: 'Mindfulness',
+        length: 14,
+        creator: 'Eirik'
+    },
+    {
+        id: 20,
+        name: 'Cardio Workouts',
+        theme: 'Fitness',
+        length: 33,
+        creator: 'Kristian'
+    },
+    {
+        id: 21,
+        name: 'Global Festivals',
+        theme: 'Culture',
+        length: 19,
+        creator: 'Peder'
+    },
+    {
+        id: 22,
+        name: 'Mandarin',
+        theme: 'Languages',
+        length: 40,
+        creator: 'Sebastian'
+    },
+    {
+        id: 23,
+        name: 'African Capitals',
+        theme: 'Geography',
+        length: 54,
+        creator: 'Ludvig'
+    },
+    {
+        id: 24,
+        name: 'International Cuisine',
+        theme: 'Food',
+        length: 28,
+        creator: 'Torbjørn'
+    },
+    
 
 ]

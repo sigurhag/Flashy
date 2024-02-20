@@ -1,93 +1,93 @@
 # Flashy
 
+## Overview
+
+Welcome to our project for the "Programvareutvikling" course. Our product owner tasked us with creating a flashcard-based application. After discussions with the product owner, we decided to develop an application that allows users to practice for exams or similar tasks through an engaging and interactive web-based platform. The application is built using a Java-based technology stack, employing React for frontend development, the Spring Boot framework for handling requests, and a MySQL database for information storage.
+
+## Building and running the App
+
+Flashy uses Maven for building and running the backend of the application. To start the application, navigate to flashy/backend using cd backend from the root of the project. Run `mvn spring-boot:run` to start the Spring project and the REST API. To perform unit tests for the backend, run `mvn install`.
+
+The frontend of our project utilizes the Node Package Manager (npm). Start the frontend on localhost by navigating to flashy/frontend and running `npm start` to open the project on a localhost.
+
+For development and testing purposes, we have integrated various development tools. To check code coverage of the backend, navigate to flashy/backend and run `mvn jacoco:report`. Copy the path from index.html found in flashy/backend/target/site.
+
+To maintain code structure, we use tools like Checkstyle and SpotBugs. Run these tools from flashy/backend with `mvn checkstyle:check` and `mvn spotbugs:check`.
 
 
-## Getting started
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## User Stories for Sprint 1
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+1. Profile Management: As a user, I want to create and manage my profile to view my own sets and favorites.
+2. Storage and Organization: As a user, I want to create, edit, and delete my own sets to customize my learning experience.
+I also want to decide if my sets should be private or public to control who sees my content
+3. Search Functions: As a user, I want to search through sets to quickly find relevant learning resources
+4. User types: As an admin, I want to create and manage admin users to ensure app security and organization
+5. Moderation and Interaction: As an admin, I want to delete inappropriate sets to maintain content quality.
+As a user, I want to "like" and comment on sets to engage with other users and provide feedback.
+6. Favorite Lists: As a user, I want to save sets to a favorite list so that I can easily revisit them later
+7. Filter Functions: As a user, I want to filter sets to quickly find relevant learning resources.
 
-## Add your files
+## Requirements
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+- **Java 17**: Flashy is built with Java.
+- **Spring boot 3.2.2**: The application uses the Spring Noot framework
+- **Maven 3.11.0**: The project uses the devolpment tool Maven.
+- **React 18.20**: The UI is made with the JS framework React
 
-```
-cd existing_repo
-git remote add origin https://gitlab.stud.idi.ntnu.no/tdt4140-2024/produktomraade-3/gruppe-44/flashy.git
-git branch -M main
-git push -uf origin main
-```
+## Dependencies
 
-## Integrate with your tools
+- **mockito 3.12.4**: Used for mocking DB in tests
+- **mysql 8.0.28**: Used for connecting to the DB
+- **jacoco 0.8.7**: Used for displaying test coverage
+- **spotbugs 4.8.3**: Used for checking code for bugs
+- **checkstyle 3.2.0**: Used for checking code structure
+- **fontawsome 6.5.1**: Icons for user interface
+- **jest 27.5.1**: testing tool for UI
+- **istanbul 3.1.6**: code coverage tool for frontend
 
-- [ ] [Set up project integrations](https://gitlab.stud.idi.ntnu.no/tdt4140-2024/produktomraade-3/gruppe-44/flashy/-/settings/integrations)
+## Agile practices
 
-## Collaborate with your team
+The team has incorporated a diverse range of agile methods in the development of user stories for Sprint 1. The sprint commenced with a meeting with the product owner, during which a product backlog was created containing all the user stories for the project. Subsequently, the group utilized planning poker to establish consensus on the estimated time for each story. Based on this estimation and the preferences of the product owner, we selected stories for Sprint 1.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Throughout the development phase, the team conducted 2-3 meetings per week, and each meeting commenced with a stand-up. Agile practices such as pair programming were explored, and the team monitored progress through the use of a burn-down chart.
 
-## Test and Deploy
+## Burn-down chart
 
-Use the built-in continuous integration in GitLab.
+## Backend class diagram
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+![Alt text](pictures/backendClassDiagram.png)
 
-***
+## rest-API class diagram
 
-# Editing this README
+![Alt text](pictures/restAPIClassDiagram.png)
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+### ER-diagram
 
-## Suggestions for a good README
+![Alt text](pictures/ERDiagram.png)
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## Figma
 
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+Link to the projects Figma model: <https://l.messenger.com/l.php?u=https%3A%2F%2Fwww.figma.com%2Ffile%2FLfOcIrsRoWDcqRQ4T0WheO%2FPU%3Ftype%3Ddesign%26node-id%3D100%253A47%26mode%3Ddesign%26t%3DaOj3bOUdxYzxMvq1-1&h=AT2zTyy2Z4VgNi0JAfIihOTq8mh_tQiYaY0VgsqeRvD9ukAzdXTEreAv6_BZO4IhXXIWzLYTTkzG-zGY9L35lx9cy90wOimnCn_cqP3-hZ3S8TGVtms4WTThRrA6N05ZmFlqugi2Gys>
 
 ## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+![Alt text](pictures/MySets.png)
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## Progress for spring 1
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+In Sprint 1, the team spent the first week researching the technology stack, agile development methods, and gaining knowledge in the chosen tech stack. After that, the team created a repository for development with Maven and initialized React and Spring projects. Subsequently, the team started working on user stories for Sprint 1, applying agile practices and tools.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+## Future developement
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+For Sprint 2, our focus will be on completing user stories in progress from Sprint 1, addressing technical debt, and developing user stories for Sprint 2.
 
 ## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
 
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Jacob Gullesen Hagen
+Sigurd Hagen
+Guro Kristensen
+Knut Lembach-Beylegaard
+Kaja Prestnes Lind
+Christina Sophie Devold Sedlmayr
+Steinar Stuestøl

@@ -5,7 +5,6 @@ const LogIn = ({ cards }) => {
   return (
     <div>
         <LogInForm />
-
     </div>
   );
 };

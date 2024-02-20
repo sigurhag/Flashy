@@ -11,7 +11,7 @@ import java.sql.SQLException;
  */
 public class Card {
     // Field for DB connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashy?username=gurokristensen&password=Flashy123";
 
     // Fields for the Card object
     private static int nextCardID = 1; // static value for nextCardID
@@ -19,24 +19,24 @@ public class Card {
     private String cardName;
     private String question;
     private String answer;
-    private int userID;
+    private int setID;
     private boolean isDifficult;
 
     /**
      * Contructor for the card.
      *
-     * @param userID   key to the user which the card belongs to
+     * @param setID   key to the set which the card belongs to
      * @param cardName The name of the card
      * @param question The question on the card
      * @param answer   The answer to the question
      */
-    public Card(int userID, String cardName, String question, String answer) {
+    public Card(int setID, String cardName, String question, String answer) {
         this.cardID = nextCardID++;
         this.cardName = cardName;
         this.question = question;
         this.answer = answer;
         this.isDifficult = false;
-        this.userID = userID;
+        this.setID = setID;
         saveCardToDatabase();
     }
 
@@ -104,12 +104,12 @@ public class Card {
     }
 
     /**
-     * Method for retriving the UserID who own the card.
+     * Method for retriving the SetID who own the card.
      *
-     * @return the userID
+     * @return the setID
      */
-    public int getCardUserID() {
-        return (int) getCardInfo("userID");
+    public int getCardSetID() {
+        return (int) getCardInfo("setID");
     }
 
     /**
@@ -149,15 +149,16 @@ public class Card {
      * Method for adding a new card to the DB.
      */
     public void saveCardToDatabase() {
+        System.err.println("heihei");
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO card (cardID, cardName, question, answer, userID, isDifficult) VALUES(?,?,?,?,?,?)";
+            String query = "INSERT INTO card (cardID, cardname, question, answer, isDifficult, setID) VALUES(?,?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, cardID);
                 preparedStatement.setString(2, cardName);
                 preparedStatement.setString(3, question);
                 preparedStatement.setString(4, answer);
-                preparedStatement.setInt(5, userID);
-                preparedStatement.setBoolean(6, isDifficult);
+                preparedStatement.setBoolean(5, isDifficult);
+                preparedStatement.setInt(6, setID);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -181,6 +182,9 @@ public class Card {
             case "difficult":
                 this.isDifficult = (boolean) newValue;
                 break;
+                case "setID":
+                this.setID = (int) newValue;
+                break;
             default:
                 throw new IllegalArgumentException(field + " is not a field which support updating!");
         }
@@ -202,7 +206,7 @@ public class Card {
     @Override
     public String toString() {
         return "Card [cardID= " + cardID + ", cardName= " + cardName + ", question= " + question + ", answer= " + answer
-                + ", isDifficult= " + isDifficult + ", userID= " + userID + "]";
+                + ", isDifficult= " + isDifficult + ", setID= " + setID + "]";
     }
 
     /**
@@ -211,6 +215,8 @@ public class Card {
      * @param args the args of the method
      */
     public static void main(String[] args) {
+        Card kort1 = new Card(1,"land1", "hva er hovedstanden i Norge", "Oslo");
+        Card kort2 = new Card(2,"navn", "hva er navnet mitt", "Guro");
     }
 
 }

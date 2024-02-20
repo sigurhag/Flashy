@@ -10,12 +10,9 @@ body {
 
 @font-face {
   font-family: 'Cherry Bomb';
-
   src: url('./cherryBomb/cherrybomb-regular-webfont.woff2') format('woff2'),
   url('./cherryBomb/cherrybomb-regular-webfont.woff') format('woff');
-
   font-weight: normal;
-
   font-style: normal;
 }
 
@@ -34,7 +31,7 @@ body {
 .sidebar-fixed {
   position: fixed;
   bottom: 0;
-  left: 5%;
+  left: 3%;
   padding: 10px;
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -44,21 +41,51 @@ body {
   border-top-left-radius: 90px;
   width:-webkit-fit-content;
   width:-moz-fit-content;
-  width:fit-content;
+  width: 120px;
+  z-index: 1000;
+}
+
+.user-icon-fixed {
+  position: fixed;
+  top: 0;
+  right: 3%;
+  padding: 10px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding-top: 2%;
+  border-bottom-right-radius: 90px;
+  border-bottom-left-radius: 90px;
+  width:-webkit-fit-content;
+  width:-moz-fit-content;
+  width:120px;
+  z-index: 1000;
+}
+
+.make-set-fixed {
+  position: fixed;
+  bottom: 300px;
+  right: 3%;
+  padding: 10px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  border-radius: 150px;
+  width:-webkit-fit-content;
+  width:-moz-fit-content;
+  width:120px;
   z-index: 1000;
 }
 
 .fixed-top-middle {
-  background-color: #FCD060;
   position: fixed;
   top: 0;
   width: 100%;
-  height: 20vh;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  z-index: 500;
+  height: 30%;
+  background: linear-gradient(to bottom, #FCD060, #FCD060 55%, transparent);
 }
 
 .fixed-top-middle h1{
@@ -76,4 +103,110 @@ body {
   justify-content: center;
   flex-direction: column;
   padding-left: 20vw;
+}
+
+
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.card {
+  width: 200px; /* Fixed width ensures cards don't grow or shrink */
+  height: 300px; /* Optional: fixed height */
+  /* Add more styles for padding, background, etc. */
+}
+
+
+.bg-color-card {
+  transform-style: preserve-3d;
+  height: 100%;
+  width: 100%;
+  position: relative; 
+  background-color:#FFEFC5;
+}
+
+.card-front,
+.card-back {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  /*Sizing*/
+  height: 100%;
+  width: 100%;
+
+  /*Content alignment*/
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+
+  /*Alignment*/
+  position: absolute; 
+}
+
+.card-front{
+  background-color: '#FFEFC5';
+}
+
+.card-back {
+  transform: rotateX(180deg);
+  background-color: '#FFEFC5';
+}
+
+.flippable-card-container {
+  height: 370px;
+  width: 600px;
+  
+  perspective: 1000px;
+  position: relative;
+}
+
+.question-card {
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  transform-style: preserve-3d;
+  
+}
+
+.flip-exit {
+  transform: rotateX(0deg);
+}
+
+.flip-exit-active {
+  transform: rotateX(180deg);
+  transition: transform 300ms;
+  transition-timing-function: cubic-bezier(0.57, 0.21, 0.69, 1.25);
+}
+
+.flip-exit-done {
+  transform: rotateX(180deg);
+}
+
+.flip-enter {
+  transform: rotateX(180deg);
+}
+
+.flip-enter-active {
+  transform: rotateX(0deg);
+  transition: transform 300ms;
+  transition-timing-function: cubic-bezier(0.57, 0.21, 0.69, 1.25);
+}
+
+.flip-enter-done {
+  transform: rotateX(0deg);
+}
+
+.icon {
+	color: #00489C;
+	background-color: #FCD060;
+	padding: 8px 16px;
+	  
+} 
+
+.icon:hover {
+	color: #00489C;
+	background-color: #FCD060;
 }

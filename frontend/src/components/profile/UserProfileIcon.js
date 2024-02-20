@@ -1,18 +1,57 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; 
+import axios from 'axios'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 
-const UserProfileIcon = ({ users }) => {
+const UserProfileIcon = ({ user = {} }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const { username, email } = user;
+  const [userInfo, setUserInfo] = useState([]);
+
+  const hoverStyle = {
+      color: '#00489C',
+      transform: 'scale(1.05)',
+      transition: 'transform 0.4s, color 0.4s'
+  };
+      useEffect(() => {
+      const getUserData = async () => {
+        try {
+          const response = await axios.get("http://localhost:3500/flash/profile", {
+            params: {username, email}
+          });
+          if (response.data) {
+            setUserInfo(response.data);
+            console.log("fetched data successfully!");
+          } else {
+            console.log("error fetching userdata")
+        } 
+        } catch (error) {
+          console.error("Error fetching user info: ", error);
+        }
+      };
+      getUserData();
+    }, [username])
   return (
-    <Link to="/profile" className="bg-color-navbar" style={{ cursor: 'pointer', display: 'inline-block', width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', textDecoration: 'none', color: 'inherit' }}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style={{ width: '100%', height: '100%' }}>
-        <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
-      </svg>
-      <div style={{ marginTop: '5px', textAlign: 'center' }}>User</div>
-    </Link>
+    <div className='bg-color-sidebar user-icon-fixed'>
+      <Link
+          to="/profile"
+          className="flex flex-column items-center nav-links"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          style={isHovered ? hoverStyle : {}}
+      >
+          <FontAwesomeIcon
+              icon={faUser}
+              color="#FFFFFF"
+              size="3x"
+              style={isHovered ? hoverStyle : {}}
+          />
+          <p className='f4'>{userInfo[0]}</p> 
+      </Link>
+    </div>
   );
 };
 
 export default UserProfileIcon;
-
-
