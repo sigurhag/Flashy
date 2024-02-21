@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class User {
 
@@ -14,7 +15,7 @@ public class User {
 
     // Fields for Users
     private static int counter = 0;
-    private int userID = 0;
+    private String userID;
     private String username;
     private String email;
     private String password;
@@ -40,7 +41,7 @@ public class User {
             this.email = email;
         }
         this.isAdmin = isAdmin;
-        this.userID = ++counter;
+        this.userID = UUID.randomUUID().toString();
 
         saveUserToDatabase();
     }
@@ -91,8 +92,8 @@ public class User {
      *
      * @return userID.
      */
-    public int getUserID() {
-        return (int) getUserData("userID");
+    public String getUserID() {
+        return (String) getUserData("userID");
     }
 
     /**
@@ -154,7 +155,7 @@ public class User {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             String query = "INSERT INTO users (userID, username, password, email, isAdmin) VALUES(?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, userID);
+                preparedStatement.setString(1, userID);
                 preparedStatement.setString(2, username);
                 preparedStatement.setString(3, password);
                 preparedStatement.setString(4, email);
@@ -176,7 +177,7 @@ public class User {
         String query = "SELECT " + field + " FROM user WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, userID);
+                preparedStatement.setString(1, userID);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
                         value = resultSet.getObject(field);
@@ -211,7 +212,7 @@ public class User {
             String query = "UPDATE user SET " + field + " = ? WHERE userID = ?";
             try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
                 updateStatement.setObject(1, newValue);
-                updateStatement.setInt(2, userID);
+                updateStatement.setString(2, userID);
                 updateStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -225,5 +226,6 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
+        
     }
 }

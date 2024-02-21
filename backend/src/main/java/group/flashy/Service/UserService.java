@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import java.lang.reflect.Array;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,6 +20,8 @@ import group.flashy.User;
 @Service 
 public class UserService {
 
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
+
     private User loggedIn;
     
     private final DataSource dataSource;
@@ -28,13 +31,14 @@ public class UserService {
     }
 
     /*
-     * Må gjøre om userID slik at den velges i konstruktør-parameterne - og ikke genereres.
+     * Sjekker at innloggingsinformasjonen er riktig
+     * Hvis ikke returneres false
      */
 
     public boolean verifyLogIn(String username, String psw) {
         boolean succesfulLogin = false;
         String query = "SELECT * FROM user WHERE username = ?";
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, username);
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -57,7 +61,7 @@ public class UserService {
      * Her må User-klassen endres slik at evt. feilmeldinger eller beskjeder kommer fram til frontend.
      * Som det er nå gis det ingen beskjed og ingen feilmelding.
      * 
-     * ID: Her må det genereres en ID for konstruktøren.
+     * Logger inn brukeren
      */
 
     public boolean registerUser(String username, String psw, String email) {
@@ -71,9 +75,9 @@ public class UserService {
         return validRegister;
     }
 
-    private Set findSetByID(ArrayList<Set> sets, int i) {
+    private Set findSetByID(ArrayList<Set> sets, String setID) {
         for (Set set : sets) {
-            if (set.getSetID() == i) {
+            if (set.getSetID().equals(setID)) {
                 return set;
             }
         }
@@ -81,19 +85,19 @@ public class UserService {
     }
 
     /*
-     * Rom for forbedringspotensiale med tanke på for-loopen (tror jeg)
      * Trenger også cardID for å ha en fremmednøkkel til set
      */
     
     public ArrayList<Set> getMySets() {
         ArrayList<Set> mySets = new ArrayList<>();
         String query = "SELECT * FROM 'Set' LEFT JOIN Card ON ('Set'.cardID = Card.cardID) WHERE userID = ?";
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, loggedIn.getUserID());
+                preparedStatement.setString(1, loggedIn.getUserID());
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    Set crtSet = findSetByID(mySets, resultSet.getInt("setID"));
+                    String setID = resultSet.getString("setID");
+                    Set crtSet = findSetByID(mySets, setID);
                     if (crtSet == null) {
                         Set set = new Set(resultSet.getString("setname"),
                         resultSet.getString("theme"),
@@ -103,7 +107,7 @@ public class UserService {
                     if (resultSet.getString("cardname").equals(null)) {
                         continue;
                     }
-                    Card crtCard = new Card(resultSet.getInt("cardID"),
+                    Card crtCard = new Card(setID,
                     resultSet.getString("cardName"),
                     resultSet.getString("question"),
                     resultSet.getString("answer"));
@@ -119,12 +123,13 @@ public class UserService {
     public ArrayList<Set> getFavorites() {
         ArrayList<Set> myFavorites = new ArrayList<>();
         String query = "SELECT setID, setname, theme, cardname, cardID, cardName, question, answer FROM Favourite INNER JOIN 'Set' ON (Favourites.setID = 'Set'.setID) LEFT JOIN Card ON ('Set'.cardID = Card.cardID) WHERE userID = ?";
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, loggedIn.getUserID());
+            preparedStatement.setString(1, loggedIn.getUserID());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Set crtSet = findSetByID(myFavorites, resultSet.getInt("setID"));
+                String setID = resultSet.getString("setID");
+                Set crtSet = findSetByID(myFavorites, setID);
                     if (crtSet == null) {
                         Set set = new Set(resultSet.getString("setname"),
                         resultSet.getString("theme"),
@@ -134,7 +139,7 @@ public class UserService {
                     if (resultSet.getString("cardname").equals(null)) {
                         continue;
                     }
-                    Card crtCard = new Card(resultSet.getInt("cardID"),
+                    Card crtCard = new Card(setID,
                     resultSet.getString("cardName"),
                     resultSet.getString("question"),
                     resultSet.getString("answer"));

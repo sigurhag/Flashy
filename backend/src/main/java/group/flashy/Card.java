@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 /**
  * Class for the flashcards.
@@ -15,11 +16,11 @@ public class Card {
 
     // Fields for the Card object
     private static int nextCardID = 1; // static value for nextCardID
-    private int cardID;
+    private String cardID;
     private String cardName;
     private String question;
     private String answer;
-    private int setID;
+    private String setID;
     private boolean isDifficult;
 
     /**
@@ -30,8 +31,8 @@ public class Card {
      * @param question The question on the card
      * @param answer   The answer to the question
      */
-    public Card(int setID, String cardName, String question, String answer) {
-        this.cardID = nextCardID++;
+    public Card(String setID, String cardName, String question, String answer) {
+        this.cardID = UUID.randomUUID().toString();
         this.cardName = cardName;
         this.question = question;
         this.answer = answer;
@@ -132,7 +133,7 @@ public class Card {
         String query = "SELECT " + field + " FROM card WHERE cardID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, cardID);
+                preparedStatement.setString(1, cardID);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
                         value = resultSet.getObject(field);
@@ -152,11 +153,11 @@ public class Card {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             String query = "INSERT INTO card (cardID, cardName, question, answer, setID, isDifficult) VALUES(?,?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, cardID);
+                preparedStatement.setString(1, cardID);
                 preparedStatement.setString(2, cardName);
                 preparedStatement.setString(3, question);
                 preparedStatement.setString(4, answer);
-                preparedStatement.setInt(5, setID);
+                preparedStatement.setString(5, setID);
                 preparedStatement.setBoolean(6, isDifficult);
                 preparedStatement.executeUpdate();
             }
@@ -182,7 +183,7 @@ public class Card {
                 this.isDifficult = (boolean) newValue;
                 break;
                 case "setID":
-                this.setID = (int) newValue;
+                this.setID = (String) newValue;
                 break;
             default:
                 throw new IllegalArgumentException(field + " is not a field which support updating!");
@@ -191,7 +192,7 @@ public class Card {
             String query = "UPDATE card SET " + field + " = ? WHERE cardID = ?";
             try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
                 updateStatement.setObject(1, newValue);
-                updateStatement.setInt(2, cardID);
+                updateStatement.setString(2, cardID);
                 updateStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -214,6 +215,22 @@ public class Card {
      * @param args the args of the method
      */
     public static void main(String[] args) {
+        String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
+        String username = "root";
+
+
+        try {
+            //Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(JDBC_URL, username, psw);
+            System.out.println("IT WORKED!");
+            User user = new User("nope", "nah", "naha", false);
+            Set set = new Set("testSet", "nothing", user.getUserID());
+            Card card = new Card(set.getSetID(), "Biology", "Is it green", "yes");
+            card.saveCardToDatabase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
