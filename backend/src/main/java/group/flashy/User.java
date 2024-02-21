@@ -14,8 +14,9 @@ public class User {
     private static final boolean True = false;
 
     // Fields for Users
-    private static int counter = 0;
-    private int userID = 0;
+    //There is something wrong with the userID logic, at least when the tables has users already
+    private static int counter = 3;
+    private int userID = 3;
     private String username;
     private String email;
     private String password;
@@ -177,7 +178,7 @@ public class User {
      */
     public Object getUserData(String field) {
         Object value = null;
-        String query = "SELECT " + field + " FROM user WHERE userID = ?";
+        String query = "SELECT " + field + " FROM User WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, userID);
@@ -229,7 +230,10 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
-        User Knut = new User("Knut123", "okidoki123", "knuterkul.123", True);
+        /*User Knut = new User("Knut123", "okidoki123", "knuterkul.123", True);
         User Christina = new User("Tinna223", "jegerkul", "christinaerraa.123@gmail.com", True);
+        User Guro = new User("gurokris", "jegerkul", "guro@gmail.com", True);
+
+        System.out.println(Knut.getUserData("username"));*/
     }
 }
