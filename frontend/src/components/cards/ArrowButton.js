@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons'
 
-const ArrowButton= ({type}) => {
+const ArrowButton= ({type, onClick}) => {
     const [isHovered, setIsHovered] = useState(false);
     const hoverStyle = {
-        transform: 'scale(1.2)',
-        transition: 'transform 0.4s,'
+        transform: 'scale(1.3)',
+        transition: 'transform 0.4s'
     };
     return (
             <FontAwesomeIcon
@@ -16,7 +14,9 @@ const ArrowButton= ({type}) => {
                 size="2x"
                 style={isHovered ? hoverStyle : {}}
                 className='pa3'
-
+                onClick={onClick}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
             />
     );
 };
