@@ -7,6 +7,9 @@ const CardList = () => {
     const [filteredCards, setFilteredCards] = useState(cards);
     const [searchQuery, setSearchQuery] = useState('');
 
+    const handleOnClick = () => {
+
+    }
     useEffect(() => {
         const filtered = cards.filter(card =>
             card.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -23,13 +26,13 @@ const CardList = () => {
             </div>
             <div className="card-list">
                 {filteredCards.map((card, i) => (
-                    <Card 
+                        <Card
                         key={i}
                         name={card.name}
                         creator={card.creator}
                         theme={card.theme}
-                        length={card.length}
-                    />
+                        length={card.length} 
+                        onClick={handleOnClick}/>
                 ))}
             </div>
         </div>
