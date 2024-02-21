@@ -14,8 +14,6 @@ For development and testing purposes, we have integrated various development too
 
 To maintain code structure, we use tools like Checkstyle and SpotBugs. Run these tools from flashy/backend with `mvn checkstyle:check` and `mvn spotbugs:check`.
 
-
-
 ## User Stories for Sprint 1
 
 1. Profile Management: As a user, I want to create and manage my profile to view my own sets and favorites.

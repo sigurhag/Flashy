@@ -2,8 +2,6 @@ import React from 'react';
 import CardList from '../components/cards/CardList';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
-import { Link } from 'react-router-dom';
-
 
 const Homepage = ({ cards }) => {
   return (
@@ -17,7 +15,6 @@ const Homepage = ({ cards }) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <h1>Today's topic: Science</h1>
-        <Link to="/cardview"><h1>CardView</h1></Link>{/*Needed a link to see CardView, remove once connected to sets*/}
         <div className='w-70'>
           <CardList />  
         </div>
