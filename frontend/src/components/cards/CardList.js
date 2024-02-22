@@ -3,7 +3,8 @@ import Card from './Card';
 import Searchbar from '../Searchbar';
 import { cards } from "./Cards";
 
-const CardList = () => {
+const CardList = ({ edit, favourite, remove }) => {
+    
     const [filteredCards, setFilteredCards] = useState(cards);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -32,7 +33,12 @@ const CardList = () => {
                         creator={card.creator}
                         theme={card.theme}
                         length={card.length} 
-                        onClick={handleOnClick}/>
+                        onClick={handleOnClick}
+                        edit={edit}
+                        favourite={favourite}
+                        remove={remove}
+                        />
+
                 ))}
             </div>
         </div>

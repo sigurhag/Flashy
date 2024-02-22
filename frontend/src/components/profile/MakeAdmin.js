@@ -6,7 +6,7 @@ const MakeAdmin = ({ username, email }) => {
 
     const handleClick = () => {
         setIsAdmin(!isAdmin);
-        /* fix backed */ 
+        /* fix backend */ 
     };
     return (
         <div className="flex flex-row justify-between items-center bg-color-card pa2 ma3" style={{borderRadius: '90px'}}>
@@ -15,7 +15,7 @@ const MakeAdmin = ({ username, email }) => {
                 <h3 className="mt1">{email}</h3>
             </div>
             <div className="mr3">
-                <GeneralButton text={isAdmin ? "Undo admin" : "Make admin"} onclick={handleClick}/>
+                <GeneralButton text={isAdmin ? "Undo admin" : "Make admin"} onClick={handleClick}/>
             </div>
         </div>
     );

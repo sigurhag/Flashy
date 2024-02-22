@@ -2,6 +2,9 @@ import React from 'react';
 import CardList from '../components/cards/CardList';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
+import FavouritesButton from '../components/cards/icons/Favourites';
+import RemoveButton from '../components/cards/icons/Remove';
+import EditButton from '../components/cards/icons/Edit';
 
 const Homepage = ({ cards }) => {
   return (
@@ -16,7 +19,7 @@ const Homepage = ({ cards }) => {
       style={{marginTop: '25vh'}}>
         <h1>Today's topic: Science</h1>
         <div className='w-70'>
-          <CardList />  
+          <CardList favourite={FavouritesButton} remove={RemoveButton} edit={EditButton} />  
         </div>
       </div>
     </div>
