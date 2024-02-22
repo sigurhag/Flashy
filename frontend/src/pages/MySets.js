@@ -4,6 +4,10 @@ import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
 import SetBtn from '../components/cards/MakeSet';
 import axios from 'axios';
+import FavouritesButton from '../components/cards/icons/Favourites';
+import EditButton from '../components/cards/icons/Edit';
+import RemoveButton from '../components/cards/icons/Remove';
+
 
 
 const MySetspage = ({ cards }) => {
@@ -40,7 +44,7 @@ const MySetspage = ({ cards }) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <div className='w-70'>
-          <CardList />
+        <CardList favourite={FavouritesButton} remove={RemoveButton} edit={EditButton} />  
         </div>
       </div>
     </div>

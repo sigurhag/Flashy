@@ -6,6 +6,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #FCD060;
   position: relative;
+  overflow: scroll;
 }
 
 @font-face {
