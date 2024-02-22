@@ -52,6 +52,8 @@ Throughout the development phase, the team conducted 2-3 meetings per week, and 
 
 ## Burn-down chart
 
+![Alt text](pictures/BurnDownChartSprint1.png)
+
 ## Backend class diagram
 
 ![Alt text](pictures/backendClassDiagram.png)
