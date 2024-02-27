@@ -11,7 +11,7 @@ import java.sql.SQLException;
  */
 public class Card {
     // Field for DB connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=gurokristensen&password=Flashy123";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
 
     // Fields for the Card object
     private static int nextCardID = 1; // static value for nextCardID

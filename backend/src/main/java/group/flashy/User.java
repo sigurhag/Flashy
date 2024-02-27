@@ -9,14 +9,14 @@ import java.sql.SQLException;
 public class User {
 
     // Field for database connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=gurokristensen&password=Flashy123";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
 
     private static final boolean True = false;
 
     // Fields for Users
     //There is something wrong with the userID logic, at least when the tables has users already
-    private static int counter = 3;
-    private int userID = 3;
+    private static int counter = 6;
+    private int userID = 6;
     private String username;
     private String email;
     private String password;
@@ -231,6 +231,6 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
-
+    
     }
 }

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class Admin extends User {
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=gurokristensen&password=Flashy123";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
 
     public Admin(String username, String password, String email) {
         super(username, password, email, true);
