@@ -10,7 +10,7 @@ import java.util.UUID;
 public class Set { 
 
     // Field for database connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?user=root&password=biblotek336";
     
     private static int nextSetID = 1; //static value for nextSetID
     private String setID;
@@ -82,7 +82,7 @@ public class Set {
 
     public void saveSetToDatabase() {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO card (setID, setname, size, theme, userID) VALUES(?,?,?,?,?)";
+            String query = "INSERT INTO ´Set´ (setID, setname, size, theme, userID) VALUES(?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, setID);
                 preparedStatement.setString(2, setname);
@@ -158,6 +158,10 @@ public class Set {
         } catch (SQLException e) {
             System.err.println(e);
         }
+    }
+
+    public static void main(String[] args) {
+        Set set = new Set("Setty", "Learn to test", "f7d7468b-238b-4990-bcdc-a56f2cf8edf1");
     }
 }
 

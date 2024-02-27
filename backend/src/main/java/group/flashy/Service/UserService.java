@@ -20,7 +20,7 @@ import group.flashy.User;
 @Service 
 public class UserService {
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?user=root&password=biblotek336";
 
     private User loggedIn;
     
@@ -90,7 +90,7 @@ public class UserService {
     
     public ArrayList<Set> getMySets() {
         ArrayList<Set> mySets = new ArrayList<>();
-        String query = "SELECT * FROM 'Set' LEFT JOIN Card ON ('Set'.cardID = Card.cardID) WHERE userID = ?";
+        String query = "SELECT * FROM ´Set´ LEFT JOIN Card ON (´Set´.cardID = Card.cardID) WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, loggedIn.getUserID());
@@ -157,5 +157,11 @@ public class UserService {
         testUser.add("John Doe"); //Test
         testUser.add("johndoe@gmail.com"); //Test
         return testUser;
+    }
+
+    public static void main(String[] args) {
+        UserService servicee = new UserService(null);
+        System.out.println(servicee.verifyLogIn("Tomhello", "secrety"));
+        servicee.getMySets();
     }
 }

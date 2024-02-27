@@ -11,7 +11,7 @@ import java.util.UUID;
 public class User {
 
     // Field for database connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?user=root&password=biblotek336";
 
     // Fields for Users
     private static int counter = 0;
@@ -153,7 +153,7 @@ public class User {
      */
     public void saveUserToDatabase() {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO users (userID, username, password, email, isAdmin) VALUES(?,?,?,?,?)";
+            String query = "INSERT INTO User (userID, username, password, email, isAdmin) VALUES(?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, userID);
                 preparedStatement.setString(2, username);
@@ -226,6 +226,7 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
-        
+        User user1 = new User("Tomhello", "secrety", "aha@hotmail.com", false);
+        //user.saveUserToDatabase();
     }
 }

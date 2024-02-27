@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public class Card {
     // Field for DB connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?user=root&password=biblotek336";
 
     // Fields for the Card object
     private static int nextCardID = 1; // static value for nextCardID
@@ -218,19 +218,7 @@ public class Card {
         String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
         String username = "root";
 
-
-        try {
-            //Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(JDBC_URL, username, psw);
-            System.out.println("IT WORKED!");
-            User user = new User("nope", "nah", "naha", false);
-            Set set = new Set("testSet", "nothing", user.getUserID());
-            Card card = new Card(set.getSetID(), "Biology", "Is it green", "yes");
-            card.saveCardToDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
+        
 
 }
