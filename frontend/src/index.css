@@ -6,6 +6,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #FCD060;
   position: relative;
+  overflow: scroll;
 }
 
 @font-face {
@@ -64,19 +65,33 @@ body {
 
 .make-set-fixed {
   position: fixed;
-  bottom: 300px;
+  bottom: 250px;
   right: 3%;
   padding: 10px;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
   padding-top: 2%;
-  padding-bottom: 2%;
+  padding-bottom: 1.5%;
   border-radius: 150px;
   width:-webkit-fit-content;
   width:-moz-fit-content;
   width:120px;
   z-index: 1000;
+}
+
+.add-question{
+  right: 3%;
+  padding: 10px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  border-radius: 150px;
+  width:-webkit-fit-content;
+  width:-moz-fit-content;
+  width:120px;
+  z-index: 1000;
+
 }
 
 .fixed-top-middle {
@@ -140,13 +155,13 @@ body {
   display: flex; 
   justify-content: center; 
   align-items: center; 
+  background-color: '#FFEFC5';
 
   /*Alignment*/
   position: absolute; 
 }
 
 .card-front{
-  background-color: '#FFEFC5';
 }
 
 .card-back {

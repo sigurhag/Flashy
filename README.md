@@ -14,8 +14,6 @@ For development and testing purposes, we have integrated various development too
 
 To maintain code structure, we use tools like Checkstyle and SpotBugs. Run these tools from flashy/backend with `mvn checkstyle:check` and `mvn spotbugs:check`.
 
-
-
 ## User Stories for Sprint 1
 
 1. Profile Management: As a user, I want to create and manage my profile to view my own sets and favorites.
@@ -53,6 +51,8 @@ The team has incorporated a diverse range of agile methods in the development of
 Throughout the development phase, the team conducted 2-3 meetings per week, and each meeting commenced with a stand-up. Agile practices such as pair programming were explored, and the team monitored progress through the use of a burn-down chart.
 
 ## Burn-down chart
+
+![Alt text](pictures/BurnDownChartSprint1.png)
 
 ## Backend class diagram
 

@@ -3,13 +3,12 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
-const MakeSet = () => {
+const SetBtn = ({text}) => {
   const [isHovered, setIsHovered] = useState(false);
   const hoverStyle = {
       color: '#00489C',
       transform: 'scale(1.05)',
       transition: 'transform 0.4s, color 0.4s'
-
   };
   return (
       <div className='bg-color-sidebar make-set-fixed'>
@@ -26,10 +25,10 @@ const MakeSet = () => {
                 size="3x"
                 style={isHovered ? hoverStyle : {}}
             />
-            <p className='f4'>Make set</p>
+            <p className='f4 tc'>{text}</p>
         </Link>
       </div>
   );
 };
 
-export default MakeSet;
+export default SetBtn;

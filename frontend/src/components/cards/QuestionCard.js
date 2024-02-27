@@ -1,35 +1,19 @@
 import React from "react";
+import HardButton from "./icons/Hard";
 
-function QuestionCard({onClick}) {
+function QuestionCard({front, back, onClick}) {
     return(
-        <div className="question-card br4" style={{backgroundColor:"#FFEFC5"}}onClick={onClick}>
-            <div className="card-back">Back</div>
-            <div className="card-front">Front</div>
+        <div className="question-card br4 f2" style={{backgroundColor:"#FFEFC5"}}onClick={onClick}>
+            <div className="card-back flex flex-column">
+                <h3 className="tc absolute top-0 left-2">Answer: </h3>{back}
+                <div className='absolute bottom-1 right-1 pa2'><HardButton /></div>
+            </div>
+            <div className="card-front ">
+                <h3 className="tc absolute top-0 left-2">Question: </h3>{front}
+            </div>
         </div>
 
     )
 }
-
-
-/*
-import { cards } from './Cards'; /*Need correct import from db*//*
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faChevronRight} from '@fortawesome/free-solid-svg-icons'
-
-const QuestionCard = (props, {onClick}) => {
-    const {question, answer} = props;
-    return (
-        <div className='bg-color-card' onClick={onClick} style={{borderRadius:'40px', height: '370px', width: '600px'}}>
-            <div className="card-back">
-                <h2>{answer}Answer</h2>
-            </div>
-            <div className="card-front"> 
-                <h2 >{question}</h2>Question 
-                <button className="absolute bottom-2 right-2" onClick={onClick} style={{ color: '#00489C', backgroundColor: '#FFEFC5', borderRadius: '90px'}}> See answer<FontAwesomeIcon icon={faChevronRight} /></button>
-            </div>
-        </div>
-    );
-
-*/
 
 export default QuestionCard;

@@ -52,13 +52,13 @@ const Profile = ({ user = {} }) => {
         <h1 className='f1 mt3 mb1'>FLASHY</h1>
         <h2 className='f2 mt1'>My profile</h2>      
       </div>
-      <div className="flex flex-column  pa3 bg-color-card" style={{ width: "500px", marginTop: '16%', padding:'5% 5% 2% 5%', borderRadius: '70px' }}>
+      <div className="flex flex-column  pa3 bg-color-card" style={{ width: "500px", marginTop: '15%', padding:'5% 5% 2% 5%', borderRadius: '70px' }}>
         <h2 className="f3 ">Username: {userInfo[0]}</h2>
         <h2 className="f3 mb5 ">E-mail: {userInfo[1]}</h2>  
         <GeneralButton text={"Change password"}/>
       </div>
       <div className='mt4'>
-        <h2 className='mb1'>Handle admin access</h2>
+        <h2 style={{marginBottom: '1%'}}>Handle admin access</h2>
         <UserList users={filteredUsers}/>   
       </div>
     </div>

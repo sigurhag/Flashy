@@ -1,8 +1,10 @@
 import React from 'react';
-import Searchbar from '../components/Searchbar';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
 import CardList from '../components/cards/CardList';
+import FavouritesButton from '../components/cards/icons/Favourites';
+import RemoveButton from '../components/cards/icons/Remove';
+import EditButton from '../components/cards/icons/Edit';
 
 
 const Searchpage = () => {
@@ -19,7 +21,7 @@ const Searchpage = () => {
       style={{marginTop: '25vh'}}
     >
       	<div className='w-70 '>
-          <CardList />  
+          <CardList favourite={FavouritesButton} remove={RemoveButton} edit={EditButton} />  
         </div>
     </div>
   </div>
