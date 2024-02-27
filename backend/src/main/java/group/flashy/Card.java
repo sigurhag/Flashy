@@ -11,7 +11,7 @@ import java.sql.SQLException;
  */
 public class Card {
     // Field for DB connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashy?username=gurokristensen&password=Flashy123";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=gurokristensen&password=Flashy123";
 
     // Fields for the Card object
     private static int nextCardID = 1; // static value for nextCardID
@@ -149,16 +149,15 @@ public class Card {
      * Method for adding a new card to the DB.
      */
     public void saveCardToDatabase() {
-        System.err.println("heihei");
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO card (cardID, cardname, question, answer, isDifficult, setID) VALUES(?,?,?,?,?,?)";
+            String query = "INSERT INTO card (cardID, cardname, question, answer, setID, isDifficult) VALUES(?,?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, cardID);
                 preparedStatement.setString(2, cardName);
                 preparedStatement.setString(3, question);
                 preparedStatement.setString(4, answer);
-                preparedStatement.setBoolean(5, isDifficult);
-                preparedStatement.setInt(6, setID);
+                preparedStatement.setInt(5, setID);
+                preparedStatement.setBoolean(6, isDifficult);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -215,8 +214,7 @@ public class Card {
      * @param args the args of the method
      */
     public static void main(String[] args) {
-        Card kort1 = new Card(1,"land1", "hva er hovedstanden i Norge", "Oslo");
-        Card kort2 = new Card(2,"navn", "hva er navnet mitt", "Guro");
+        
     }
 
 }

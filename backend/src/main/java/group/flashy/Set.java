@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class Set { 
 
     // Field for database connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=gurokristensen&password=Flashy123";
     
     private static int nextSetID = 1; //static value for nextSetID
     private int setID;
@@ -63,7 +63,7 @@ public class Set {
 
     public Object getSetInfo(String field) {
         Object value = null;
-        String query = "SELECT " + field + " FROM set WHERE setID = ?";
+        String query = "SELECT " + field + " FROM `set` WHERE setID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, setID);
@@ -81,7 +81,7 @@ public class Set {
 
     public void saveSetToDatabase() {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO card (setID, setname, size, theme, userID) VALUES(?,?,?,?,?)";
+            String query = "INSERT INTO `Set` (setID, setname, size, theme, userID) VALUES(?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, setID);
                 preparedStatement.setString(2, setname);
@@ -119,7 +119,7 @@ public class Set {
     private boolean validateSetExists(int setID) {
         boolean setExists = false;
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "SELECT COUNT(*) FROM Set WHERE setID = ?";
+            String query = "SELECT COUNT(*) FROM `Set` WHERE setID = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, setID);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -148,7 +148,7 @@ public class Set {
                 throw new IllegalArgumentException(field + " is not a field which support updating!");
         }
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "UPDATE set SET " + field + " = ? WHERE setID = ?";
+            String query = "UPDATE `set` SET " + field + " = ? WHERE setID = ?";
             try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
                 updateStatement.setObject(1, newValue);
                 updateStatement.setInt(2, setID);
@@ -157,6 +157,10 @@ public class Set {
         } catch (SQLException e) {
             System.err.println(e);
         }
+    }
+
+    public static void main(String[] args) {
+        
     }
 }
 

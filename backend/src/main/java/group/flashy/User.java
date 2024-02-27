@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class User {
 
     // Field for database connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashy?username=gurokristensen&password=Flashy123";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=gurokristensen&password=Flashy123";
 
     private static final boolean True = false;
 
@@ -155,13 +155,12 @@ public class User {
     public void saveUserToDatabase() {
         
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            System.out.println("heihei");
-            String query = "INSERT INTO User (userID, username, password, email) VALUES(?,?,?,?)";
+            String query = "INSERT INTO User (userID, username, email, password) VALUES(?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, userID);
                 preparedStatement.setString(2, username);
-                preparedStatement.setString(3, password);
-                preparedStatement.setString(4, email);
+                preparedStatement.setString(3, email);
+                preparedStatement.setString(4, password);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -206,8 +205,10 @@ public class User {
                     this.username =  (String) newValue;
                 }
                 break;
-            case "isAdmin":
-                this.isAdmin = (boolean) newValue;
+            case "password":
+                if (isValidPassword((String) newValue)) {
+                    this.password =  (String) newValue;
+                }
                 break;
             default:
                 throw new IllegalArgumentException(field + " is not a field which support updating!");
@@ -230,10 +231,6 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
-        /*User Knut = new User("Knut123", "okidoki123", "knuterkul.123", True);
-        User Christina = new User("Tinna223", "jegerkul", "christinaerraa.123@gmail.com", True);
-        User Guro = new User("gurokris", "jegerkul", "guro@gmail.com", True);
 
-        System.out.println(Knut.getUserData("username"));*/
     }
 }
