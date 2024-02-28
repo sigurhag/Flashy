@@ -1,6 +1,7 @@
 package group.flashy.Controller;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,7 +36,9 @@ public class MainController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<String> verifyLogin(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<String> verifyLogin(@RequestBody Map<String, String> credentials) {
+        String username = credentials.get("username");
+        String password = credentials.get("password");
         boolean isValid = userService.verifyLogIn(username, password);
         if (isValid) {
             return ResponseEntity.ok("Successful login");

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class User {
 
@@ -16,7 +17,7 @@ public class User {
     // Fields for Users
     //There is something wrong with the userID logic, at least when the tables has users already
     private static int counter = 6;
-    private int userID = 6;
+    private String userID;
     private String username;
     private String email;
     private String password;
@@ -42,7 +43,7 @@ public class User {
             this.email = email;
         }
         this.isAdmin = isAdmin;
-        this.userID = ++counter;
+        this.userID = UUID.randomUUID().toString();
 
         saveUserToDatabase();
     }
@@ -93,8 +94,8 @@ public class User {
      *
      * @return userID.
      */
-    public int getUserID() {
-        return (int) getUserData("userID");
+    public String getUserID() {
+        return (String) getUserData("userID");
     }
 
     /**
@@ -155,9 +156,13 @@ public class User {
     public void saveUserToDatabase() {
         
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
+<<<<<<< backend/src/main/java/group/flashy/User.java
+            String query = "INSERT INTO User (userID, username, password, email, isAdmin) VALUES(?,?,?,?,?)";
+=======
             String query = "INSERT INTO User (userID, username, email, password) VALUES(?,?,?,?)";
+>>>>>>> backend/src/main/java/group/flashy/User.java
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, userID);
+                preparedStatement.setString(1, userID);
                 preparedStatement.setString(2, username);
                 preparedStatement.setString(3, email);
                 preparedStatement.setString(4, password);
@@ -180,7 +185,7 @@ public class User {
         String query = "SELECT " + field + " FROM User WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, userID);
+                preparedStatement.setString(1, userID);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
                         value = resultSet.getObject(field);
@@ -217,7 +222,7 @@ public class User {
             String query = "UPDATE user SET " + field + " = ? WHERE userID = ?";
             try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
                 updateStatement.setObject(1, newValue);
-                updateStatement.setInt(2, userID);
+                updateStatement.setString(2, userID);
                 updateStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -231,6 +236,11 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
+<<<<<<< backend/src/main/java/group/flashy/User.java
+        User user1 = new User("Tomhello", "secrety", "aha@hotmail.com", false);
+        //user.saveUserToDatabase();
+=======
     
+>>>>>>> backend/src/main/java/group/flashy/User.java
     }
 }

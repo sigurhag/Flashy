@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class Set { 
 
@@ -12,14 +13,14 @@ public class Set {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
     
     private static int nextSetID = 1; //static value for nextSetID
-    private int setID;
+    private String setID;
     private String setname;
     private int size;
     private String theme;
-    private int userID;
+    private String userID;
 
-    public Set(String setname, String theme, int userID) {
-        this.setID = nextSetID ++;
+    public Set(String setname, String theme, String userID) {
+        this.setID = UUID.randomUUID().toString();
         this.setname = setname;
         this.size = 0;
         this.theme = theme;
@@ -30,8 +31,8 @@ public class Set {
 
     //Getters
 
-    public int getSetID() {
-        return (int) getSetInfo("setID");
+    public String getSetID() {
+        return (String) getSetInfo("setID");
     }
 
     public String getSetName() {
@@ -66,7 +67,7 @@ public class Set {
         String query = "SELECT " + field + " FROM `set` WHERE setID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, setID);
+                preparedStatement.setString(1, setID);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
                         value = resultSet.getObject(field);
@@ -81,13 +82,13 @@ public class Set {
 
     public void saveSetToDatabase() {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO `Set` (setID, setname, size, theme, userID) VALUES(?,?,?,?,?)";
+            String query = "INSERT INTO ´Set´ (setID, setname, size, theme, userID) VALUES(?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, setID);
+                preparedStatement.setString(1, setID);
                 preparedStatement.setString(2, setname);
                 preparedStatement.setInt(3, size);
                 preparedStatement.setString(4, theme);
-                preparedStatement.setInt(5, userID);
+                preparedStatement.setString(5, userID);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -151,7 +152,7 @@ public class Set {
             String query = "UPDATE `set` SET " + field + " = ? WHERE setID = ?";
             try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
                 updateStatement.setObject(1, newValue);
-                updateStatement.setInt(2, setID);
+                updateStatement.setString(2, setID);
                 updateStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -160,7 +161,7 @@ public class Set {
     }
 
     public static void main(String[] args) {
-        
+        Set set = new Set("Setty", "Learn to test", "f7d7468b-238b-4990-bcdc-a56f2cf8edf1");
     }
 }
 
