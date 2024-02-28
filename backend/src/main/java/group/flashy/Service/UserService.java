@@ -153,4 +153,8 @@ public class UserService {
         testUser.add("johndoe@gmail.com"); //Test
         return testUser;
     }
+
+    public static void main(String[] args) {
+        UserService test = new UserService(null);
+    }
 }

@@ -1,4 +1,3 @@
-
 package group.flashy;
 
 import java.sql.Connection;
@@ -10,11 +9,14 @@ import java.sql.SQLException;
 public class User {
 
     // Field for database connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
+
+    private static final boolean True = false;
 
     // Fields for Users
-    private static int counter = 0;
-    private int userID = 0;
+    //There is something wrong with the userID logic, at least when the tables has users already
+    private static int counter = 6;
+    private int userID = 6;
     private String username;
     private String email;
     private String password;
@@ -151,18 +153,20 @@ public class User {
      * Method for saving new user to database.
      */
     public void saveUserToDatabase() {
+        
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO users (userID, username, password, email, isAdmin) VALUES(?,?,?,?,?)";
+            String query = "INSERT INTO User (userID, username, email, password) VALUES(?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, userID);
                 preparedStatement.setString(2, username);
-                preparedStatement.setString(3, password);
-                preparedStatement.setString(4, email);
-                preparedStatement.setBoolean(5, isAdmin);
+                preparedStatement.setString(3, email);
+                preparedStatement.setString(4, password);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
+            
             System.err.println(e);
+            
         }
     }
 
@@ -173,7 +177,7 @@ public class User {
      */
     public Object getUserData(String field) {
         Object value = null;
-        String query = "SELECT " + field + " FROM user WHERE userID = ?";
+        String query = "SELECT " + field + " FROM User WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, userID);
@@ -201,8 +205,10 @@ public class User {
                     this.username =  (String) newValue;
                 }
                 break;
-            case "isAdmin":
-                this.isAdmin = (boolean) newValue;
+            case "password":
+                if (isValidPassword((String) newValue)) {
+                    this.password =  (String) newValue;
+                }
                 break;
             default:
                 throw new IllegalArgumentException(field + " is not a field which support updating!");
@@ -225,5 +231,6 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
+    
     }
 }
