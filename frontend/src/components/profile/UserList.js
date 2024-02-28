@@ -17,7 +17,7 @@ const UserList = ({users}) => {
 
     return (
         <div className='flex flex-column justify-center items-center'>
-        <div style={{ width: '100%', maxWidth: '600px' }}> {/* Adjust maxWidth as needed */}
+            <div>
             <Searchbar text="Find user" onSearch={setSearchQuery} />
         </div>
             {filteredUsers.map((user, index) => (

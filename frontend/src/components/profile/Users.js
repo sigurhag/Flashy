@@ -16,6 +16,10 @@ export const users = [
         email: "pokebowl@yahoo.it"
     },
     {
+        username: "shrek",
+        email: "green@donkey.fr"
+    },
+    {
         username: "neil_armstrong",
         email: "moonwalker@nasa.gov",
     },

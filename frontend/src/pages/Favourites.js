@@ -2,7 +2,9 @@ import React from 'react';
 import CardList from '../components/cards/CardList';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
-
+import FavouritesButton from '../components/cards/icons/Favourites';
+import RemoveButton from '../components/cards/icons/Remove';
+import EditButton from '../components/cards/icons/Edit';
 
 
 const Favouritespage = ({ cards }) => {
@@ -17,7 +19,7 @@ const Favouritespage = ({ cards }) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <div className='w-70'>
-          <CardList cards={cards}/>
+        <CardList favourite={FavouritesButton} remove={RemoveButton} edit={EditButton} />  
         </div>
       </div>
     </div>

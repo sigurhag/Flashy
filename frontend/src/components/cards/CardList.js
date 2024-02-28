@@ -3,10 +3,14 @@ import Card from './Card';
 import Searchbar from '../Searchbar';
 import { cards } from "./Cards";
 
-const CardList = () => {
+const CardList = ({ edit, favourite, remove }) => {
+    
     const [filteredCards, setFilteredCards] = useState(cards);
     const [searchQuery, setSearchQuery] = useState('');
 
+    const handleOnClick = () => {
+
+    }
     useEffect(() => {
         const filtered = cards.filter(card =>
             card.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -18,18 +22,23 @@ const CardList = () => {
 
     return (
         <div className='flex flex-column justify-center '>
-            <div className='flex flex-column justify-center'>
-            <Searchbar className="flex flex-column justify-center align-center" text="What do you want to learn today?" onSearch={setSearchQuery} />
+            <div style={{ width: '100%', maxWidth: '1000px' }}>
+            <Searchbar text="What do you want to learn today?" onSearch={setSearchQuery} />
             </div>
             <div className="card-list">
                 {filteredCards.map((card, i) => (
-                    <Card 
+                        <Card
                         key={i}
                         name={card.name}
                         creator={card.creator}
                         theme={card.theme}
-                        length={card.length}
-                    />
+                        length={card.length} 
+                        onClick={handleOnClick}
+                        edit={edit}
+                        favourite={favourite}
+                        remove={remove}
+                        />
+
                 ))}
             </div>
         </div>
