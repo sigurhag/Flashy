@@ -160,8 +160,6 @@ public class UserService {
     }
 
     public static void main(String[] args) {
-        UserService servicee = new UserService(null);
-        System.out.println(servicee.verifyLogIn("Tomhello", "secrety"));
-        servicee.getMySets();
+        UserService test = new UserService(null);
     }
 }

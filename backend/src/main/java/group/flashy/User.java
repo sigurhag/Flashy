@@ -1,4 +1,3 @@
-
 package group.flashy;
 
 import java.sql.Connection;
@@ -11,10 +10,13 @@ import java.util.UUID;
 public class User {
 
     // Field for database connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?user=root&password=biblotek336";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
+
+    private static final boolean True = false;
 
     // Fields for Users
-    private static int counter = 0;
+    //There is something wrong with the userID logic, at least when the tables has users already
+    private static int counter = 6;
     private String userID;
     private String username;
     private String email;
@@ -152,18 +154,24 @@ public class User {
      * Method for saving new user to database.
      */
     public void saveUserToDatabase() {
+        
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
+<<<<<<< backend/src/main/java/group/flashy/User.java
             String query = "INSERT INTO User (userID, username, password, email, isAdmin) VALUES(?,?,?,?,?)";
+=======
+            String query = "INSERT INTO User (userID, username, email, password) VALUES(?,?,?,?)";
+>>>>>>> backend/src/main/java/group/flashy/User.java
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, userID);
                 preparedStatement.setString(2, username);
-                preparedStatement.setString(3, password);
-                preparedStatement.setString(4, email);
-                preparedStatement.setBoolean(5, isAdmin);
+                preparedStatement.setString(3, email);
+                preparedStatement.setString(4, password);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
+            
             System.err.println(e);
+            
         }
     }
 
@@ -174,7 +182,7 @@ public class User {
      */
     public Object getUserData(String field) {
         Object value = null;
-        String query = "SELECT " + field + " FROM user WHERE userID = ?";
+        String query = "SELECT " + field + " FROM User WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, userID);
@@ -202,8 +210,10 @@ public class User {
                     this.username =  (String) newValue;
                 }
                 break;
-            case "isAdmin":
-                this.isAdmin = (boolean) newValue;
+            case "password":
+                if (isValidPassword((String) newValue)) {
+                    this.password =  (String) newValue;
+                }
                 break;
             default:
                 throw new IllegalArgumentException(field + " is not a field which support updating!");
@@ -226,7 +236,11 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
+<<<<<<< backend/src/main/java/group/flashy/User.java
         User user1 = new User("Tomhello", "secrety", "aha@hotmail.com", false);
         //user.saveUserToDatabase();
+=======
+    
+>>>>>>> backend/src/main/java/group/flashy/User.java
     }
 }
