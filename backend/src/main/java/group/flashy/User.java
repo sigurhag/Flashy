@@ -158,9 +158,6 @@ public class User {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
 <<<<<<< backend/src/main/java/group/flashy/User.java
             String query = "INSERT INTO User (userID, username, password, email, isAdmin) VALUES(?,?,?,?,?)";
-=======
-            String query = "INSERT INTO User (userID, username, email, password) VALUES(?,?,?,?)";
->>>>>>> backend/src/main/java/group/flashy/User.java
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, userID);
                 preparedStatement.setString(2, username);
