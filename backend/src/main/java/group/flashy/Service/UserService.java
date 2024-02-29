@@ -20,7 +20,7 @@ import group.flashy.User;
 @Service 
 public class UserService {
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?user=generalUser&password=Flashy123";
 
     private User loggedIn;
 

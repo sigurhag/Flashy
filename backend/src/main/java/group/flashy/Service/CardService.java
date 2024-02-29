@@ -17,7 +17,7 @@ import group.flashy.Set;
 @Service
 public class CardService {
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?user=generalUser&password=Flashy123";
 
     private final DataSource dataSource;
 
