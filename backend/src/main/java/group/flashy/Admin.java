@@ -42,7 +42,7 @@ public class Admin extends User {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             String query = "INSERT INTO admin (adminID, username, password, email) VALUES (?, ?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, getUserID());
+                //preparedStatement.setInt(1, getUserID());
                 preparedStatement.setString(2, user.getUsername());
                 preparedStatement.setString(3, user.getPassword());
                 preparedStatement.setString(4, user.getEmail());
