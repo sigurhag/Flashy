@@ -19,7 +19,6 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private boolean isAdmin;
 
     /**
      * Contstructor for the class.
@@ -29,8 +28,7 @@ public class User {
      * @param email
      * @param isAdmin
      */
-    public User(String username, String password, String email,
-            boolean isAdmin) {
+    public User(String username, String password, String email) {
         if (isValidUsername(username)) {
             this.username = username;
         }
@@ -40,9 +38,7 @@ public class User {
         if (isValidEmail(email)) {
             this.email = email;
         }
-        this.isAdmin = isAdmin;
         this.userID = UUID.randomUUID().toString();
-
         saveUserToDatabase();
     }
 
@@ -54,7 +50,7 @@ public class User {
      */
     private boolean isValidUsername(String username) {
         if (username.length() < 5 || username.length() > 20) {
-            return false;
+            throw new IllegalArgumentException("Invalid Username!");
         }
         return true;
     }
@@ -67,7 +63,7 @@ public class User {
      */
     private boolean isValidPassword(String password) {
         if (password.length() < 7 || password.length() > 20) {
-            return false;
+            throw new IllegalArgumentException("Invalid password!");
         }
         return true;
     }
@@ -82,7 +78,7 @@ public class User {
         if (!email.endsWith("@gmail.com")
                 && !email.endsWith("@stud.ntnu.no")
                 && !email.endsWith("@hotmail.com")) {
-            return false;
+            throw new IllegalArgumentException("Invalid email");
         }
         return true;
     }
@@ -152,7 +148,6 @@ public class User {
      * Method for saving new user to database.
      */
     public void saveUserToDatabase() {
-        
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             String query = "INSERT INTO User (userID, username, email, password) VALUES(?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -230,7 +225,5 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
-        User user1 = new User("Tomhello", "secrety", "aha@hotmail.com", false);
-        //user.saveUserToDatabase();
-    }
+           }
 }
