@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import RegisterButton from "./Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BackButton from "./BackButton";
 import axios from "axios";
 
@@ -9,18 +9,19 @@ const RegisterForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
+    const navigate = useNavigate();
 
     const handleRegisterPress = async () => {
         try {
-        const response = await axios.post("", {
+        const response = await axios.post("http://localhost:3500/flash/register", {
             username: username,
             email: email,
             password: password,
             password2: password2
         });
-        if (response.data.sucess) {
+        navigate("/home");
+        if (response.data.success) {
             console.log("Registration successful!");
-            //Save information about logged in user
         } else {
             console.log("error with registration")
         } 
@@ -72,7 +73,7 @@ const RegisterForm = () => {
                         onChange= {(e) => setPassword2(e.target.value)}
                     />
             </label>
-            <Link to="/home"><RegisterButton onClick={handleRegisterPress} /></Link>
+            <RegisterButton onClick={handleRegisterPress} />
             <Link to="/"><BackButton/></Link>
         </div>
     );

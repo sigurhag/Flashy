@@ -20,9 +20,11 @@ import group.flashy.User;
 @Service 
 public class UserService {
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?user=root&password=biblotek336";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
 
     private User loggedIn;
+
+    public static String LoggedInUserID;
     
     private final DataSource dataSource;
 
@@ -45,9 +47,7 @@ public class UserService {
                 if (resultSet.next()) {
                     String dbPsw = resultSet.getString("password");
                     if (dbPsw.equals(psw)) {
-                        loggedIn = new User(username, psw,
-                        resultSet.getString("email"),
-                        resultSet.getBoolean("isAdmin"));
+                        LoggedInUserID = resultSet.getString("userID");
                         succesfulLogin = true;
                     }
                 }
@@ -64,13 +64,16 @@ public class UserService {
      * Logger inn brukeren
      */
 
-    public boolean registerUser(String username, String psw, String email) {
-        boolean validRegister = true;
+    public boolean registerUser(String username, String password1, String password2, String email) {
+        boolean validRegister = false;
+        if(password1.equals(password2)) {
         try {
-            User registrant = new User(username, psw, email, false);
-            loggedIn = registrant;
+            User registrant = new User(username, password1, email);
+            LoggedInUserID = registrant.getUserID();
+            validRegister = true;
         } catch (Exception e) {
             validRegister = false;
+        }
         }
         return validRegister;
     }
@@ -101,7 +104,7 @@ public class UserService {
                     if (crtSet == null) {
                         Set set = new Set(resultSet.getString("setname"),
                         resultSet.getString("theme"),
-                        loggedIn.getUserID());
+                        LoggedInUserID);
                         mySets.add(set);
                     }
                     if (resultSet.getString("cardname").equals(null)) {
@@ -133,7 +136,7 @@ public class UserService {
                     if (crtSet == null) {
                         Set set = new Set(resultSet.getString("setname"),
                         resultSet.getString("theme"),
-                        loggedIn.getUserID());
+                        LoggedInUserID);
                         myFavorites.add(set);
                     }
                     if (resultSet.getString("cardname").equals(null)) {
@@ -152,11 +155,26 @@ public class UserService {
     }
 
     //This method need to be updated to request from the DB
-    public ArrayList<String> getUserInfo() {
-        ArrayList<String> testUser = new ArrayList<>(); //Just for testing
-        testUser.add("John Doe"); //Test
-        testUser.add("johndoe@gmail.com"); //Test
-        return testUser;
+    public ArrayList<String> getUserInfo(String userID) {
+        ArrayList<String> userInfo = new ArrayList<>(); 
+        String query = "SELECT userID, username, email  FROM user WHERE userID = ?";
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1,userID);
+                try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if(resultSet.next()) {
+                        String userIDResult = resultSet.getString("userID");
+                        String usernameResult = resultSet.getString("username");
+                        String emailResult = resultSet.getString("email");
+                        userInfo.add(usernameResult);
+                        userInfo.add(emailResult);
+                    }
+                } 
+            }
+            catch(SQLException e) {
+                e.printStackTrace();
+            }
+        return userInfo;
     }
 
     public static void main(String[] args) {

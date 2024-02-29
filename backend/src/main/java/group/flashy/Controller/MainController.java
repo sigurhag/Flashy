@@ -37,7 +37,7 @@ public class MainController {
 
     @PostMapping("/verify")
     public ResponseEntity<String> verifyLogin(@RequestBody Map<String, String> credentials) {
-        String username = credentials.get("username");
+        String username= credentials.get("username");
         String password = credentials.get("password");
         boolean isValid = userService.verifyLogIn(username, password);
         if (isValid) {
@@ -48,8 +48,12 @@ public class MainController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
-        boolean isValid = userService.registerUser(username, password, email);
+    public ResponseEntity<String> registerUser(@RequestBody Map<String, String> credentials) {
+        String username = credentials.get("username");
+        String password = credentials.get("password");
+        String password2 = credentials.get("password2");
+        String email = credentials.get("email");
+        boolean isValid = userService.registerUser(username, password, password2, email);
         if (isValid) {
             return ResponseEntity.ok("Successful register and login");
         } else {
@@ -77,7 +81,7 @@ public class MainController {
 
     @GetMapping("/profile")
     public ResponseEntity<ArrayList<String>> getProfileInfo() {
-        ArrayList<String> userInfo = userService.getUserInfo();
+        ArrayList<String> userInfo = userService.getUserInfo(UserService.LoggedInUserID);
         return ResponseEntity.ok(userInfo);
     }
 }
