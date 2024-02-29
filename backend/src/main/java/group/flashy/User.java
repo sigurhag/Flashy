@@ -15,8 +15,6 @@ public class User {
     private static final boolean True = false;
 
     // Fields for Users
-    //There is something wrong with the userID logic, at least when the tables has users already
-    private static int counter = 6;
     private String userID;
     private String username;
     private String email;
@@ -156,11 +154,7 @@ public class User {
     public void saveUserToDatabase() {
         
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-<<<<<<< backend/src/main/java/group/flashy/User.java
-            String query = "INSERT INTO User (userID, username, password, email, isAdmin) VALUES(?,?,?,?,?)";
-=======
             String query = "INSERT INTO User (userID, username, email, password) VALUES(?,?,?,?)";
->>>>>>> backend/src/main/java/group/flashy/User.java
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, userID);
                 preparedStatement.setString(2, username);
@@ -236,11 +230,7 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
-<<<<<<< backend/src/main/java/group/flashy/User.java
         User user1 = new User("Tomhello", "secrety", "aha@hotmail.com", false);
         //user.saveUserToDatabase();
-=======
-    
->>>>>>> backend/src/main/java/group/flashy/User.java
     }
 }

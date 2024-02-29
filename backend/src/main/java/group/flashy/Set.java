@@ -12,7 +12,6 @@ public class Set {
     // Field for database connection
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
     
-    private static int nextSetID = 1; //static value for nextSetID
     private String setID;
     private String setname;
     private int size;
