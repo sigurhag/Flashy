@@ -15,8 +15,6 @@ public class User {
     private static final boolean True = false;
 
     // Fields for Users
-    //There is something wrong with the userID logic, at least when the tables has users already
-    private static int counter = 6;
     private String userID;
     private String username;
     private String email;

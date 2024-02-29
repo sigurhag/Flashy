@@ -15,7 +15,6 @@ public class Card {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
 
     // Fields for the Card object
-    private static int nextCardID = 1; // static value for nextCardID
     private String cardID;
     private String cardName;
     private String question;
