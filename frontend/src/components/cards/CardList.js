@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Card from './Card';
 import Searchbar from '../Searchbar';
-import { cards } from "./Cards";
 
-const CardList = ({ edit, favourite, remove }) => {
-    
+const CardList = ({ cards, edit, favourite, remove }) => {
     const [filteredCards, setFilteredCards] = useState(cards);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -18,7 +16,7 @@ const CardList = ({ edit, favourite, remove }) => {
             card.theme.toLowerCase().includes(searchQuery.toLowerCase())
         );
         setFilteredCards(filtered);
-    }, [searchQuery]);
+    }, [searchQuery, cards]);
 
     return (
         <div className='flex flex-column justify-center '>
@@ -33,10 +31,10 @@ const CardList = ({ edit, favourite, remove }) => {
                         creator={card.creator}
                         theme={card.theme}
                         length={card.length} 
-                        onClick={handleOnClick}
-                        edit={edit}
-                        favourite={favourite}
-                        remove={remove}
+                        onClick= {() => {}}
+                        edit = {edit}
+                        favourite = {favourite}
+                        remove = {remove}
                         />
 
                 ))}
