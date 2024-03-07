@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import group.flashy.Set;
@@ -84,4 +83,18 @@ public class MainController {
         ArrayList<String> userInfo = userService.getUserInfo(UserService.LoggedInUserID);
         return ResponseEntity.ok(userInfo);
     }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<String> changePassword(@RequestBody Map<String, String> changes){
+        String newPassword = changes.get("newPassword");
+
+        boolean success = userService.changePassword(newPassword);
+
+        if (success) {
+            return ResponseEntity.ok("Password changed successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to change password");
+        }
+    }
+
 }

@@ -177,6 +177,21 @@ public class UserService {
         return userInfo;
     }
 
+    //This method takes in username and email, and changes the password of the corresponding user
+    public boolean changePassword(String newPassword) {
+        String query = "UPDATE User SET password = ? WHERE userID = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(2, LoggedInUserID);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // If any rows were affected, return true
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
         UserService test = new UserService(null);
     }
