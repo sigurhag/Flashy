@@ -10,10 +10,8 @@ import java.util.UUID;
 public class User {
 
     // Field for database connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?user=generalUser&password=Flashy123";
-
-    private static final boolean True = false;
-
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
+    
     // Fields for Users
     private String userID;
     private String username;
@@ -39,7 +37,6 @@ public class User {
             this.email = email;
         }
         this.userID = UUID.randomUUID().toString();
-        saveUserToDatabase();
     }
 
     /**
@@ -117,22 +114,6 @@ public class User {
      */
     public String getPassword() {
         return (String) getUserData("password");
-    }
-
-    /**
-     * Method for checking if user is admin.
-     *
-     * @return if the user is admin.
-     */
-    public boolean isAdmin() {
-        return (boolean) getUserData("isAdmin");
-    }
-
-    /**
-     * Method for checking if a user is admin.
-     */
-    public void setIsAdmin() {
-        updateUserInfo("isAdmin", true);
     }
 
     /**
@@ -217,6 +198,14 @@ public class User {
         } catch (SQLException e) {
             System.err.println(e);
         }
+    }
+
+    
+
+    @Override
+    public String toString() {
+        return "User [userID=" + userID + ", username=" + username + ", email=" + email + ", password=" + password
+                + "]";
     }
 
     /**

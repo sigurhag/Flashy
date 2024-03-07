@@ -1,6 +1,7 @@
 package group.flashy.Controller;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import group.flashy.Set;
+import group.flashy.User;
+import group.flashy.Admin;
 import group.flashy.Service.CardService;
 import group.flashy.Service.UserService;
 
@@ -84,19 +87,6 @@ public class MainController {
         return ResponseEntity.ok(userInfo);
     }
 
-    @PostMapping("/changeUsername")
-    public ResponseEntity<String> changeUsername(@RequestBody Map<String, String> changes){
-        String newUsername = changes.get("newUsername");
-
-        boolean success = userService.changeUsername(newUsername);
-
-        if (success) {
-            return ResponseEntity.ok("Username changed successfully");
-        } else {
-            return ResponseEntity.badRequest().body("Failed to change username");
-        }
-    }
-
     @PostMapping("/changeEmail")
     public ResponseEntity<String> changeEmail(@RequestBody Map<String, String> changes){
         String newEmail = changes.get("newEmail");
@@ -122,5 +112,52 @@ public class MainController {
             return ResponseEntity.badRequest().body("Failed to change password");
         }
     }
+    @PostMapping("/changeUsername")
+    public ResponseEntity<String> changeUsername(@RequestBody Map<String, String> changes){
+        String newUsername = changes.get("newUsername");
 
+        boolean success = userService.changeUsername(newUsername);
+
+        if (success) {
+            return ResponseEntity.ok("Username changed successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to change username");
+        }
+    }
+
+    @GetMapping("/adminRights")
+    public ResponseEntity<Boolean> getAdminRights() {
+        boolean isAdmin = userService.checkISAdmin(UserService.LoggedInUserID);
+        return ResponseEntity.ok(isAdmin);
+    }
+
+    @GetMapping("/allUsers")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        System.out.println("Retrieved users: " + users.toString());  // Add this line for logging
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/updateAdmin")
+    public ResponseEntity<String> updateAdmin(@RequestBody Map<String, String> credentials) {
+        String username = credentials.get("username");
+        String password = credentials.get("password");
+        String email = credentials.get("email");
+        boolean isValid = userService.updateAdmin(UserService.LoggedInUserID, username, password, email);
+        if (isValid) {
+            return ResponseEntity.ok("Successfully updated adminRights");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to update adminRights");
+        }
+    }
+
+
+    @PostMapping("/addSet")
+    public ResponseEntity<Boolean> addSet(@RequestBody Map<String, String> cardinfo) {
+        String title = cardinfo.get("title");
+        int size = Integer.parseInt(cardinfo.get("size"));
+        String theme = cardinfo.get("category");
+        boolean success = userService.saveSetToDatabase(title, size, theme, UserService.LoggedInUserID);
+        return ResponseEntity.ok(success);
+    }
 }
