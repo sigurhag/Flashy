@@ -89,6 +89,7 @@ const CreateSet = () => {
             <div className="flex flex-row justify-center question-box ma3">
                 <Button text={"Add question"} icon={faPlus} onClick={handleAddQuestion}/>
                 <Button text={"I am finished!"} icon={faCheck} onClick={handleRemoveQuestion}/> {/* must implement save to database and add to my sets */}
+            </div>
         </div>
     );
 }
