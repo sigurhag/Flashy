@@ -3,22 +3,24 @@ import Card from './Card';
 import Searchbar from '../Searchbar';
 import { cards } from "./Cards";
 
-const CardList = ({ edit, favourite, remove }) => {
+const CardList = ({ edit, favourite, remove, category }) => {
     
     const [filteredCards, setFilteredCards] = useState(cards);
     const [searchQuery, setSearchQuery] = useState('');
 
-    const handleOnClick = () => {
+    const handleOnClick = () => {}
 
-    }
     useEffect(() => {
         const filtered = cards.filter(card =>
-            card.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (card.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             card.creator.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            card.theme.toLowerCase().includes(searchQuery.toLowerCase())
+            (card.theme && card.theme.toLowerCase().includes(searchQuery.toLowerCase()))) &&
+            (category === '' || category === 'all' || card.category.toLowerCase() == category.toLowerCase())
         );
+
+        console.log('Filtered cards:', filtered);
         setFilteredCards(filtered);
-    }, [searchQuery]);
+    }, [searchQuery, category]); 
 
     return (
         <div className='flex flex-column justify-center '>
@@ -31,7 +33,7 @@ const CardList = ({ edit, favourite, remove }) => {
                         key={i}
                         name={card.name}
                         creator={card.creator}
-                        theme={card.theme}
+                        category={card.category}
                         length={card.length} 
                         onClick={handleOnClick}
                         edit={edit}

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const RemoveButton = () => {
+const Icon = ({icon, onClick, color, onHoverColor }) => {
     const [isHovered, setIsHovered] = useState(false);
     const hoverStyle = {
-        color: 'grey',
-        transform: 'scale(1.05)',
+        color: onHoverColor,
+        transform: 'scale(1.1)',
         transition: 'transform 0.4s, color 0.4s'
     }
     const containerStyle = {
@@ -17,10 +17,10 @@ const RemoveButton = () => {
     };
 
     return (
-        <div style={containerStyle}>
+        <div style={containerStyle} onClick={onClick}>
             <FontAwesomeIcon
-                icon={faTrash}
-                color="#FFFFFF"
+                icon={icon}
+                color={isHovered ? onHoverColor : color}
                 size="2x"
                 style={isHovered ? hoverStyle : {}}
                 onMouseEnter={() => setIsHovered(true)}
@@ -29,5 +29,5 @@ const RemoveButton = () => {
         </div>
     );
 }
-export default RemoveButton
+export default Icon
 

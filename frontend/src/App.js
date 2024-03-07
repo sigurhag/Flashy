@@ -12,7 +12,6 @@ import Homepage from './pages/Home';
 import Searchpage from './pages/Search';
 import Favouritespage from './pages/Favourites';
 import MySetspage from './pages/MySets';
-import LogOutpage from './pages/Welcome';
 import Profile from './pages/Profile';
 import LogIn from './pages/LogIn';
 import UserRegister from './pages/UserRegister';
