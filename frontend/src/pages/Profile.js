@@ -44,6 +44,22 @@ const Profile = ({ user = {} }) => {
     }
   };
 
+  const handleChangePassword = async () => {
+    const newPassword = prompt("Enter your new password (between 5 and 20 characters):");
+    if (newPassword && newPassword.length >= 5 && newPassword.length <= 20) {
+      try {
+        await axios.post("http://localhost:3500/flash/changePassword", {
+          newPassword
+        });
+        alert("Password changed successfully!");
+      } catch (error) {
+        alert("Error changing password. Please try again later.");
+      }
+    } else {
+      alert("Password must be between 5 and 20 characters.");
+    }
+  };
+
   return (
     <div className='flex flex-column justify-center items-center'>   
       <UserProfileIcon />
@@ -55,7 +71,7 @@ const Profile = ({ user = {} }) => {
       <div className="flex flex-column  pa3 bg-color-card" style={{ width: "500px", marginTop: '15%', padding:'5% 5% 2% 5%', borderRadius: '70px' }}>
         <h2 className="f3 ">Username: {userInfo[0]}</h2>
         <h2 className="f3 mb5 ">E-mail: {userInfo[1]}</h2>  
-        <GeneralButton text={"Change password"}/>
+        <GeneralButton text={"Change password"} onClick={handleChangePassword}/>
       </div>
       <div className='mt4'>
         <h2 style={{marginBottom: '1%'}}>Handle admin access</h2>
