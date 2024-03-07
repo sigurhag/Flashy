@@ -44,9 +44,46 @@ const Profile = ({ user = {} }) => {
     }
   };
 
+  const handleChangeUsername = async () => {
+    const newUsername = prompt("Enter your new username (between 5 and 20 characters):");
+    if (newUsername && newUsername.length >= 5 && newUsername.length <= 20) {
+      try {
+        await axios.post("http://localhost:3500/flash/changeUsername", {
+          newUsername
+        });
+        alert("Username changed successfully!");
+      } catch (error) {
+        alert("Error changing username. Please try again later.");
+      }
+    } else if (newUsername !== null){
+      alert("Username must be between 5 and 20 characters.");
+    }
+  };
+
+  const handleChangeEmail = async () => {
+    const newEmail = prompt("Enter your new email:");
+    if (newEmail !== null) {
+      if (newEmail.endsWith("@gmail.com") || newEmail.endsWith("@stud.ntnu.no") || newEmail.endsWith("@hotmail.com")) {
+        try {
+          await axios.post("http://localhost:3500/flash/changeEmail", {
+            newEmail
+          });
+          alert("Email changed successfully!");
+        } catch (error) {
+          alert("Error changing email. Please try again later.");
+        }
+      } else if (newEmail !== null){
+        alert("Email must be valid");
+      }
+    }
+    else{
+      
+    }
+  };
+
   const handleChangePassword = async () => {
-    const newPassword = prompt("Enter your new password (between 5 and 20 characters):");
-    if (newPassword && newPassword.length >= 5 && newPassword.length <= 20) {
+    const newPassword = prompt("Enter your new password (between 7 and 20 characters):");
+    if (newPassword && newPassword.length >= 7 && newPassword.length <= 20) {
       try {
         await axios.post("http://localhost:3500/flash/changePassword", {
           newPassword
@@ -55,8 +92,8 @@ const Profile = ({ user = {} }) => {
       } catch (error) {
         alert("Error changing password. Please try again later.");
       }
-    } else {
-      alert("Password must be between 5 and 20 characters.");
+    } else if (newPassword !== null){
+      alert("Password must be between 7 and 20 characters.");
     }
   };
 
@@ -71,6 +108,8 @@ const Profile = ({ user = {} }) => {
       <div className="flex flex-column  pa3 bg-color-card" style={{ width: "500px", marginTop: '15%', padding:'5% 5% 2% 5%', borderRadius: '70px' }}>
         <h2 className="f3 ">Username: {userInfo[0]}</h2>
         <h2 className="f3 mb5 ">E-mail: {userInfo[1]}</h2>  
+        <GeneralButton text={"Change username"} onClick={handleChangeUsername}/>
+        <GeneralButton text={"Change email"} onClick={handleChangeEmail}/>
         <GeneralButton text={"Change password"} onClick={handleChangePassword}/>
       </div>
       <div className='mt4'>

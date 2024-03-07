@@ -177,7 +177,37 @@ public class UserService {
         return userInfo;
     }
 
-    //This method takes in username and email, and changes the password of the corresponding user
+    //This method takes in changes username of LoggedInUser
+    public boolean changeUsername(String newUsername) {
+        String query = "UPDATE User SET username = ? WHERE userID = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, newUsername);
+            preparedStatement.setString(2, LoggedInUserID);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // If any changes were made, return true
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //This method takes in changes email of LoggedInUser
+    public boolean changeEmail(String newEmail) {
+        String query = "UPDATE User SET email = ? WHERE userID = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, newEmail);
+            preparedStatement.setString(2, LoggedInUserID);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // If any changes were made, return true
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //This method takes in changes password of LoggedInUser
     public boolean changePassword(String newPassword) {
         String query = "UPDATE User SET password = ? WHERE userID = ?";
         try (Connection connection = dataSource.getConnection();
@@ -185,13 +215,12 @@ public class UserService {
             preparedStatement.setString(1, newPassword);
             preparedStatement.setString(2, LoggedInUserID);
             int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0; // If any rows were affected, return true
+            return rowsAffected > 0; // If any changes were made, return true
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-
     public static void main(String[] args) {
         UserService test = new UserService(null);
     }

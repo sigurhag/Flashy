@@ -84,6 +84,32 @@ public class MainController {
         return ResponseEntity.ok(userInfo);
     }
 
+    @PostMapping("/changeUsername")
+    public ResponseEntity<String> changeUsername(@RequestBody Map<String, String> changes){
+        String newUsername = changes.get("newUsername");
+
+        boolean success = userService.changeUsername(newUsername);
+
+        if (success) {
+            return ResponseEntity.ok("Username changed successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to change username");
+        }
+    }
+
+    @PostMapping("/changeEmail")
+    public ResponseEntity<String> changeEmail(@RequestBody Map<String, String> changes){
+        String newEmail = changes.get("newEmail");
+
+        boolean success = userService.changeEmail(newEmail);
+
+        if (success) {
+            return ResponseEntity.ok("Email changed successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to change email");
+        }
+    }
+
     @PostMapping("/changePassword")
     public ResponseEntity<String> changePassword(@RequestBody Map<String, String> changes){
         String newPassword = changes.get("newPassword");
