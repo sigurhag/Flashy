@@ -1,13 +1,26 @@
+import axios from "axios";
 import React, {useState} from "react";
 import GeneralButton from "../GeneralButton";
 
-const MakeAdmin = ({ username, email }) => {
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    const handleClick = () => {
-        setIsAdmin(!isAdmin);
-        /* fix backend */ 
+const MakeAdmin = ({ username, email, password, userID }) => {
+    const handleClick = async () => {
+        try {
+            const response = await axios.post("http://localhost:3500/flash/updateAdmin", {
+                username: username,
+                email: email,
+                password: password,
+                userID: userID,
+            });
+            if(response.data) {
+                console.log("Updated admin rights successfully")
+            } else{
+                console.log("error updating admin rights")
+            }
+        } catch (error) {
+            console.error("unexpected error occured: ", error)
+        }
     };
+    
     return (
         <div className="flex flex-row justify-between items-center bg-color-card pa2 ma3" style={{borderRadius: '90px'}}>
             <div className="pl4">
@@ -15,7 +28,7 @@ const MakeAdmin = ({ username, email }) => {
                 <h3 className="mt1">{email}</h3>
             </div>
             <div className="mr3">
-                <GeneralButton text={isAdmin ? "Undo admin" : "Make admin"} onClick={handleClick}/>
+                <GeneralButton text={"Make admin"} onClick={handleClick}/>
             </div>
         </div>
     );
