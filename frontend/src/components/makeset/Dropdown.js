@@ -1,4 +1,4 @@
-const Dropdown = ({ label, options, value, onChange }) => {
+const Dropdown = ({ label, options, value, onChange, backgroundColor }) => {
     return (
       <div className='flex items-center mb2' > {/* Adding gap between items */}
         <label className='f3' style={{ marginLeft: '15px' }}>{label}</label>
@@ -7,9 +7,10 @@ const Dropdown = ({ label, options, value, onChange }) => {
             className="f3 tc bg-transparent ba b--transparent" 
             style={{
               color: "#00489C",
-              backgroundColor: '#EFD593',
+              backgroundColor: backgroundColor,
               borderRadius: '90px',
-              marginLeft: '50px'
+              marginLeft: '50px',
+              marginRight: '30px'
             }}
             value={value} 
             onChange={e => onChange(e.target.value)}

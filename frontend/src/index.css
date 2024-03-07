@@ -6,7 +6,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #FCD060;
   position: relative;
-  overflow: scroll;
+
 }
 
 @font-face {
@@ -37,6 +37,7 @@ body {
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
+  max-height: 95vh;
   padding-top: 3%;
   border-top-right-radius: 90px;
   border-top-left-radius: 90px;
@@ -224,4 +225,24 @@ body {
 .icon:hover {
 	color: #00489C;
 	background-color: #FCD060;
+}
+
+.progress-bar{
+  height: 25px;
+  position: relative;
+  background: #555;
+  border-radius: 25px;
+  padding: 10px;
+  box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.active-progress{
+  display: block;
+  height: 150%;
+  position: relative;
+  overflow: hidden;
+}
+
+.input-reset::placeholder {
+  color: rgba(0, 72, 156, 0.6);
 }

@@ -4,6 +4,7 @@ import Dropdown from "./Dropdown";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPlus , faCheck} from '@fortawesome/free-solid-svg-icons';
 import Button from "./Buttons";
+import Icon from "../cards/Icon";
 
 
 const CreateSet = () => {
@@ -11,7 +12,6 @@ const CreateSet = () => {
     const [category, setCategory] = useState('');
     const [questions, setQuestions] = useState([{ question: '', answer: '' }]);
     
-    // ...
     const categories = [
         {label: 'Art', value: 'art'},
         {label: 'Culture', value: 'culture'},
@@ -36,11 +36,10 @@ const CreateSet = () => {
         setQuestions([...questions, { question: '', answer: '' }]);
     };
 
-    const handleRemoveQuestion = () => {
-        if (questions.length > 1) {
-            setQuestions(questions.slice(0, -1));
-        }
+    const handleRemoveQuestion = (index) => {
+        setQuestions(questions.filter((_, i) => i !== index));
     };
+    
 
     const handleQuestionChange = (index, value) => {
         const updatedQuestions = [...questions];
@@ -55,20 +54,20 @@ const CreateSet = () => {
     };
 
     return(
-        <div className="form flex flex-column justify-center align-center">
-            <div className="bg-color-card ma3 pa3 " style={{borderRadius:'60px'}}>
+        <div className="form flex flex-column justify-center">
+            <div className="bg-color-card mb3 pa3 flex flex-column justify-center " style={{borderRadius:'50px'}}>
                 <TextBox label={"Title: "} value={title} onChange={handleTitleChange}/>
-                <Dropdown label={"Category: "} options={categories} value={category} onChange={handleCategoryChange}/>
+                <Dropdown label={"Category: "} options={categories} value={category} onChange={handleCategoryChange} backgroundColor={'#EFD593'}/>
             </div>
             {questions.map((q, index) => (
-                <div key={index} className="bg-color-card ma3 pa3" style={{borderRadius:'60px'}}>
+                <div key={index} className="bg-color-card ba3 pa3 mb3" style={{borderRadius:'50px'}}>
                     <TextBox label={"Question: "} value={q.question} onChange={(value) => handleQuestionChange(index, value)}/>
                     <TextBox label={"Answer: "} value={q.answer} onChange={(value) => handleAnswerChange(index, value)}/>
+                    <div className="flex flex-column items-center"><Icon icon={faTrash} onClick={() => handleRemoveQuestion(index)} color={'#00489C;'} onHoverColor={'black'}/></div>
                 </div>
             ))}
-            <div className="flex flex-row justify-center question-box">
-                <Button text={"Add question"} icon={faPlus } onClick={handleAddQuestion}/>
-                <Button text={"Remove question"} icon={faTrash} onClick={handleRemoveQuestion}/>
+            <div className="flex flex-row justify-center question-box ma3">
+                <Button text={"Add question"} icon={faPlus} onClick={handleAddQuestion}/>
                 <Button text={"I am finished!"} icon={faCheck} onClick={handleRemoveQuestion}/> {/* must implement save to database and add to my sets */}
             </div>
         </div>
