@@ -1,4 +1,3 @@
-
 package group.flashy;
 
 import java.sql.Connection;
@@ -6,19 +5,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class User {
 
     // Field for database connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
-
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
+    
     // Fields for Users
-    private static int counter = 0;
-    private int userID = 0;
+    private String userID;
     private String username;
     private String email;
     private String password;
-    private boolean isAdmin;
 
     /**
      * Contstructor for the class.
@@ -28,8 +26,7 @@ public class User {
      * @param email
      * @param isAdmin
      */
-    public User(String username, String password, String email,
-            boolean isAdmin) {
+    public User(String username, String password, String email) {
         if (isValidUsername(username)) {
             this.username = username;
         }
@@ -39,10 +36,7 @@ public class User {
         if (isValidEmail(email)) {
             this.email = email;
         }
-        this.isAdmin = isAdmin;
-        this.userID = ++counter;
-
-        saveUserToDatabase();
+        this.userID = UUID.randomUUID().toString();
     }
 
     /**
@@ -53,7 +47,7 @@ public class User {
      */
     private boolean isValidUsername(String username) {
         if (username.length() < 5 || username.length() > 20) {
-            return false;
+            throw new IllegalArgumentException("Invalid Username!");
         }
         return true;
     }
@@ -66,7 +60,7 @@ public class User {
      */
     private boolean isValidPassword(String password) {
         if (password.length() < 7 || password.length() > 20) {
-            return false;
+            throw new IllegalArgumentException("Invalid password!");
         }
         return true;
     }
@@ -81,7 +75,7 @@ public class User {
         if (!email.endsWith("@gmail.com")
                 && !email.endsWith("@stud.ntnu.no")
                 && !email.endsWith("@hotmail.com")) {
-            return false;
+            throw new IllegalArgumentException("Invalid email");
         }
         return true;
     }
@@ -91,8 +85,8 @@ public class User {
      *
      * @return userID.
      */
-    public int getUserID() {
-        return (int) getUserData("userID");
+    public String getUserID() {
+        return (String) getUserData("userID");
     }
 
     /**
@@ -123,22 +117,6 @@ public class User {
     }
 
     /**
-     * Method for checking if user is admin.
-     *
-     * @return if the user is admin.
-     */
-    public boolean isAdmin() {
-        return (boolean) getUserData("isAdmin");
-    }
-
-    /**
-     * Method for checking if a user is admin.
-     */
-    public void setIsAdmin() {
-        updateUserInfo("isAdmin", true);
-    }
-
-    /**
      * Method for updating username.
      *
      * @param newUsername new username.
@@ -152,17 +130,18 @@ public class User {
      */
     public void saveUserToDatabase() {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO users (userID, username, password, email, isAdmin) VALUES(?,?,?,?,?)";
+            String query = "INSERT INTO User (userID, username, email, password) VALUES(?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, userID);
+                preparedStatement.setString(1, userID);
                 preparedStatement.setString(2, username);
-                preparedStatement.setString(3, password);
-                preparedStatement.setString(4, email);
-                preparedStatement.setBoolean(5, isAdmin);
+                preparedStatement.setString(3, email);
+                preparedStatement.setString(4, password);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
+            
             System.err.println(e);
+            
         }
     }
 
@@ -173,10 +152,10 @@ public class User {
      */
     public Object getUserData(String field) {
         Object value = null;
-        String query = "SELECT " + field + " FROM user WHERE userID = ?";
+        String query = "SELECT " + field + " FROM User WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, userID);
+                preparedStatement.setString(1, userID);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
                         value = resultSet.getObject(field);
@@ -201,8 +180,10 @@ public class User {
                     this.username =  (String) newValue;
                 }
                 break;
-            case "isAdmin":
-                this.isAdmin = (boolean) newValue;
+            case "password":
+                if (isValidPassword((String) newValue)) {
+                    this.password =  (String) newValue;
+                }
                 break;
             default:
                 throw new IllegalArgumentException(field + " is not a field which support updating!");
@@ -211,12 +192,20 @@ public class User {
             String query = "UPDATE user SET " + field + " = ? WHERE userID = ?";
             try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
                 updateStatement.setObject(1, newValue);
-                updateStatement.setInt(2, userID);
+                updateStatement.setString(2, userID);
                 updateStatement.executeUpdate();
             }
         } catch (SQLException e) {
             System.err.println(e);
         }
+    }
+
+    
+
+    @Override
+    public String toString() {
+        return "User [userID=" + userID + ", username=" + username + ", email=" + email + ", password=" + password
+                + "]";
     }
 
     /**
@@ -225,5 +214,5 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
-    }
+           }
 }

@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 import LogInButton from "./Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BackButton from "../registration/BackButton";
 import axios from "axios";
 
 const LogInForm = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleLoginPress = async () => {  
       try {
-      const response = await axios.post("http://localhost:3500/flash/verify", username, password);
+      const response = await axios.post("http://localhost:3500/flash/verify", {
+        username: username,
+        password: password
+      })
       if (response.data) {
-          console.log("Log in successful!");
-          //Save information about logged in user
+        navigate("/home");
+        console.log("Log in successful!");
+        //Save information about logged in user
       } else {
           console.log("error with loggin in")
       } 
@@ -45,7 +50,7 @@ const LogInForm = () => {
                         onChange={(e) => {setPassword(e.target.value)}}
                     />
             </label>
-            <Link to="/home"><LogInButton onClick={handleLoginPress} /></Link>
+            <LogInButton onClick={handleLoginPress} />
             <Link to="/"><BackButton /></Link>
         </div>
     );

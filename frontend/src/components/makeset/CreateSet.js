@@ -1,16 +1,18 @@
 import React, { useState, setAnswer } from "react";
 import TextBox from "./Textbox";
 import Dropdown from "./Dropdown";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPlus , faCheck} from '@fortawesome/free-solid-svg-icons';
 import Button from "./Buttons";
 import Icon from "../cards/Icon";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 const CreateSet = () => {
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const [questions, setQuestions] = useState([{ question: '', answer: '' }]);
+    const navigate = useNavigate();
     
     const categories = [
         {label: 'Art', value: 'art'},
@@ -28,7 +30,25 @@ const CreateSet = () => {
         {label: 'Technology', value: 'technology'},
         {label: 'Other', value: 'other'},
     ]
-    
+    const handleAddPress = async() => {
+        try {
+        const response = await axios.post("http://localhost:3500/flash/addSet", {
+            title: title, 
+            size: questions.length,
+            category: category
+        });
+        console.log(title);
+        if(response.data) {
+            navigate("/mySets")
+            console.log("added set successfully");
+        } else {
+            console.log("failed to add set");
+        }
+        } catch(error) {
+            console.log("unexpected error occured")
+        }
+    };
+
     const handleTitleChange = value => setTitle(value);
     const handleCategoryChange = value => setCategory(value);
     
@@ -69,7 +89,6 @@ const CreateSet = () => {
             <div className="flex flex-row justify-center question-box ma3">
                 <Button text={"Add question"} icon={faPlus} onClick={handleAddQuestion}/>
                 <Button text={"I am finished!"} icon={faCheck} onClick={handleRemoveQuestion}/> {/* must implement save to database and add to my sets */}
-            </div>
         </div>
     );
 }

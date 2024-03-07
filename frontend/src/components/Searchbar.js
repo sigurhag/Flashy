@@ -7,7 +7,7 @@ const Searchbar = ({ text, onSearch }) => {
       onSearch(query);
     }
   };
-
+  
   return (
     <div className='ma4 flex justify-center'>
     <input
