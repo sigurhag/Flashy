@@ -17,41 +17,55 @@ public class Set {
     private int size;
     private String theme;
     private String userID;
+    private int likes; 
 
-    public Set(String setname, String theme, String userID) {
+    public Set(String setname, String theme, String userID, int likes) {
         this.setID = UUID.randomUUID().toString();
         this.setname = setname;
         this.size = 0;
         this.theme = theme;
         this.userID = userID;
-        saveSetToDatabase();
+        this.likes = likes; 
+    }
+
+    public Set(String setID, String setname, String theme, String userID, int likes) {
+        this.setID = setID;
+        this.setname = setname;
+        this.size = 0;
+        this.theme = theme;
+        this.userID = userID;
+        this.likes = likes; 
     }
 
 
     //Getters
 
     public String getSetID() {
-        return (String) getSetInfo("setID");
+        return (String) getSetInfo("setID", userID);
     }
 
     public String getSetName() {
-        return (String) getSetInfo("setname");
+        return (String) getSetInfo("setname", userID);
     }
 
-    public int getSize() {
-        return (int) getSetInfo("size");
-    }
+    /*public int getSize() {
+        return (int) getSetInfo("size", userID);
+    }*/
 
     public String getTheme() {
-        return (String) getSetInfo("theme");
+        return (String) getSetInfo("theme", userID);
     }
 
-    public int getUserID() {
-        return (int) getSetInfo("userID");
+    public String getUserID() {
+        return (String) getSetInfo("userID", userID);
     }
     
-    //Methods
+    public int getLikes() {
+        return (int) getSetInfo("likes", userID);
+    }
 
+    //Methods
+    /* 
     public void setSetTheme(String theme) {
         updateSetInfo("theme", theme);
     }
@@ -59,9 +73,10 @@ public class Set {
     public void setSetName(String name) {
         updateSetInfo("setname", name);
     }
+    */
     //SQL
 
-    public Object getSetInfo(String field) {
+    public Object getSetInfo(String field, String userID) {
         Object value = null;
         String query = "SELECT " + field + " FROM `set` WHERE setID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
@@ -81,7 +96,7 @@ public class Set {
 
     public void saveSetToDatabase() {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO ´Set´ (setID, setname, size, theme, userID) VALUES(?,?,?,?,?)";
+            String query = "INSERT INTO `Set` (setID, setname, size, theme, userID) VALUES(?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, setID);
                 preparedStatement.setString(2, setname);
@@ -94,7 +109,7 @@ public class Set {
             System.err.println(e);
         }
     }
-
+     
     public void addCardToSet(Card card) {
             // Validate that the provided setID exists in the Set table
     boolean setExists = validateSetExists(card.getCardSetID());
@@ -103,7 +118,6 @@ public class Set {
         System.err.println("Error: The specified setID does not exist.");
         return; // Exit the method if the setID is invalid
     }
-    
     try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
         String cardInsertQuery = "INSERT INTO card (setID) VALUES (?)";
             try (PreparedStatement cardStatement = connection.prepareStatement(cardInsertQuery)) {
@@ -158,9 +172,18 @@ public class Set {
             System.err.println(e);
         }
     }
+    
+
+    
+
+    @Override
+    public String toString() {
+        return "Set [setID=" + setID + ", setname=" + setname + ", size=" + size + ", theme=" + theme + ", userID="
+                + userID + ", likes=" + likes + "]";
+    }
+
 
     public static void main(String[] args) {
-        Set set = new Set("Setty", "Learn to test", "f7d7468b-238b-4990-bcdc-a56f2cf8edf1");
     }
 }
 

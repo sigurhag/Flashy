@@ -1,3 +1,4 @@
+
 package group.flashy.Service;
 
 import javax.sql.DataSource;
@@ -41,7 +42,7 @@ public class UserService {
      * Hvis ikke returneres false
      */
 
-    public boolean verifyLogIn(String username, String psw) {
+     public boolean verifyLogIn(String username, String psw) {
         boolean succesfulLogin = false;
         String adminQuery = "SELECT * FROM admin WHERE username = ?";
         String userQuery = "SELECT * FROM user WHERE username = ?";
@@ -196,12 +197,13 @@ public class UserService {
      * Trenger også cardID for å ha en fremmednøkkel til set
      */
 
-    public ArrayList<Set> getMySets() {
+     public ArrayList<Set> getMySets() {
         ArrayList<Set> mySets = new ArrayList<>();
-        String query = "SELECT * FROM `Set` LEFT JOIN Card ON (´Set´.cardID = Card.cardID) WHERE userID = ?";
+        String userID = LoggedInUserID;
+        String query = "SELECT * FROM `Set` WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, loggedIn.getUserID());
+            preparedStatement.setString(1, userID);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 String setID = resultSet.getString("setID");
@@ -209,7 +211,7 @@ public class UserService {
                 if (crtSet == null) {
                     Set set = new Set(resultSet.getString("setname"),
                             resultSet.getString("theme"),
-                            LoggedInUserID);
+                            LoggedInUserID, resultSet.getInt("likes"));
                     mySets.add(set);
                 }
                 if (resultSet.getString("cardname").equals(null)) {
@@ -228,9 +230,30 @@ public class UserService {
         return mySets;
     }
 
+    public ArrayList<Set> getMostPopular() {
+        ArrayList<Set> mostPopular = new ArrayList<>();
+        String query = "SELECT * FROM `Set` ORDER BY likes DESC";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    String setID = resultSet.getString("setID");
+                    String userID = resultSet.getString("userID");
+                    String theme = resultSet.getString("theme");
+                    String setname = resultSet.getString("setname");
+                    int likes = resultSet.getInt("likes");
+                    Set set = new Set(setID, setname, theme, userID, likes);
+                    mostPopular.add(set);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mostPopular;
+    }
+
     public ArrayList<Set> getFavorites() {
         ArrayList<Set> myFavorites = new ArrayList<>();
-        String query = "SELECT setID, setname, theme, cardname, cardID, cardName, question, answer FROM Favourite INNER JOIN 'Set' ON (Favourites.setID = 'Set'.setID) LEFT JOIN Card ON ('Set'.cardID = Card.cardID) WHERE userID = ?";
+        String query = "SELECT setID, setname, theme, likes, cardname, cardID, cardName, question, answer FROM Favourite INNER JOIN `Set` ON (Favourites.setID = `Set`.setID) LEFT JOIN Card ON ('Set'.cardID = Card.cardID) WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, loggedIn.getUserID());
@@ -241,7 +264,7 @@ public class UserService {
                 if (crtSet == null) {
                     Set set = new Set(resultSet.getString("setname"),
                             resultSet.getString("theme"),
-                            LoggedInUserID);
+                            LoggedInUserID, resultSet.getInt("likes"));
                     myFavorites.add(set);
                 }
                 if (resultSet.getString("cardname").equals(null)) {
@@ -307,7 +330,7 @@ public class UserService {
     public boolean saveSetToDatabase(String setname, int size, String theme, String LoggedInUserID) {
         setID =  UUID.randomUUID().toString();
         int likes = 0;
-        String query = "INSERT INTO `SET` (setID, setname, size, theme, likes, userID) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO SET (setID, setname, size, theme, likes, userID) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, setID);
