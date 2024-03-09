@@ -6,9 +6,14 @@ import FavouritesButton from '../components/cards/icons/Favourites';
 import RemoveButton from '../components/cards/icons/Remove';
 import EditButton from '../components/cards/icons/Edit';
 import axios from 'axios';
-
+import Icon from '../components/cards/Icon';
+import { faHeart, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 const Favouritespage = ({ sets }) => {
+  const favouriteBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'#FFA5A5'}/>
+	const removeBtn = <Icon icon={faTrash} color={'white'} onHoverColor={'grey'}/> /* Delete skal kun komme opp for admin */
+	const editBtn = <Icon icon={faPenToSquare} color={'white'} onHoverColor={'#34B8F0'}/> 
+
   const[set, setSet] = useState([]);
 
   useEffect(() => {
@@ -28,8 +33,6 @@ const Favouritespage = ({ sets }) => {
     getSets();
   }, [sets])
   
-
-
   return (
     <div>
       <UserProfileIcon />
@@ -41,7 +44,7 @@ const Favouritespage = ({ sets }) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <div className='w-70'>
-        <CardList set={set} favourite={FavouritesButton} remove={RemoveButton} edit={EditButton} />  
+        <CardList favourite={favouriteBtn} remove={removeBtn} edit={editBtn} />  
         </div>
       </div>
     </div>

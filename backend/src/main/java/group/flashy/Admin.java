@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class Admin extends User {
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?user=generalUser&password=Flashy123";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
 
     public Admin(String username, String password, String email) {
         super(username, password, email);
@@ -29,15 +29,6 @@ public class Admin extends User {
 
     //Sletter User og lager en Admin med samme attributter
     public void makeUserAdmin(User user) {
-
-        if (!userExists(user)) {
-            throw new IllegalArgumentException("User does not exist in the database");
-        }
-
-        if (adminExists(user)) {
-            throw new IllegalArgumentException("User is already admin");
-        }
-
         deleteUserFromDatabase(user);
 
         createAdminInDatabase(user);
@@ -45,38 +36,15 @@ public class Admin extends User {
 
     //Deletes admin and creates a user with the same attributes
     public void removeAdminRights(User user) {
-
-        if (!adminExists(user)) {
-            throw new IllegalArgumentException("Admin does not exist in the database");
-        }
-
-        if (!userExists(user)) {
-            throw new IllegalArgumentException("User does not have admin rights");
-        }
-
         deleteAdminFromDatabase(user);
 
         user.saveUserToDatabase();
     }
 
     //Checks if User exists in database
-    private boolean userExists(User user) {
+    public boolean userExists(User user) {
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE userID = ?")) {
-            preparedStatement.setString(1, user.getUserID());
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                return rs.next();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    //Checks if Admin exists in database
-    private boolean adminExists(User user) {
-        try (Connection connection = DriverManager.getConnection(JDBC_URL);
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM admin WHERE adminID = ?")) {
             preparedStatement.setString(1, user.getUserID());
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 return rs.next();

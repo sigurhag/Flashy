@@ -7,18 +7,20 @@ const CardList = ({ set, edit, favourite, remove }) => {
     const [filteredCards, setFilteredCards] = useState(set);
     const [searchQuery, setSearchQuery] = useState('');
 
-    const handleOnClick = () => {
+    const handleOnClick = () => {}
 
-    }
     useEffect(() => {
         console.log(set)
         const filtered = set.filter(card =>
             card.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             card.creator.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            card.theme.toLowerCase().includes(searchQuery.toLowerCase())
+            (card.theme && card.theme.toLowerCase().includes(searchQuery.toLowerCase()))) &&
+            (category === '' || category === 'all' || card.category.toLowerCase() == category.toLowerCase())
         );
+
+        console.log('Filtered cards:', filtered);
         setFilteredCards(filtered);
-    }, [searchQuery]);
+    }, [searchQuery, category]); 
 
     return (
         <div className='flex flex-column justify-center '>

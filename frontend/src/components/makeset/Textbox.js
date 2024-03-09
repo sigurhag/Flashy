@@ -2,8 +2,8 @@ import React from 'react';
 
 const TextBox = ({ label, value, onChange }) => {
   return (
-    <div className="pa3 flex flex-column">
-      <label className='f3'>{label}</label>
+    <div className="pa2 flex flex-column justify-center">
+      <label className='f3 mb1'>{label}</label>
       <input
         type="text"
         value={value}

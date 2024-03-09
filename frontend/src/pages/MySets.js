@@ -4,14 +4,17 @@ import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
 import SetBtn from '../components/cards/MakeSet';
 import axios from 'axios';
-import FavouritesButton from '../components/cards/icons/Favourites';
-import EditButton from '../components/cards/icons/Edit';
-import RemoveButton from '../components/cards/icons/Remove';
+import Icon from '../components/cards/Icon';
+import { faHeart, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const MySetspage = ({ sets }) => {
-  const[set, setSet] = useState([]);
+const MySetspage = ({ cards }) => {
+  const favouriteBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'#FFA5A5'}/>
+	const removeBtn = <Icon icon={faTrash} color={'white'} onHoverColor={'grey'}/> /* Delete skal kun komme opp for admin */
+	const editBtn = <Icon icon={faPenToSquare} color={'white'} onHoverColor={'#34B8F0'}/>
+  
+  const[card, setCard] = useState([]);
 
   useEffect(() => {
     const getSets = async() => {
@@ -50,7 +53,7 @@ const MySetspage = ({ sets }) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <div className='w-70'>
-        <CardList set={set} favourite={FavouritesButton} remove={RemoveButton} edit={EditButton} />  
+        <CardList favourite={FavouritesButton} remove={RemoveButton} edit={EditButton} />  
         </div>
       </div>
     </div>

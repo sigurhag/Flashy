@@ -4,7 +4,6 @@ import Search from "./Search"
 import MySets from "./MySets"
 import Favourites from "./Favourites"
 import LogOut from "./LogOut"
-import FavouritesButton from "../cards/icons/Favourites";
 
 const Sidebar = () => {
     return (

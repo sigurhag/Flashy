@@ -13,8 +13,8 @@ const Searchbar = ({ text, onSearch }) => {
     <input
         type="text"
         size={32}
-        className="input-reset ba pa3 mb2 grow font-color"
-        style={{borderRadius: '90px', backgroundColor: '#FFEFC5', fontSize: '1.4rem' }}
+        className="input-reset ba pa3 mb2 grow font-color bg-transparent ba b--transparent"
+        style={{borderRadius: '90px', backgroundColor: '#FFEFC5', fontSize: '1.4rem', color: "#00489C" }}
         placeholder={text}
         onChange={handleChange}
     />
