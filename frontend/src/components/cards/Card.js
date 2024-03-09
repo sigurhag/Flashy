@@ -17,7 +17,7 @@ const Card = (props) => {
             <h2 style={{ marginBottom: '1%', marginTop: '13%' }}>{name}</h2>
             <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{creator}</h3>
             <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{theme}</h3>
-            <h3 style={{ marginBottom: '13%', marginTop: '1%' }}>{length} cards</h3>
+            <h3 style={{ marginBottom: '13%', marginTop: '1%' }}>{length}</h3>
         </Link>
     );
 }

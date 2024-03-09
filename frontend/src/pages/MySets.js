@@ -10,17 +10,22 @@ import RemoveButton from '../components/cards/icons/Remove';
 
 
 
-const MySetspage = ({ cards }) => {
-  const[card, setCard] = useState([]);
+const MySetspage = ({ sets }) => {
+  const[set, setSet] = useState([]);
 
   useEffect(() => {
-    const getCards = async() => {
+    const getSets = async() => {
       try {
-        const response = await axios.get("", {
-          params: cards
-        });
+        const response = await axios.get("http://localhost:3500/flash/mysets");
         if(response.data) {
-          setCard(response.data);
+          const setInfo = response.data.map((set) => ({
+            setID: set.setID,
+            setname: set.setname,
+            category: set.theme,
+            length: set.size,
+            creator: set.userID,
+          }))
+          setSet(setInfo);
           console.log("Fetched cards sucessfully!");
         } else {
           console.log("Failed to fetch cards");
@@ -29,8 +34,9 @@ const MySetspage = ({ cards }) => {
         console.error("An unexpected error occured: ", error);
       };
     }
-    getCards();
-  }, [cards])
+    console.log(set);
+    getSets();
+  }, [sets])
   
   return (
     <div>
@@ -44,7 +50,7 @@ const MySetspage = ({ cards }) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <div className='w-70'>
-        <CardList favourite={FavouritesButton} remove={RemoveButton} edit={EditButton} />  
+        <CardList set={set} favourite={FavouritesButton} remove={RemoveButton} edit={EditButton} />  
         </div>
       </div>
     </div>

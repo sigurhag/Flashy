@@ -64,13 +64,21 @@ public class MainController {
     @GetMapping("/mysets")
     public ResponseEntity<ArrayList<Set>> getMySets() {
         ArrayList<Set> mySets = userService.getMySets();
+        System.out.println("Retrieved sets: " + mySets.toString());
         return ResponseEntity.ok(mySets);
     }
 
-    @GetMapping("/favorites")
+   /*  @GetMapping("/favorites")
     public ResponseEntity<ArrayList<Set>> getMyFavorites() {
         ArrayList<Set> myFavorites = userService.getFavorites();
         return ResponseEntity.ok(myFavorites);
+    }*/
+
+    @GetMapping("/mostpopular")
+    public ResponseEntity<ArrayList<Set>> getMostPopular() {
+        ArrayList<Set> mostPopular = userService.getMostPopular();
+        System.out.println("Retrieved sets: " + mostPopular.toString());
+        return ResponseEntity.ok(mostPopular);
     }
 
     @GetMapping("/search/{searchword}")

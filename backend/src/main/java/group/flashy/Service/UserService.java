@@ -78,14 +78,14 @@ public class UserService {
         return validRegister;
     }
 
-    private Set findSetByID(ArrayList<Set> sets, String setID) {
+   /*  private Set findSetByID(ArrayList<Set> sets, String setID) {
         for (Set set : sets) {
             if (set.getSetID().equals(setID)) {
                 return set;
             }
         }
         return null;
-    }
+    }*/
 
     /*
      * Trenger også cardID for å ha en fremmednøkkel til set
@@ -93,28 +93,19 @@ public class UserService {
     
     public ArrayList<Set> getMySets() {
         ArrayList<Set> mySets = new ArrayList<>();
-        String query = "SELECT * FROM ´Set´ LEFT JOIN Card ON (´Set´.cardID = Card.cardID) WHERE userID = ?";
+        String query = "SELECT * FROM `Set` WHERE userID = ?"; //LEFT JOIN Card ON (`Set`.cardID = Card.cardID) - Fjernet denne fra spørringen
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, loggedIn.getUserID());
+                preparedStatement.setString(1, LoggedInUserID);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     String setID = resultSet.getString("setID");
-                    Set crtSet = findSetByID(mySets, setID);
-                    if (crtSet == null) {
-                        Set set = new Set(resultSet.getString("setname"),
-                        resultSet.getString("theme"),
-                        LoggedInUserID);
-                        mySets.add(set);
-                    }
-                    if (resultSet.getString("cardname").equals(null)) {
-                        continue;
-                    }
-                    Card crtCard = new Card(setID,
-                    resultSet.getString("cardName"),
-                    resultSet.getString("question"),
-                    resultSet.getString("answer"));
-                    crtSet.addCardToSet(crtCard);
+                    String userID = resultSet.getString("userID");
+                    String theme = resultSet.getString("theme");
+                    String setname = resultSet.getString("setname");
+                    int likes = resultSet.getInt("likes");
+                    Set set = new Set(setID, setname, theme, userID, likes);
+                    mySets.add(set);
                 }
                 
             } catch (SQLException e) {
@@ -123,12 +114,34 @@ public class UserService {
         return mySets;
     }
 
-    public ArrayList<Set> getFavorites() {
+    public ArrayList<Set> getMostPopular() {
+        ArrayList<Set> mostPopular = new ArrayList<>();
+        String query = "SELECT * FROM `Set` ORDER BY likes DESC";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    String setID = resultSet.getString("setID");
+                    String userID = resultSet.getString("userID");
+                    String theme = resultSet.getString("theme");
+                    String setname = resultSet.getString("setname");
+                    int likes = resultSet.getInt("likes");
+                    Set set = new Set(setID, setname, theme, userID, likes);
+                    mostPopular.add(set);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mostPopular;
+    }
+
+    /*
+     * public ArrayList<Set> getFavorites() {
         ArrayList<Set> myFavorites = new ArrayList<>();
-        String query = "SELECT setID, setname, theme, cardname, cardID, cardName, question, answer FROM Favourite INNER JOIN 'Set' ON (Favourites.setID = 'Set'.setID) LEFT JOIN Card ON ('Set'.cardID = Card.cardID) WHERE userID = ?";
+        String query = "SELECT setID, setname, theme, cardname, cardID, cardName, question, answer FROM Favourite INNER JOIN `Set` ON (Favourites.setID = `Set`.setID) LEFT JOIN Card ON (`Set`.cardID = Card.cardID) WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, loggedIn.getUserID());
+            preparedStatement.setString(1, LoggedInUserID);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 String setID = resultSet.getString("setID");
@@ -136,7 +149,8 @@ public class UserService {
                     if (crtSet == null) {
                         Set set = new Set(resultSet.getString("setname"),
                         resultSet.getString("theme"),
-                        LoggedInUserID);
+                        LoggedInUserID, resultSet.getInt("likes"));
+
                         myFavorites.add(set);
                     }
                     if (resultSet.getString("cardname").equals(null)) {
@@ -153,6 +167,8 @@ public class UserService {
         }
         return myFavorites;
     }
+     */
+    
 
     //This method need to be updated to request from the DB
     public ArrayList<String> getUserInfo(String userID) {
