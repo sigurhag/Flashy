@@ -13,7 +13,7 @@ const MySetspage = ({ cards }) => {
   const favouriteBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'#FFA5A5'}/>
 	const removeBtn = <Icon icon={faTrash} color={'white'} onHoverColor={'grey'}/> /* Delete skal kun komme opp for admin */
 	const editBtn = <Icon icon={faPenToSquare} color={'white'} onHoverColor={'#34B8F0'}/>
-  
+
   const[card, setCard] = useState([]);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const MySetspage = ({ cards }) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <div className='w-70'>
-        <CardList favourite={FavouritesButton} remove={RemoveButton} edit={EditButton} />  
+        <CardList set={set} favourite={favouriteBtn} remove={removeBtn} edit={ editBtn} />  
         </div>
       </div>
     </div>

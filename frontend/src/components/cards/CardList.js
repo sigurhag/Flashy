@@ -16,11 +16,11 @@ const CardList = ({ set, edit, favourite, remove }) => {
             card.creator.toLowerCase().includes(searchQuery.toLowerCase()) ||
             (card.theme && card.theme.toLowerCase().includes(searchQuery.toLowerCase()))) &&
             (category === '' || category === 'all' || card.category.toLowerCase() == category.toLowerCase())
-        );
 
         console.log('Filtered cards:', filtered);
         setFilteredCards(filtered);
-    }, [searchQuery, category]); 
+}
+    , [searchQuery, category]); 
 
     return (
         <div className='flex flex-column justify-center '>
