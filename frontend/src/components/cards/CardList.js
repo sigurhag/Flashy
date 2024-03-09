@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Card from './Card';
 import Searchbar from '../Searchbar';
 
-const CardList = ({ set, edit, favourite, remove }) => {
+const CardList = ({ set, edit, favourite, remove, category }) => {
     
     const [filteredCards, setFilteredCards] = useState(set);
     const [searchQuery, setSearchQuery] = useState('');
@@ -15,7 +15,7 @@ const CardList = ({ set, edit, favourite, remove }) => {
             card.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             card.creator.toLowerCase().includes(searchQuery.toLowerCase()) ||
             (card.theme && card.theme.toLowerCase().includes(searchQuery.toLowerCase()))) &&
-            (category === '' || category === 'all' || card.category.toLowerCase() == category.toLowerCase())
+            (category === '' || category === 'all' || set.category.toLowerCase() == category.toLowerCase())
 
         console.log('Filtered cards:', filtered);
         setFilteredCards(filtered);

@@ -9,12 +9,12 @@ import { faHeart, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-ico
 
 
 
-const MySetspage = ({ cards }) => {
+const MySetspage = ({ sets }) => {
   const favouriteBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'#FFA5A5'}/>
 	const removeBtn = <Icon icon={faTrash} color={'white'} onHoverColor={'grey'}/> /* Delete skal kun komme opp for admin */
 	const editBtn = <Icon icon={faPenToSquare} color={'white'} onHoverColor={'#34B8F0'}/>
 
-  const[card, setCard] = useState([]);
+  const[set, setSet] = useState([]);
 
   useEffect(() => {
     const getSets = async() => {
