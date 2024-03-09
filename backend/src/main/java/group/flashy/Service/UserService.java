@@ -26,6 +26,7 @@ public class UserService {
     private User loggedIn; // Vil prøve å konsekvent bruke LoggedInUserID
 
     public static String LoggedInUserID;
+    public static String setID;
 
     public static boolean isAdmin = false;
 
@@ -258,32 +259,6 @@ public class UserService {
         return myFavorites;
     }
 
-<<<<<<< HEAD
-    //This method takes in username and email, and changes the password of the corresponding user
-=======
-    //This method need to be updated to request from the DB
-    public ArrayList<String> getUserInfo(String userID) {
-        ArrayList<String> userInfo = new ArrayList<>(); 
-        String query = "SELECT userID, username, email  FROM user WHERE userID = ?";
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1,userID);
-                try(ResultSet resultSet = preparedStatement.executeQuery()) {
-                    if(resultSet.next()) {
-                        String userIDResult = resultSet.getString("userID");
-                        String usernameResult = resultSet.getString("username");
-                        String emailResult = resultSet.getString("email");
-                        userInfo.add(usernameResult);
-                        userInfo.add(emailResult);
-                    }
-                } 
-            }
-            catch(SQLException e) {
-                e.printStackTrace();
-            }
-        return userInfo;
-    }
-
     //This method takes in changes username of LoggedInUser
     public boolean changeUsername(String newUsername) {
         String query = "UPDATE User SET username = ? WHERE userID = ?";
@@ -315,7 +290,6 @@ public class UserService {
     }
 
     //This method takes in changes password of LoggedInUser
->>>>>>> main
     public boolean changePassword(String newPassword) {
         String query = "UPDATE User SET password = ? WHERE userID = ?";
         try (Connection connection = dataSource.getConnection();
@@ -329,10 +303,9 @@ public class UserService {
             return false;
         }
     }
-<<<<<<< HEAD
 
     public boolean saveSetToDatabase(String setname, int size, String theme, String LoggedInUserID) {
-        String setID =  UUID.randomUUID().toString();
+        setID =  UUID.randomUUID().toString();
         int likes = 0;
         String query = "INSERT INTO `SET` (setID, setname, size, theme, likes, userID) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
@@ -351,8 +324,25 @@ public class UserService {
         return false;
     }
 
-=======
->>>>>>> main
+    public boolean saveCardToDatabase(String question, String answer) {
+        String cardID = UUID.randomUUID().toString();
+        boolean isDifficult = false;
+        String query = "INSERT INTO card (cardID, question, answer, SetID, isDifficult) VALUES (?, ?, ?, ?, ?)";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, cardID);
+            preparedStatement.setString(2, question);
+            preparedStatement.setString(3, answer);
+            preparedStatement.setString(4, setID);
+            preparedStatement.setBoolean(5, isDifficult);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         UserService test = new UserService(null);
     }

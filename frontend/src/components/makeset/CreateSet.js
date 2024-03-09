@@ -32,20 +32,33 @@ const CreateSet = () => {
     ]
     const handleAddPress = async() => {
         try {
-        const response = await axios.post("http://localhost:3500/flash/addSet", {
+        const setResponse = await axios.post("http://localhost:3500/flash/addSet", {
             title: title, 
             size: questions.length,
             category: category
         });
-        console.log(title);
-        if(response.data) {
-            navigate("/mySets")
+        if(setResponse.data) {
             console.log("added set successfully");
         } else {
             console.log("failed to add set");
         }
+        const cards = questions.map((q) => ({
+            question: q.question,
+            answer: q.answer,
+        }));
+        const cardResponse = await axios.post("http://localhost:3500/flash/addCards", cards);
+        console.log(cards);
+        if(cardResponse.data) {
+            console.log("added cards successfully");
+        } else {
+            console.log("failed to add cards");
+        }
+
+        if(cardResponse && setResponse) {
+            navigate("/mySets")
+        }
         } catch(error) {
-            console.log("unexpected error occured")
+            console.log("unexpected error occured");
         }
     };
 
@@ -88,7 +101,7 @@ const CreateSet = () => {
             ))}
             <div className="flex flex-row justify-center question-box ma3">
                 <Button text={"Add question"} icon={faPlus} onClick={handleAddQuestion}/>
-                <Button text={"I am finished!"} icon={faCheck} onClick={handleRemoveQuestion}/> {/* must implement save to database and add to my sets */}
+                <Button text={"I am finished!"} icon={faCheck} onClick={handleAddPress}/> 
             </div>
         </div>
     );
