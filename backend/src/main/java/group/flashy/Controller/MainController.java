@@ -161,11 +161,23 @@ public class MainController {
 
 
     @PostMapping("/addSet")
-    public ResponseEntity<Boolean> addSet(@RequestBody Map<String, String> cardinfo) {
-        String title = cardinfo.get("title");
-        int size = Integer.parseInt(cardinfo.get("size"));
-        String theme = cardinfo.get("category");
+    public ResponseEntity<Boolean> addSet(@RequestBody Map<String, String> setInfo) {
+        String title = setInfo.get("title");
+        int size = Integer.parseInt(setInfo.get("size"));
+        String theme = setInfo.get("category");
         boolean success = userService.saveSetToDatabase(title, size, theme, UserService.LoggedInUserID);
+        return ResponseEntity.ok(success);
+    }
+
+    @PostMapping("/addCards")
+    public ResponseEntity<Boolean> addCards(@RequestBody List<Map<String, String>> cardInfo) {
+        boolean success = false;
+        for (Map<String, String> card : cardInfo) {
+            String question = card.get("question");
+            String answer = card.get("answer");
+            System.out.println(question + " " + answer);
+            success = userService.saveCardToDatabase(question, answer);
+        }
         return ResponseEntity.ok(success);
     }
 }
