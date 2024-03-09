@@ -1,0 +1,54 @@
+@startuml flashyClassDiagram
+
+package flashy/backend {
+    class User {
+        - USERID: String
+        - username: String
+        - PASSWORD: String
+        - EMAIL: String
+        - isAdmin: boolean
+
+        + User(string username, String password, String email, boolean password)
+        - boolean isValidUsername(String username): boolean
+        - isValidPassword(String password): boolean
+        - isValidEmail(String email): boolean
+        + saveUserToDatabase(): void
+        + getUserData(String field): Object
+        + updateUserInfo(String field, Object newValue): void
+    }
+
+    class Card {
+        - cardID: int
+        - cardName: String
+        - question: String
+        - answer: String
+        - userID: String
+        - isDifficult: boolean
+
+        + Card(int userID, String cardName, String question, String answer)
+        + getCardInfo(String field): Object
+        + saveCardToDatabase(): void
+        + updateCardInfo(String field, Object newValue): void
+    }
+    class Set {
+        - setID: int
+        - setName: String
+        - size: int 
+        - theme: String
+        - userID: int
+        - listOfCards: Collection<Card>
+
+        + Set(String setName, String theme, int userID)
+        + addCard(Card card): void
+        + removeCard(Card card): boolean
+        + containsCard(Card card): boolean
+        + setTheme(String string): void
+    }
+    class Admin {
+        + Admin(String username, String password, String email, boolean isAdmin)
+    }
+    Card --> "*" Set: contains
+    User --> "*" Set: owns
+    Admin --|> User: inherit
+}
+@enduml

@@ -1,0 +1,86 @@
+variables:
+  MAVEN_OPTS: "-Djava.awt.headless=true -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  MAVEN_CLI_OPTS_NO_TESTS: "--batch-mode -DskipTests"
+  MAVEN_CLI_OPTS_HEADLESS: "--batch-mode -P headless"
+
+stages:
+  - build
+  - test
+  - coverage
+
+.get_percentage:
+  script:
+    - missed_hit=$(cat target/site/jacoco/jacoco.xml | sed 's/.*<\/package>//;' | grep -o 'INSTRUCTION.*/>' | grep -o [0-9]*)
+    - missed=$(echo ${missed_hit} | grep -o "[0-9]* ")
+    - hit=$(echo ${missed_hit} | grep -o " [0-9]*")
+    - percentage=$(awk -v hit="${hit}" -v missed="${missed}" 'BEGIN { print  100 * hit / (hit + missed) }')
+
+cache:
+  paths:
+    - .m2/repository
+  key: "$CI_BUILD_REF_NAME"
+
+build:
+  stage: build
+  needs: []
+  before_script:
+    - cd backend
+    - apk --no-cache add maven
+  script:
+    - mvn clean install $MAVEN_CLI_OPTS_NO_TESTS
+
+test:
+  stage: test
+  before_script:
+    - cd backend
+    - apk --no-cache add maven
+  script:
+    - mvn clean test $MAVEN_CLI_OPTS_HEADLESS
+    - mvn jacoco:report
+  artifacts:
+    paths:
+      - backend/
+    expire_in: 5 days
+
+checkstyle:
+  stage: test
+  needs: []
+  before_script:
+    - cd backend
+    - apk --no-cache add maven
+  script: 
+    - mvn checkstyle:check
+
+coverage: 
+  stage: coverage 
+  needs: ["test"]
+  dependencies: 
+    - test
+  before_script: 
+    - cd backend
+  script:
+    - !reference [.get_percentage, script]
+    - 'echo "Code Coverage core: ${percentage}%"'
+  coverage: "/Code Coverage core: ([0-9\\.]*)%/"
+
+spotbugs:
+  stage: test
+  needs: [build]
+  before_script:
+   - cd backend
+   - apk --no-cache add maven
+  script:
+    - mvn clean install $MAVEN_CLI_OPTS_NO_TESTS
+    - mvn spotbugs:check
+
+test_frontend:
+  stage: test
+  before_script: 
+    - apk --no-cache add nodejs npm
+    - cd frontend
+  script:
+    - npm install
+    - npm test -- --coverage
+  artifacts:
+    paths:
+      - frontend/coverage
