@@ -59,10 +59,11 @@ public class Set {
     public String getUserID() {
         return (String) getSetInfo("userID", userID);
     }
-    
+    /*
     public int getLikes() {
         return (int) getSetInfo("likes", userID);
     }
+    */
 
     //Methods
     /* 
@@ -78,7 +79,7 @@ public class Set {
 
     public Object getSetInfo(String field, String userID) {
         Object value = null;
-        String query = "SELECT " + field + " FROM `set` WHERE setID = ?";
+        String query = "SELECT " + field + " FROM `Set` WHERE setID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, setID);

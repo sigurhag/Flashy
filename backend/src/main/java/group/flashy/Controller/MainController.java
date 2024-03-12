@@ -69,11 +69,11 @@ public class MainController {
         System.out.println("Retrieved sets: " + mySets.toString());
         return ResponseEntity.ok(mySets);
     }
-    /*@GetMapping("/favorites")
+    @GetMapping("/favorites")
     public ResponseEntity<ArrayList<Set>> getMyFavorites() {
         ArrayList<Set> myFavorites = userService.getFavorites();
         return ResponseEntity.ok(myFavorites);
-    }*/
+    }
 
     @GetMapping("/mostpopular")
     public ResponseEntity<ArrayList<Set>> getMostPopular() {
@@ -139,9 +139,8 @@ public class MainController {
     }
 
     @GetMapping("/allUsers")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        System.out.println("Retrieved users: " + users.toString());  // Add this line for logging
+    public ResponseEntity<ArrayList<User>> getAllUsers() {
+        ArrayList<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 

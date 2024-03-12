@@ -16,6 +16,7 @@ const Profile = ({ user = {} }) => {
         const UserResponse = await axios.get("http://localhost:3500/flash/profile", {
           params: {username, email}
         });
+        console.log(UserResponse)
         if (UserResponse.data) {
           setUserInfo(UserResponse.data);
           console.log("fetched data successfully!");
@@ -28,7 +29,7 @@ const Profile = ({ user = {} }) => {
           setUserInfo(UserResponse.data)
           console.log("Fetched admin rights successfully!");
         } else {
-          console.log("Error fetching admin rights!");
+          console.log("this user does not have admin rights!");
         }
       } catch (error) {
         console.error("Error fetching user info: ", error);
@@ -70,7 +71,6 @@ const Profile = ({ user = {} }) => {
       }
     }
     else{
-      
     }
   };
 

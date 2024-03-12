@@ -39,6 +39,14 @@ public class User {
         this.userID = UUID.randomUUID().toString();
     }
 
+
+    public User(String userID, String username, String password, String email) {
+        this.userID = userID;
+        this.email = email;
+        this.password = password;
+        this.email = username;
+    }
+    
     /**
      * Method to validate username.
      *

@@ -16,7 +16,6 @@ public class Card {
 
     // Fields for the Card object
     private String cardID;
-    private String cardName;
     private String question;
     private String answer;
     private String setID;
@@ -30,14 +29,12 @@ public class Card {
      * @param question The question on the card
      * @param answer   The answer to the question
      */
-    public Card(String setID, String cardName, String question, String answer) {
+    public Card(String setID, String question, String answer) {
         this.cardID = UUID.randomUUID().toString();
-        this.cardName = cardName;
         this.question = question;
         this.answer = answer;
         this.isDifficult = false;
         this.setID = setID;
-        saveCardToDatabase();
     }
 
     /**
@@ -74,15 +71,6 @@ public class Card {
      */
     public int getCardID() {
         return (int) getCardInfo("cardID");
-    }
-
-    /**
-     * Method for retriving the name of the card.
-     *
-     * @return the name
-     */
-    public String getCardName() {
-        return (String) getCardInfo("cardName");
     }
 
     /**
@@ -150,14 +138,13 @@ public class Card {
      */
     public void saveCardToDatabase() {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO card (cardID, cardname, question, answer, setID, isDifficult) VALUES(?,?,?,?,?,?)";
+            String query = "INSERT INTO card (cardID, question, answer, setID, isDifficult) VALUES(?,?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, cardID);
-                preparedStatement.setString(2, cardName);
-                preparedStatement.setString(3, question);
-                preparedStatement.setString(4, answer);
-                preparedStatement.setString(5, setID);
-                preparedStatement.setBoolean(6, isDifficult);
+                preparedStatement.setString(2, question);
+                preparedStatement.setString(3, answer);
+                preparedStatement.setString(4, setID);
+                preparedStatement.setBoolean(5, isDifficult);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -204,7 +191,7 @@ public class Card {
      */
     @Override
     public String toString() {
-        return "Card [cardID= " + cardID + ", cardName= " + cardName + ", question= " + question + ", answer= " + answer
+        return "Card [cardID= " + cardID + ", question= " + question + ", answer= " + answer
                 + ", isDifficult= " + isDifficult + ", setID= " + setID + "]";
     }
 

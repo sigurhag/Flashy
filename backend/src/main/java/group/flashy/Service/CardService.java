@@ -37,7 +37,8 @@ public class CardService {
             if (resultSet.getString("setname").toLowerCase().contains(searchWord.toLowerCase())) {
                 Set set = new Set(resultSet.getString("setname"),
                         resultSet.getString("theme"),
-                        resultSet.getString("userID"));
+                        resultSet.getString("userID"),
+                        resultSet.getInt("likes"));
                 relevantSets.add(set);
             }
         }
@@ -47,9 +48,9 @@ public class CardService {
         return relevantSets;
     }
 
-    public boolean createCard(String setID, String cardName, String question, String answer) {
+    public boolean createCard(String setID, String question, String answer) {
         try {
-            Card card = new Card(setID, cardName, question, answer);
+            Card card = new Card(setID, question, answer);
             card.saveCardToDatabase();
         } catch (Exception e) {
             return false;
