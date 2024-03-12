@@ -18,7 +18,8 @@ const RegisterForm = () => {
             email: email,
             password: password,
             password2: password2
-        });
+        })
+        console.log(response);
         navigate("/home");
         if (response.data.success) {
             console.log("Registration successful!");
