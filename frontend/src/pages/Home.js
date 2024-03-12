@@ -68,8 +68,8 @@ const Homepage = () => {
       style={{marginTop: '25vh'}}>
         <h1><Dropdown label="Filter: " options={categories} value={category} onChange={handleCategoryChange} backgroundColor={'#FFEFC5'}/></h1>
         <div className='w-70'>
-        </div>
         <CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn}/>
+        </div>
       </div>
     </div>
   );
