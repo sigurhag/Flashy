@@ -22,7 +22,6 @@ const Searchpage = () => {
       style={{marginTop: '25vh'}}
     >
       	<div className='w-70 '>
-        <CardList favourite={favouriteBtn} remove={removeBtn} />  
         </div>
     </div>
   </div>

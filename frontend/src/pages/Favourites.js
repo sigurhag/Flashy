@@ -10,18 +10,23 @@ const Favouritespage = ({ sets }) => {
   const favouriteBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'#FFA5A5'}/>
 	const removeBtn = <Icon icon={faTrash} color={'white'} onHoverColor={'grey'}/> /* Delete skal kun komme opp for admin */
 	const editBtn = <Icon icon={faPenToSquare} color={'white'} onHoverColor={'#34B8F0'}/> 
+  const likeBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'red'}/>
 
   const[set, setSet] = useState([]);
 
   useEffect(() => {
     const getSets = async() => {
       try {
-        const response = await axios.get("");
-        if(response.data) {
-          setSet(response.data);
-          console.log("Fetched cards sucessfully!");
+        const response = await axios.get("http://localhost:3500/flash/favorites");
+        if (response.data) {
+          const setInfo = response.data.map((set) => ({
+            setname: set.setName,
+            theme: set.theme, 
+            user: set.userID
+          }));
+          setSet(setInfo)
         } else {
-          console.log("Failed to fetch cards");
+          console.log('Error fetching users');
         }
       } catch (error) {
         console.error("An unexpected error occured: ", error);
@@ -41,8 +46,8 @@ const Favouritespage = ({ sets }) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <div className='w-70'>
-        <CardList favourite={favouriteBtn} remove={removeBtn} edit={editBtn} />  
         </div>
+        <CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn}/>
       </div>
     </div>
 

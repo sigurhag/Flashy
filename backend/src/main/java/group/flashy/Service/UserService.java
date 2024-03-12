@@ -42,7 +42,7 @@ public class UserService {
      * Hvis ikke returneres false
      */
 
-     public boolean verifyLogIn(String username, String psw) {
+    public boolean verifyLogIn(String username, String psw) {
         boolean succesfulLogin = false;
         String adminQuery = "SELECT * FROM admin WHERE username = ?";
         String userQuery = "SELECT * FROM user WHERE username = ?";
@@ -97,6 +97,7 @@ public class UserService {
 
     /**
      * Method for fetching user info from user or admin table
+     * 
      * @param userID
      * @return
      */
@@ -143,17 +144,18 @@ public class UserService {
 
     public ArrayList<User> getAllUsers() {
         ArrayList<User> allUsers = new ArrayList<>();
-        String query = "SELECT * FROM user"; 
+        String query = "SELECT * FROM user";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
-            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-        ResultSet resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()) {
-            String username = resultSet.getString("username");
-            String password = resultSet.getString("password");
-            String email = resultSet.getString("email");
-            User user = new User(username, password, email);
-            allUsers.add(user);
-        }
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String userID = resultSet.getString("userID");
+                String username = resultSet.getString("username");
+                String password = resultSet.getString("password");
+                String email = resultSet.getString("email");
+                User user = new User(userID,username, password, email);
+                allUsers.add(user);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -164,20 +166,20 @@ public class UserService {
         String addQuery = "insert into admin values (?, ?, ?, ?)";
         String deleteQuery = "delete from user where userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
-            PreparedStatement addStatement = connection.prepareStatement(addQuery);
-            PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
-                addStatement.setString(1, userID);
-                addStatement.setString(2, username);
-                addStatement.setString(3, password);
-                addStatement.setString(4, email);
-                int addResult = addStatement.executeUpdate();
-                if(addResult > 0) {
-                    deleteStatement.setString(1, userID);
-                    int deleteResult = deleteStatement.executeUpdate();
-                    if(deleteResult > 0) {
-                        return true;
-                    }
+                PreparedStatement addStatement = connection.prepareStatement(addQuery);
+                PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
+            addStatement.setString(1, userID);
+            addStatement.setString(2, username);
+            addStatement.setString(3, password);
+            addStatement.setString(4, email);
+            int addResult = addStatement.executeUpdate();
+            if (addResult > 0) {
+                deleteStatement.setString(1, userID);
+                int deleteResult = deleteStatement.executeUpdate();
+                if (deleteResult > 0) {
+                    return true;
                 }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -197,33 +199,22 @@ public class UserService {
      * Trenger også cardID for å ha en fremmednøkkel til set
      */
 
-     public ArrayList<Set> getMySets() {
+    public ArrayList<Set> getMySets() {
         ArrayList<Set> mySets = new ArrayList<>();
-        String userID = LoggedInUserID;
         String query = "SELECT * FROM `Set` WHERE userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, userID);
+            preparedStatement.setString(1, LoggedInUserID);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 String setID = resultSet.getString("setID");
-                Set crtSet = findSetByID(mySets, setID);
-                if (crtSet == null) {
-                    Set set = new Set(resultSet.getString("setname"),
-                            resultSet.getString("theme"),
-                            LoggedInUserID, resultSet.getInt("likes"));
-                    mySets.add(set);
-                }
-                if (resultSet.getString("cardname").equals(null)) {
-                    continue;
-                }
-                Card crtCard = new Card(setID,
-                        resultSet.getString("cardName"),
-                        resultSet.getString("question"),
-                        resultSet.getString("answer"));
-                crtSet.addCardToSet(crtCard);
+                String userID = resultSet.getString("userID");
+                String theme = resultSet.getString("theme");
+                String setname = resultSet.getString("setname");
+                int likes = resultSet.getInt("likes");
+                Set set = new Set(setID, setname, theme, userID, likes);
+                mySets.add(set);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -234,16 +225,16 @@ public class UserService {
         ArrayList<Set> mostPopular = new ArrayList<>();
         String query = "SELECT * FROM `Set` ORDER BY likes DESC";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
-            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    String setID = resultSet.getString("setID");
-                    String userID = resultSet.getString("userID");
-                    String theme = resultSet.getString("theme");
-                    String setname = resultSet.getString("setname");
-                    int likes = resultSet.getInt("likes");
-                    Set set = new Set(setID, setname, theme, userID, likes);
-                    mostPopular.add(set);
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String setID = resultSet.getString("setID");
+                String userID = resultSet.getString("userID");
+                String theme = resultSet.getString("theme");
+                String setname = resultSet.getString("setname");
+                int likes = resultSet.getInt("likes");
+                Set set = new Set(setID, setname, theme, userID, likes);
+                mostPopular.add(set);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -253,28 +244,19 @@ public class UserService {
 
     public ArrayList<Set> getFavorites() {
         ArrayList<Set> myFavorites = new ArrayList<>();
-        String query = "SELECT setID, setname, theme, likes, cardname, cardID, cardName, question, answer FROM Favourite INNER JOIN `Set` ON (Favourites.setID = `Set`.setID) LEFT JOIN Card ON ('Set'.cardID = Card.cardID) WHERE userID = ?";
+        String query = "SELECT * FROM `Set` WHERE setID IN (SELECT setID FROM `Set` WHERE userID = ?)";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, loggedIn.getUserID());
+            preparedStatement.setString(1, LoggedInUserID);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 String setID = resultSet.getString("setID");
-                Set crtSet = findSetByID(myFavorites, setID);
-                if (crtSet == null) {
-                    Set set = new Set(resultSet.getString("setname"),
-                            resultSet.getString("theme"),
-                            LoggedInUserID, resultSet.getInt("likes"));
-                    myFavorites.add(set);
-                }
-                if (resultSet.getString("cardname").equals(null)) {
-                    continue;
-                }
-                Card crtCard = new Card(setID,
-                        resultSet.getString("cardName"),
-                        resultSet.getString("question"),
-                        resultSet.getString("answer"));
-                crtSet.addCardToSet(crtCard);
+                String userID = resultSet.getString("userID");
+                String theme = resultSet.getString("theme");
+                String setname = resultSet.getString("setname");
+                int likes = resultSet.getInt("likes");
+                Set set = new Set(setID, setname, theme, userID, likes);
+                myFavorites.add(set);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -282,11 +264,11 @@ public class UserService {
         return myFavorites;
     }
 
-    //This method takes in changes username of LoggedInUser
+    // This method takes in changes username of LoggedInUser
     public boolean changeUsername(String newUsername) {
         String query = "UPDATE User SET username = ? WHERE userID = ?";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, newUsername);
             preparedStatement.setString(2, LoggedInUserID);
             int rowsAffected = preparedStatement.executeUpdate();
@@ -297,11 +279,11 @@ public class UserService {
         }
     }
 
-    //This method takes in changes email of LoggedInUser
+    // This method takes in changes email of LoggedInUser
     public boolean changeEmail(String newEmail) {
         String query = "UPDATE User SET email = ? WHERE userID = ?";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, newEmail);
             preparedStatement.setString(2, LoggedInUserID);
             int rowsAffected = preparedStatement.executeUpdate();
@@ -312,11 +294,11 @@ public class UserService {
         }
     }
 
-    //This method takes in changes password of LoggedInUser
+    // This method takes in changes password of LoggedInUser
     public boolean changePassword(String newPassword) {
         String query = "UPDATE User SET password = ? WHERE userID = ?";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, newPassword);
             preparedStatement.setString(2, LoggedInUserID);
             int rowsAffected = preparedStatement.executeUpdate();
@@ -328,11 +310,11 @@ public class UserService {
     }
 
     public boolean saveSetToDatabase(String setname, int size, String theme, String LoggedInUserID) {
-        setID =  UUID.randomUUID().toString();
+        setID = UUID.randomUUID().toString();
         int likes = 0;
-        String query = "INSERT INTO SET (setID, setname, size, theme, likes, userID) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO `Set` (setID, setname, size, theme, likes, userID) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
-            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, setID);
             preparedStatement.setString(2, setname);
             preparedStatement.setInt(3, size);
@@ -352,7 +334,7 @@ public class UserService {
         boolean isDifficult = false;
         String query = "INSERT INTO card (cardID, question, answer, SetID, isDifficult) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
-            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, cardID);
             preparedStatement.setString(2, question);
             preparedStatement.setString(3, answer);

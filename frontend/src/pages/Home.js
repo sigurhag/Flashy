@@ -7,12 +7,13 @@ import { faHeart, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-ico
 import Dropdown from '../components/makeset/Dropdown';
 import axios from 'axios';
 
-const Homepage = ({ sets }) => {
+const Homepage = () => {
   const favouriteBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'#FFA5A5'}/>
 	const removeBtn = <Icon icon={faTrash} color={'white'} onHoverColor={'grey'}/> /* Delete skal kun komme opp for admin */
 	const editBtn = <Icon icon={faPenToSquare} color={'white'} onHoverColor={'#34B8F0'}/> /* Må fikse sånn at edit kun kommer opp på egne sett */
+  const likeBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'red'}/>
   const [category, setCategory] = useState('all');
-
+  
   const categories = [
     {label: 'All', value: 'all'},
     {label: 'Art', value: 'art'},
@@ -33,31 +34,28 @@ const Homepage = ({ sets }) => {
 
   const handleCategoryChange = value => setCategory(value);
   console.log("Selected category:", category);
-  const[set, setSet] = useState([]);
+  const[set, setSet] = useState([])
 
   useEffect(() => {
     const getSets = async() => {
       try {
         const response = await axios.get("http://localhost:3500/flash/mostpopular");
-        if(response.data) {
-            const setInfo = response.data.map((set) => ({
-              setID: set.setID,
-              setname: set.setname,
-              category: set.theme,
-              length: set.size,
-              creator: set.userID,
-            }))
-          setSet(setInfo);
-          console.log("Fetched cards sucessfully!");
+        if (response.data) {
+          const setInfo = response.data.map((set) => ({
+            setname: set.setName,
+            theme: set.theme, 
+            user: set.userID
+          }));
+          setSet(setInfo)
         } else {
-          console.log("Failed to fetch cards");
+          console.log('Error fetching users');
         }
       } catch (error) {
         console.error("An unexpected error occured: ", error);
       };
-    }
+    };
     getSets();
-  }, [sets])
+  },[set])
   return (
     <div>
       <Sidebar />
@@ -70,8 +68,8 @@ const Homepage = ({ sets }) => {
       style={{marginTop: '25vh'}}>
         <h1><Dropdown label="Filter: " options={categories} value={category} onChange={handleCategoryChange} backgroundColor={'#FFEFC5'}/></h1>
         <div className='w-70'>
-          <CardList set={set} favourite={favouriteBtn} remove={removeBtn} edit={editBtn} />  
         </div>
+        <CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn}/>
       </div>
     </div>
   );

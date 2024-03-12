@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, {useState} from "react";
+import React from "react";
 import GeneralButton from "../GeneralButton";
 
 const MakeAdmin = ({ username, email, password, userID }) => {
@@ -8,8 +8,6 @@ const MakeAdmin = ({ username, email, password, userID }) => {
             const response = await axios.post("http://localhost:3500/flash/updateAdmin", {
                 username: username,
                 email: email,
-                password: password,
-                userID: userID,
             });
             if(response.data) {
                 console.log("Updated admin rights successfully")

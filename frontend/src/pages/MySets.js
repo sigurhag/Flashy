@@ -13,33 +13,33 @@ const MySetspage = ({ sets }) => {
   const favouriteBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'#FFA5A5'}/>
 	const removeBtn = <Icon icon={faTrash} color={'white'} onHoverColor={'grey'}/> /* Delete skal kun komme opp for admin */
 	const editBtn = <Icon icon={faPenToSquare} color={'white'} onHoverColor={'#34B8F0'}/>
+  const likeBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'red'}/>
 
   const[set, setSet] = useState([]);
 
   useEffect(() => {
-    const getSets = async() => {
+    const getSets = async () => {
       try {
         const response = await axios.get("http://localhost:3500/flash/mysets");
-        if(response.data) {
-          const setInfo = response.data.map((set) => ({
-            setID: set.setID,
-            setname: set.setname,
-            category: set.theme,
-            length: set.size,
-            creator: set.userID,
-          }))
-          setSet(setInfo);
-          console.log("Fetched cards sucessfully!");
+        if (response.data) {
+          const userInfo = response.data.map((set) => ({
+            setname: set.setName,
+            theme: set.theme, 
+            user: set.userID
+          }));
+          setSet(userInfo)
+          console.log(set);
         } else {
-          console.log("Failed to fetch cards");
+          console.log('Error fetching my sets');
         }
       } catch (error) {
-        console.error("An unexpected error occured: ", error);
-      };
-    }
-    console.log(set);
+        console.error("An unexpected error occurred: ", error);
+      }
+    };
+  
     getSets();
-  }, [sets])
+  }, [sets]);
+
   
   return (
     <div>
@@ -53,8 +53,8 @@ const MySetspage = ({ sets }) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <div className='w-70'>
-        <CardList set={set} favourite={favouriteBtn} remove={removeBtn} edit={ editBtn} />  
         </div>
+        <CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn}/>
       </div>
     </div>
 
