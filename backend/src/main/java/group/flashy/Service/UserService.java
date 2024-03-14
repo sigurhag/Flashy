@@ -74,13 +74,6 @@ public class UserService {
         return succesfulLogin;
     }
 
-    /*
-     * Her må User-klassen endres slik at evt. feilmeldinger eller beskjeder kommer
-     * fram til frontend.
-     * Som det er nå gis det ingen beskjed og ingen feilmelding.
-     * 
-     * Logger inn brukeren
-     */
     public boolean registerUser(String username, String password1, String password2, String email) {
         boolean validRegister = false;
         if (password1.equals(password2)) {
@@ -446,6 +439,37 @@ public class UserService {
             e.printStackTrace();
             return false; 
         }
+    }
+    
+    public boolean favoriteSet(String setID) {
+        String userID = LoggedInUserID;
+        String query = "INSERT INTO Favourite (userID, setID) VALUES (?, ?)";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
+            PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setString(1, userID);
+            preparedStatement.setString(2, setID);
+            int result = preparedStatement.executeUpdate();
+            return result > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean isFavourited(String setID) {
+        String userID = LoggedInUserID;
+        String query = "SELECT 1 FROM Favourite WHERE userID = ? AND setID = ?";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, userID);
+            preparedStatement.setString(2, setID);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next(); 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static void main(String[] args) {

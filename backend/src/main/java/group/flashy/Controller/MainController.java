@@ -187,6 +187,20 @@ public class MainController {
         return ResponseEntity.ok(success);
     }
 
+    @PostMapping("/favouriteSet")
+    public ResponseEntity<Boolean> likeSet(@RequestBody String setID) {
+        boolean success = false;
+        success = userService.favoriteSet(setID);
+        return ResponseEntity.ok(success);
+    }
+
+    @PostMapping("/isFavourited")
+    public ResponseEntity<Boolean> isFavourited(@RequestBody String setID) {
+        boolean success = false;
+        success = userService.isFavourited(setID);
+        return ResponseEntity.ok(success);
+    }
+
     @PostMapping("/fetchSet")
     public ResponseEntity<Set> fetchSet(@RequestBody String setID) {
         Set setInfo = userService.getSet(setID);

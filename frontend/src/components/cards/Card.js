@@ -6,8 +6,17 @@ const Card = (props) => {
     const { name, creator, setID, length, category, edit, favourite, remove } = props;
     const navigate = useNavigate();
 
-    const handleFavourite = (event) => {
+    const handleFavourite = async() => {
         console.log("Favourite was pressed!");
+        try {
+            const response = await axios.post("http://localhost:3500/flash//favouriteSet",{setID})
+        if(response.data) {
+            console.log("liked set successfully")
+            window.location.reload()
+            } 
+        } catch (error) {
+            console.log(error)
+        } 
     }
 
     const handleRemove = async () => {
