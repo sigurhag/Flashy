@@ -41,10 +41,12 @@ const Homepage = () => {
       try {
         const response = await axios.get("http://localhost:3500/flash/mostpopular");
         if (response.data) {
+          console.log(response)
           const setInfo = response.data.map((set) => ({
             setname: set.setName,
             theme: set.theme, 
-            user: set.userID
+            owner : set.owner,
+            size: set.size,
           }));
           setSet(setInfo)
         } else {

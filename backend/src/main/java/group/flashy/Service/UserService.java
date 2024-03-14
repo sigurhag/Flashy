@@ -201,19 +201,22 @@ public class UserService {
 
     public ArrayList<Set> getMySets() {
         ArrayList<Set> mySets = new ArrayList<>();
-        String query = "SELECT * FROM `Set` WHERE userID = ?";
+        String query = "SELECT s.*, u.username AS username FROM `Set` AS s JOIN user AS u ON (u.userID=s.userID) WHERE s.userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, LoggedInUserID);
             ResultSet resultSet = preparedStatement.executeQuery();
+
+            
             while (resultSet.next()) {
                 String setID = resultSet.getString("setID");
                 String userID = resultSet.getString("userID");
                 String theme = resultSet.getString("theme");
                 String setname = resultSet.getString("setname");
+                String owner = resultSet.getString("username");
                 int likes = resultSet.getInt("likes");
                 int size = resultSet.getInt("size");
-                Set set = new Set(setID, setname, theme, userID, likes, size);
+                Set set = new Set(setID, setname, theme, userID, likes, size, owner);
                 mySets.add(set);
             }
         } catch (SQLException e) {
@@ -224,7 +227,7 @@ public class UserService {
 
     public ArrayList<Set> getMostPopular() {
         ArrayList<Set> mostPopular = new ArrayList<>();
-        String query = "SELECT * FROM `Set` ORDER BY likes DESC";
+        String query = "SELECT s.*, u.username FROM `Set` AS s INNER JOIN user AS u ON (s.userID=u.userID) ORDER BY likes DESC";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -235,7 +238,8 @@ public class UserService {
                 String setname = resultSet.getString("setname");
                 int likes = resultSet.getInt("likes");
                 int size = resultSet.getInt("size");
-                Set set = new Set(setID, setname, theme, userID, likes, size);
+                String owner = resultSet.getString("u.username");
+                Set set = new Set(setID, setname, theme, userID, likes, size, owner);
                 mostPopular.add(set);
             }
         } catch (SQLException e) {
@@ -246,7 +250,7 @@ public class UserService {
 
     public ArrayList<Set> getFavorites() {
         ArrayList<Set> myFavorites = new ArrayList<>();
-        String query = "SELECT * FROM `Set` WHERE setID IN (SELECT setID FROM `Set` WHERE userID = ?)";
+        String query = "SELECT s.*, u.username FROM `Set` AS s INNER JOIN user AS u ON (s.userID=u.userID) WHERE setID IN (SELECT setID FROM s WHERE s.userID = ?)";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, LoggedInUserID);
@@ -258,7 +262,8 @@ public class UserService {
                 String setname = resultSet.getString("setname");
                 int likes = resultSet.getInt("likes");
                 int size = resultSet.getInt("size");
-                Set set = new Set(setID, setname, theme, userID, likes, size);
+                String owner = resultSet.getString("u.username");
+                Set set = new Set(setID, setname, theme, userID, likes, size, owner);
                 myFavorites.add(set);
             }
         } catch (SQLException e) {

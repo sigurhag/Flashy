@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 
 const Card = (props) => {
-    const { name, creator, length, category, onClick, edit, favourite, remove} = props;
+    const { name, owner, size, theme, onClick, edit, favourite, remove} = props;
+    console.log(props);
 
     return (
         <Link  to={"/cardview"} onClick={onClick} className='bg-color-card br4 pa1 ma2 grow tc flex flex-column items-center justify-center relative' style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -15,9 +16,9 @@ const Card = (props) => {
                 {edit}
             </div>
             <h2 style={{ marginBottom: '1%', marginTop: '13%' }}>{name}</h2>
-            <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{creator}</h3>
-            <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{category}</h3>
-            <h3 style={{ marginBottom: '13%', marginTop: '1%' }}>{length} cards</h3>
+            <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{owner}</h3>
+            <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{theme}</h3>
+            <h3 style={{ marginBottom: '13%', marginTop: '1%' }}>{size} cards</h3>
         </Link>
     );
 }

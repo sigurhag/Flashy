@@ -18,6 +18,7 @@ public class Set {
     private String theme;
     private String userID;
     private int likes; 
+    private String owner;
 
     public Set(String setname, String theme, String userID, int likes) {
         this.setID = UUID.randomUUID().toString();
@@ -28,13 +29,14 @@ public class Set {
         this.likes = likes; 
     }
 
-    public Set(String setID, String setname, String theme, String userID, int likes, int size) {
+    public Set(String setID, String setname, String theme, String userID, int likes, int size, String owner) {
         this.setID = setID;
         this.setname = setname;
         this.theme = theme;
         this.userID = userID;
         this.likes = likes; 
         this.size = size;
+        this.owner = owner;
     }
 
 
@@ -62,6 +64,10 @@ public class Set {
     
     public int getLikes() {
         return (int) getSetInfo("likes", userID);
+    }
+
+    public String getSetOwner() {
+        return (String) this.owner;
     }
     
 
@@ -180,7 +186,7 @@ public class Set {
     @Override
     public String toString() {
         return "Set [setID=" + setID + ", setname=" + setname + ", size=" + size + ", theme=" + theme + ", userID="
-                + userID + ", likes=" + likes + "]";
+                + userID + ", likes=" + likes + ", owner=" + owner +"]";
     }
 
 
