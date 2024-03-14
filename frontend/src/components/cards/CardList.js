@@ -4,7 +4,7 @@ import Searchbar from '../Searchbar';
 import axios from 'axios';
 
 
-const CardList = ({ set, edit, favourite, remove, category }) => {
+const CardList = ({ set, edit, favourite, remove }) => {
     const [admin, setAdmin] = useState(false);
 
    
@@ -25,20 +25,23 @@ const CardList = ({ set, edit, favourite, remove, category }) => {
     
     return (
         <div className='flex flex-column justify-center '>
-          <div style={{ width: '1000%', maxWidth: '1000px' }}>
+          <div>
           </div>
           <div className="card-list">
-          {set.map((set, i) => (
+          {set.map((item, i) => (
+            
                 <Card
                   key={i}
-                  setID={set.setID}
-                  name={set.setname}
-                  creator={set.userID}
-                  theme={set.theme}
+                  name={item.setname}
+                  owner={item.owner}
+                  size={item.size}
+                  theme={item.theme}
                   favourite={favourite}
                   {...admin && {remove, edit}}
                 />
+                
               ))}
+              
           </div>
         </div>
       );

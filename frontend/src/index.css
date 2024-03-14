@@ -17,10 +17,6 @@ body {
   font-style: normal;
 }
 
-.bg-color-card {
-  background-color:#FFEFC5
-}
-
 .bg-color-sidebar {
   background-color: #34B8F0;
 }
@@ -138,8 +134,8 @@ body {
 
 .bg-color-card {
   transform-style: preserve-3d;
-  height: 100%;
-  width: 100%;
+  height: 170px;
+  width: 250px;
   position: relative; 
   background-color:#FFEFC5;
 }

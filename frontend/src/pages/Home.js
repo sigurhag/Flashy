@@ -55,7 +55,8 @@ const Homepage = () => {
           theme: set.theme, 
           user: set.userID,
           size: set.size,
-          likes: set.likes
+          likes: set.likes,
+          owner: set.owner
         }));
         setSet(setInfo)
       } else {
@@ -77,7 +78,8 @@ const Homepage = () => {
             theme: set.theme, 
             user: set.userID,
             size: set.size,
-            likes: set.likes
+            likes: set.likes,
+            owner: set.owner
           }));
           setSet(setInfo)
         } else {
@@ -102,6 +104,7 @@ const Homepage = () => {
     
   }, []);
 
+
   return (
     <div>
       <Sidebar />
@@ -120,6 +123,8 @@ const Homepage = () => {
       </div>
     </div>
   );
-};
+}
+
+
 
 export default Homepage;
