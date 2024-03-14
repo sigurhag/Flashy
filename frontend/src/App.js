@@ -19,6 +19,7 @@ import Welcome from './pages/Welcome';
 import CardViewPage from './pages/CardView';
 import { users } from './components/profile/Users';
 import MakeSetPage from './pages/MakeSet';
+import EditPage from './pages/Edit';
 
 const App = () => {
     return (
@@ -35,6 +36,7 @@ const App = () => {
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/makeSet" element={<MakeSetPage />} />
                     <Route path="/register" element={<UserRegister />} />
+                    <Route path='/edit' element={<EditPage/>} />
                 </Routes>
 
         </div>

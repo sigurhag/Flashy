@@ -122,7 +122,7 @@ public class Set {
     try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
         String cardInsertQuery = "INSERT INTO card (setID) VALUES (?)";
             try (PreparedStatement cardStatement = connection.prepareStatement(cardInsertQuery)) {
-                cardStatement.setInt(1, card.getCardSetID()); // Sets setID for the card to the provided setID
+                cardStatement.setString(1, card.getCardSetID()); // Sets setID for the card to the provided setID
                 cardStatement.executeUpdate();
             }
         } 
@@ -131,12 +131,12 @@ public class Set {
         }
     }
 
-    private boolean validateSetExists(int setID) {
+    private boolean validateSetExists(String setID) {
         boolean setExists = false;
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
             String query = "SELECT COUNT(*) FROM `Set` WHERE setID = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, setID);
+                preparedStatement.setString(1, setID);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
                         int count = resultSet.getInt(1);

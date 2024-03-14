@@ -37,13 +37,21 @@ public class Card {
         this.setID = setID;
     }
 
+    public Card(String cardID, String question, String answer, String setID, Boolean isDifficult) {
+        this.cardID = cardID;
+        this.question = question;
+        this.answer = answer;
+        this.setID = setID;
+        this.isDifficult = isDifficult;
+    }
+
     /**
      * Method for updating the difficulty of a question.
      *
      * @param difficult boolean on is difficult
      */
     public void changeDifficult(boolean difficult) {
-        updateCardInfo("difficult", difficult);
+        updateCardInfo("isDifficult", difficult);
     }
 
     /**
@@ -69,8 +77,8 @@ public class Card {
      *
      * @return the ID
      */
-    public int getCardID() {
-        return (int) getCardInfo("cardID");
+    public String getCardID() {
+        return (String) getCardInfo("cardID");
     }
 
     /**
@@ -96,8 +104,8 @@ public class Card {
      *
      * @return the setID
      */
-    public int getCardSetID() {
-        return (int) getCardInfo("setID");
+    public String getCardSetID() {
+        return (String) getCardInfo("setID");
     }
 
     /**
@@ -106,7 +114,7 @@ public class Card {
      * @return true or false on card is difficult
      */
     public boolean getIsDifficult() {
-        return (boolean) getCardInfo("Difficult");
+        return (boolean) getCardInfo("isDifficult");
     }
 
     /**
@@ -201,8 +209,6 @@ public class Card {
      * @param args the args of the method
      */
     public static void main(String[] args) {
-        String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
-        String username = "root";
 
     }
         

@@ -11,9 +11,9 @@ const UserList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3500/flash/allUsers");
-        if (response.data) {
-          const userInfo = response.data.map((user) => ({
+        const Userresponse = await axios.get("http://localhost:3500/flash/allUsers");
+        if (Userresponse.data) {
+          const userInfo = Userresponse.data.map((user) => ({
             username: user.username,
             password: user.password,
             email: user.email,
