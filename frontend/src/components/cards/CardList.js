@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import Card from './Card';
 import Searchbar from '../Searchbar';
+import axios from 'axios';
 
-const CardList = ({ set, edit, favourite, remove}) => {
+
+const CardList = ({ set, edit, favourite, remove }) => {
+    const [admin, setAdmin] = useState(false);
+
+   
+    useEffect(() => {
+      const fetchData = async() => {
+        try {
+          const adminResponse = await axios.get("http://localhost:3500/flash/adminRights");
+          if(adminResponse.data) {
+            setAdmin(true)
+          }
+          
+        } catch (error) {
+          console.error("An unexpected error occured: ", error);
+        };
+      };
+      fetchData();
+    },)
     
-
-    const handleOnClick = () => {
-        
-    }
-    console.log(set)
     return (
         <div className='flex flex-column justify-center '>
           <div>
@@ -22,9 +36,8 @@ const CardList = ({ set, edit, favourite, remove}) => {
                   owner={item.owner}
                   size={item.size}
                   theme={item.theme}
-                  edit={edit}
                   favourite={favourite}
-                  remove={remove}
+                  {...admin && {remove, edit}}
                 />
                 
               ))}

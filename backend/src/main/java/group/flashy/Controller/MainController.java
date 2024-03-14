@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import group.flashy.Set;
 import group.flashy.User;
 import group.flashy.Admin;
+import group.flashy.Card;
 import group.flashy.Service.CardService;
 import group.flashy.Service.UserService;
 
@@ -31,7 +32,7 @@ public class MainController {
         this.userService = userService;
         this.cardService = cardService;
     }
-    
+
     @GetMapping("/test")
     public String testA() {
         return "IT is working, JSON?";
@@ -39,7 +40,7 @@ public class MainController {
 
     @PostMapping("/verify")
     public ResponseEntity<String> verifyLogin(@RequestBody Map<String, String> credentials) {
-        String username= credentials.get("username");
+        String username = credentials.get("username");
         String password = credentials.get("password");
         boolean isValid = userService.verifyLogIn(username, password);
         if (isValid) {
@@ -69,21 +70,21 @@ public class MainController {
         System.out.println("Retrieved sets: " + mySets.toString());
         return ResponseEntity.ok(mySets);
     }
+
     @GetMapping("/favorites")
     public ResponseEntity<ArrayList<Set>> getMyFavorites() {
         ArrayList<Set> myFavorites = userService.getFavorites();
         return ResponseEntity.ok(myFavorites);
     }
 
-    @GetMapping("/mostpopular")
+    @GetMapping("/mostpopular") // Used for both all sets and getSetsFromTheme in Home.js
     public ResponseEntity<ArrayList<Set>> getMostPopular() {
         ArrayList<Set> mostPopular = userService.getMostPopular();
-        System.out.println("Retrieved sets: " + mostPopular.toString());
         return ResponseEntity.ok(mostPopular);
     }
 
     @GetMapping("/search/{searchword}")
-    public ResponseEntity<ArrayList<Set>> searchFor(@PathVariable ("searchword") String searchWord) {
+    public ResponseEntity<ArrayList<Set>> searchFor(@PathVariable("searchword") String searchWord) {
         ArrayList<Set> result = cardService.searchEngine(searchWord);
         return ResponseEntity.ok(result);
     }
@@ -95,7 +96,7 @@ public class MainController {
     }
 
     @PostMapping("/changeEmail")
-    public ResponseEntity<String> changeEmail(@RequestBody Map<String, String> changes){
+    public ResponseEntity<String> changeEmail(@RequestBody Map<String, String> changes) {
         String newEmail = changes.get("newEmail");
 
         boolean success = userService.changeEmail(newEmail);
@@ -108,7 +109,7 @@ public class MainController {
     }
 
     @PostMapping("/changePassword")
-    public ResponseEntity<String> changePassword(@RequestBody Map<String, String> changes){
+    public ResponseEntity<String> changePassword(@RequestBody Map<String, String> changes) {
         String newPassword = changes.get("newPassword");
 
         boolean success = userService.changePassword(newPassword);
@@ -119,8 +120,9 @@ public class MainController {
             return ResponseEntity.badRequest().body("Failed to change password");
         }
     }
+
     @PostMapping("/changeUsername")
-    public ResponseEntity<String> changeUsername(@RequestBody Map<String, String> changes){
+    public ResponseEntity<String> changeUsername(@RequestBody Map<String, String> changes) {
         String newUsername = changes.get("newUsername");
 
         boolean success = userService.changeUsername(newUsername);
@@ -157,7 +159,6 @@ public class MainController {
         }
     }
 
-
     @PostMapping("/addSet")
     public ResponseEntity<Boolean> addSet(@RequestBody Map<String, String> setInfo) {
         String title = setInfo.get("title");
@@ -178,4 +179,40 @@ public class MainController {
         }
         return ResponseEntity.ok(success);
     }
+
+    @PostMapping("/removeSet")
+    public ResponseEntity<Boolean> removeSet(@RequestBody String setID) {
+        boolean success = false;
+        success = userService.removeSet(setID);
+        return ResponseEntity.ok(success);
+    }
+
+    @PostMapping("/fetchSet")
+    public ResponseEntity<Set> fetchSet(@RequestBody String setID) {
+        Set setInfo = userService.getSet(setID);
+        return ResponseEntity.ok(setInfo);
+    }
+
+    @PostMapping("/fetchCards")
+    public ResponseEntity<ArrayList<Card>> fetchCard(@RequestBody String setID) {
+        ArrayList<Card> cards = userService.getCards(setID);
+        return ResponseEntity.ok(cards);
+    }
+
+    @PostMapping("/updateSet")
+    public ResponseEntity<Boolean> updateSet(@RequestBody Map<String, String> setInfo) {
+        String setID = setInfo.get("setID");
+        String title = setInfo.get("title");
+        int size = Integer.parseInt(setInfo.get("size"));
+        String theme = setInfo.get("category");
+        boolean isValid = userService.updateSet(setID, title, size, theme);
+        return ResponseEntity.ok(isValid);
+    }
+
+    @PostMapping("/updateCard")
+    public ResponseEntity<Boolean> updateCards(@RequestBody List<Map<String, String>> cardInfo, String setID) {
+        Boolean success = userService.updateCards(cardInfo, setID);
+        return ResponseEntity.ok(success);
+    }
+
 }
