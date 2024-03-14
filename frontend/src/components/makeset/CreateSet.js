@@ -1,4 +1,4 @@
-import React, { useState, setAnswer } from "react";
+import React, { useState } from "react";
 import TextBox from "./Textbox";
 import Dropdown from "./Dropdown";
 import { faTrash, faPlus , faCheck} from '@fortawesome/free-solid-svg-icons';

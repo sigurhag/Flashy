@@ -11,6 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.List;
+import org.json.JSONObject;
 
 import org.springframework.stereotype.Service;
 import java.util.UUID;
@@ -23,8 +26,6 @@ import group.flashy.User;
 public class UserService {
 
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?user=generalUser&password=Flashy123";
-
-    private User loggedIn; // Vil prøve å konsekvent bruke LoggedInUserID
 
     public static String LoggedInUserID;
     public static String setID;
@@ -153,7 +154,7 @@ public class UserService {
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
                 String email = resultSet.getString("email");
-                User user = new User(userID,username, password, email);
+                User user = new User(userID, username, password, email);
                 allUsers.add(user);
             }
         } catch (SQLException e) {
@@ -185,19 +186,6 @@ public class UserService {
         }
         return false;
     }
-
-    private Set findSetByID(ArrayList<Set> sets, String setID) {
-        for (Set set : sets) {
-            if (set.getSetID().equals(setID)) {
-                return set;
-            }
-        }
-        return null;
-    }
-
-    /*
-     * Trenger også cardID for å ha en fremmednøkkel til set
-     */
 
     public ArrayList<Set> getMySets() {
         ArrayList<Set> mySets = new ArrayList<>();
@@ -329,6 +317,26 @@ public class UserService {
         return false;
     }
 
+    public boolean removeSet(String setIDObject) {
+        JSONObject jsonObject = new JSONObject(setIDObject);
+        String setID = jsonObject.getString("setID");
+        System.out.println(setID);
+        String cardQuery = "DELETE FROM card WHERE setID = ?";
+        String setQuery = "DELETE FROM `Set` WHERE setID = ?";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
+                PreparedStatement cardStatement = connection.prepareStatement(cardQuery);
+                PreparedStatement setStatement = connection.prepareStatement(setQuery)) {
+            cardStatement.setString(1, setID);
+            setStatement.setString(1, setID);
+            int deleteCards = cardStatement.executeUpdate();
+            int deleteSets = setStatement.executeUpdate();
+            return deleteCards >= 1 && deleteSets == 1;
+        } catch (SQLException e) {
+            System.err.println(e);
+            return false;
+        }
+    }
+
     public boolean saveCardToDatabase(String question, String answer) {
         String cardID = UUID.randomUUID().toString();
         boolean isDifficult = false;
@@ -346,6 +354,98 @@ public class UserService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public Set getSet(String setIDObject) {
+        JSONObject jsonObject = new JSONObject(setIDObject);
+        String setID = jsonObject.getString("setID");
+        String query = "SELECT * FROM `SET` WHERE setID = ?";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, setID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String userID = resultSet.getString("userID");
+                String theme = resultSet.getString("theme");
+                String setName = resultSet.getString("setname");
+                int likes = resultSet.getInt("likes");
+                Set set = new Set(setID, setName, theme, userID, likes);
+                return set;
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        return null;
+    }
+
+    public ArrayList<Card> getCards(String setIDObject) {
+        JSONObject jsonObject = new JSONObject(setIDObject);
+        String setID = jsonObject.getString("setID");
+        ArrayList<Card> cards = new ArrayList<>();
+        String query = "SELECT * FROM card WHERE setID = ?";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, setID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String cardID = resultSet.getString("cardID");
+                String question = resultSet.getString("question");
+                String answer = resultSet.getString("answer");
+                Boolean isDifficult = resultSet.getBoolean("isDifficult");
+                Card card = new Card(cardID, question, answer, setID, isDifficult);
+                cards.add(card);
+            }
+            return cards;
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        return null;
+    }
+
+    public boolean updateSet(String setID, String setname, int size, String theme) {
+        String query = "UPDATE `Set` SET  setname= ?, size = ?, theme = ? WHERE setID = ?";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, setname);
+            preparedStatement.setInt(2, size);
+            preparedStatement.setString(3, theme);
+            preparedStatement.setString(4, setID);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateCards(List<Map<String, String>> cardInfo, String setID) {
+        String queryDeleteCards = "DELETE FROM card WHERE setID = ?";
+        String queryAddCards = "INSERT INTO card (cardID, question, answer, setID, isDifficult) VALUES (?, ?, ?, ?, ?)";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
+             PreparedStatement deleteStatement = connection.prepareStatement(queryDeleteCards);
+             PreparedStatement addStatement = connection.prepareStatement(queryAddCards)) {
+
+            deleteStatement.setString(1, setID);
+            int deleteRows = deleteStatement.executeUpdate();
+
+            for (Map<String, String> card : cardInfo) {
+                String cardID = UUID.randomUUID().toString();
+                String question = card.get("question");
+                String answer = card.get("answer");
+                boolean isDifficult = false;
+                
+                addStatement.setString(1, cardID);
+                addStatement.setString(2, question);
+                addStatement.setString(3, answer);
+                addStatement.setString(4, setID);
+                addStatement.setBoolean(5, isDifficult);
+                int rowsAffected = addStatement.executeUpdate();
+            }
+            return true; 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; 
+        }
     }
 
     public static void main(String[] args) {
