@@ -6,7 +6,7 @@ const Card = (props) => {
     const { name, creator, length, category, onClick, edit, favourite, remove} = props;
 
     return (
-        <Link  to={"/cardview"} onClick={onClick} className='bg-color-card br4 pa1 ma2 grow tc flex flex-column items-center justify-center relative' style={{ height: '150%', width: '30%', textDecoration: 'none', color: 'inherit' }}>
+        <Link  to={"/cardview"} onClick={onClick} className='bg-color-card br4 pa1 ma2 grow tc flex flex-column items-center justify-center relative' style={{ textDecoration: 'none', color: 'inherit' }}>
             <div className='absolute top-0 right-0 pa2'> 
                 {favourite} {/* Endre fargen når settet er favorisert */}
             </div>

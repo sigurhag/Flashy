@@ -28,13 +28,13 @@ public class Set {
         this.likes = likes; 
     }
 
-    public Set(String setID, String setname, String theme, String userID, int likes) {
+    public Set(String setID, String setname, String theme, String userID, int likes, int size) {
         this.setID = setID;
         this.setname = setname;
-        this.size = 0;
         this.theme = theme;
         this.userID = userID;
         this.likes = likes; 
+        this.size = size;
     }
 
 
@@ -48,9 +48,9 @@ public class Set {
         return (String) getSetInfo("setname", userID);
     }
 
-    /*public int getSize() {
+    public int getSize() {
         return (int) getSetInfo("size", userID);
-    }*/
+    }
 
     public String getTheme() {
         return (String) getSetInfo("theme", userID);
@@ -59,11 +59,11 @@ public class Set {
     public String getUserID() {
         return (String) getSetInfo("userID", userID);
     }
-    /*
+    
     public int getLikes() {
         return (int) getSetInfo("likes", userID);
     }
-    */
+    
 
     //Methods
     /* 

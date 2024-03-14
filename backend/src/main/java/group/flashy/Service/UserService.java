@@ -212,7 +212,8 @@ public class UserService {
                 String theme = resultSet.getString("theme");
                 String setname = resultSet.getString("setname");
                 int likes = resultSet.getInt("likes");
-                Set set = new Set(setID, setname, theme, userID, likes);
+                int size = resultSet.getInt("size");
+                Set set = new Set(setID, setname, theme, userID, likes, size);
                 mySets.add(set);
             }
         } catch (SQLException e) {
@@ -233,7 +234,8 @@ public class UserService {
                 String theme = resultSet.getString("theme");
                 String setname = resultSet.getString("setname");
                 int likes = resultSet.getInt("likes");
-                Set set = new Set(setID, setname, theme, userID, likes);
+                int size = resultSet.getInt("size");
+                Set set = new Set(setID, setname, theme, userID, likes, size);
                 mostPopular.add(set);
             }
         } catch (SQLException e) {
@@ -255,7 +257,8 @@ public class UserService {
                 String theme = resultSet.getString("theme");
                 String setname = resultSet.getString("setname");
                 int likes = resultSet.getInt("likes");
-                Set set = new Set(setID, setname, theme, userID, likes);
+                int size = resultSet.getInt("size");
+                Set set = new Set(setID, setname, theme, userID, likes, size);
                 myFavorites.add(set);
             }
         } catch (SQLException e) {

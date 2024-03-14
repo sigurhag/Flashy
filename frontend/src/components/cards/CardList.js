@@ -8,10 +8,10 @@ const CardList = ({ set, edit, favourite, remove, category, like }) => {
     const handleOnClick = () => {
         
     }
-
+    console.log(set.setname)
     return (
         <div className='flex flex-column justify-center '>
-          <div style={{ width: '100%', maxWidth: '1000px' }}>
+          <div>
           </div>
           <div className="card-list">
           {set.map((set, i) => (
@@ -19,12 +19,14 @@ const CardList = ({ set, edit, favourite, remove, category, like }) => {
                   key={i}
                   name={set.setname}
                   creator={set.userID}
+                  length={set.size}
                   theme={set.theme}
                   edit={edit}
                   favourite={favourite}
                   remove={remove}
-                  like={like}
+                  like={set.likes}
                 />
+                
               ))}
           </div>
         </div>
