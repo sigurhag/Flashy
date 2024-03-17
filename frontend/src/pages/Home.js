@@ -118,8 +118,8 @@ const Homepage = () => {
         <h1>Todays theme: {todaysTheme}</h1>
         <h1><Dropdown label="Filter: " options={categories} value={category} onChange={handleCategoryChange} backgroundColor={'#FFEFC5'}/></h1>
         <div className='w-70'>
+          <CardList set={set} remove={removeBtn} edit={editBtn} favourite={favouriteBtn}/>
         </div>
-        <CardList set={set} remove={removeBtn} edit={editBtn} favourite={favouriteBtn}/>
       </div>
     </div>
   );
