@@ -58,8 +58,8 @@ const MySetspage = ({ sets }) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <div className='w-70'>
+          <CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn}/>
         </div>
-        <CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn}/>
       </div>
     </div>
 
