@@ -373,16 +373,20 @@ public class UserService {
         JSONObject jsonObject = new JSONObject(setIDObject);
         String setID = jsonObject.getString("setID");
         System.out.println(setID);
+        String favoriteQuery = "DELETE FROM Favourite WHERE setID = ?";
         String cardQuery = "DELETE FROM card WHERE setID = ?";
         String setQuery = "DELETE FROM `Set` WHERE setID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
                 PreparedStatement cardStatement = connection.prepareStatement(cardQuery);
-                PreparedStatement setStatement = connection.prepareStatement(setQuery)) {
+                PreparedStatement setStatement = connection.prepareStatement(setQuery);
+                PreparedStatement favouriteStatement = connection.prepareStatement(favoriteQuery)) {
             cardStatement.setString(1, setID);
             setStatement.setString(1, setID);
+            favouriteStatement.setString(1, setID);
+            int deleteFavourite = favouriteStatement.executeUpdate();
             int deleteCards = cardStatement.executeUpdate();
             int deleteSets = setStatement.executeUpdate();
-            return deleteCards >= 1 && deleteSets == 1;
+            return deleteCards >= 1 && deleteSets == 1 && deleteFavourite >= 1;
         } catch (SQLException e) {
             System.err.println(e);
             return false;
