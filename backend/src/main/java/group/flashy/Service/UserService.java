@@ -156,29 +156,78 @@ public class UserService {
         return allUsers;
     }
 
-    public boolean updateAdmin(String userID, String username, String password, String email) {
-        String addQuery = "insert into admin values (?, ?, ?, ?)";
-        String deleteQuery = "delete from user where userID = ?";
-        try (Connection connection = DriverManager.getConnection(JDBC_URL);
-                PreparedStatement addStatement = connection.prepareStatement(addQuery);
-                PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
-            addStatement.setString(1, userID);
-            addStatement.setString(2, username);
-            addStatement.setString(3, password);
-            addStatement.setString(4, email);
-            int addResult = addStatement.executeUpdate();
-            if (addResult > 0) {
-                deleteStatement.setString(1, userID);
-                int deleteResult = deleteStatement.executeUpdate();
-                if (deleteResult > 0) {
-                    return true;
-                }
+    public boolean updateAdmin(String userID) {
+        String selectQuery = "SELECT * FROM user WHERE userID = ?";
+        String addAdminQuery = "INSERT INTO admin (adminID, username, password, email) VALUES (?, ?, ?, ?)";
+        String deleteFromUserQuery = "DELETE FROM user WHERE userID = ?";
+        String deleteSetsQuery = "DELETE FROM set WHERE userID = ?";
+        String deleteCardsQuery = "DELETE FROM card WHERE setID IN (SELECT setID FROM set WHERE userID = ?)";
+    
+        Connection connection = null;
+    
+        try {
+            connection = DriverManager.getConnection(JDBC_URL);
+            PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
+            PreparedStatement addAdminStatement = connection.prepareStatement(addAdminQuery);
+            PreparedStatement deleteFromUserStatement = connection.prepareStatement(deleteFromUserQuery);
+            PreparedStatement deleteSetsStatement = connection.prepareStatement(deleteSetsQuery);
+            PreparedStatement deleteCardsStatement = connection.prepareStatement(deleteCardsQuery);
+    
+            connection.setAutoCommit(false);
+    
+            // Fetch user details
+            selectStatement.setString(1, userID);
+            ResultSet resultSet = selectStatement.executeQuery();
+    
+            if (resultSet.next()) {
+                String username = resultSet.getString("username");
+                String password = resultSet.getString("password");
+                String email = resultSet.getString("email");
+    
+                // Delete sets and cards associated with the user
+                deleteCardsStatement.setString(1, userID);
+                deleteCardsStatement.executeUpdate();
+    
+                deleteSetsStatement.setString(1, userID);
+                deleteSetsStatement.executeUpdate();
+    
+                // Insert into admin table
+                addAdminStatement.setString(1, userID);
+                addAdminStatement.setString(2, username);
+                addAdminStatement.setString(3, password);
+                addAdminStatement.setString(4, email);
+                addAdminStatement.executeUpdate();
+    
+                // Delete user from user table
+                deleteFromUserStatement.setString(1, userID);
+                deleteFromUserStatement.executeUpdate();
+    
+                // Commit transaction
+                connection.commit();
+                return true;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
+    
+    
 
     public ArrayList<Set> getMySets() {
         ArrayList<Set> mySets = new ArrayList<>();
@@ -398,13 +447,13 @@ public class UserService {
     public boolean updateSet(String setID, String setname, int size, String theme) {
         String query = "UPDATE `Set` SET  setname= ?, size = ?, theme = ? WHERE setID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, setname);
             preparedStatement.setInt(2, size);
             preparedStatement.setString(3, theme);
             preparedStatement.setString(4, setID);
             int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0; 
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -415,8 +464,8 @@ public class UserService {
         String queryDeleteCards = "DELETE FROM card WHERE setID = ?";
         String queryAddCards = "INSERT INTO card (cardID, question, answer, setID, isDifficult) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
-             PreparedStatement deleteStatement = connection.prepareStatement(queryDeleteCards);
-             PreparedStatement addStatement = connection.prepareStatement(queryAddCards)) {
+                PreparedStatement deleteStatement = connection.prepareStatement(queryDeleteCards);
+                PreparedStatement addStatement = connection.prepareStatement(queryAddCards)) {
 
             deleteStatement.setString(1, setID);
             int deleteRows = deleteStatement.executeUpdate();
@@ -426,7 +475,7 @@ public class UserService {
                 String question = card.get("question");
                 String answer = card.get("answer");
                 boolean isDifficult = false;
-                
+
                 addStatement.setString(1, cardID);
                 addStatement.setString(2, question);
                 addStatement.setString(3, answer);
@@ -434,18 +483,18 @@ public class UserService {
                 addStatement.setBoolean(5, isDifficult);
                 int rowsAffected = addStatement.executeUpdate();
             }
-            return true; 
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; 
+            return false;
         }
     }
-    
+
     public boolean favoriteSet(String setID) {
         String userID = LoggedInUserID;
         String query = "INSERT INTO Favourite (userID, setID) VALUES (?, ?)";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
-            PreparedStatement preparedStatement = connection.prepareStatement(query)){
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, userID);
             preparedStatement.setString(2, setID);
             int result = preparedStatement.executeUpdate();
@@ -460,11 +509,11 @@ public class UserService {
         String userID = LoggedInUserID;
         String query = "SELECT 1 FROM Favourite WHERE userID = ? AND setID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, userID);
             preparedStatement.setString(2, setID);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return resultSet.next(); 
+                return resultSet.next();
             }
         } catch (SQLException e) {
             e.printStackTrace();

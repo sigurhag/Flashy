@@ -24,7 +24,6 @@ import group.flashy.Service.UserService;
 @CrossOrigin
 @RequestMapping("/flash")
 public class MainController {
-
     private final UserService userService;
     private final CardService cardService;
 
@@ -146,12 +145,9 @@ public class MainController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/updateAdmin")
-    public ResponseEntity<String> updateAdmin(@RequestBody Map<String, String> credentials) {
-        String username = credentials.get("username");
-        String password = credentials.get("password");
-        String email = credentials.get("email");
-        boolean isValid = userService.updateAdmin(UserService.LoggedInUserID, username, password, email);
+    @PostMapping("/updateAdmin")
+    public ResponseEntity<String> updateAdmin(@RequestBody String userID) {
+        boolean isValid = userService.updateAdmin(userID);
         if (isValid) {
             return ResponseEntity.ok("Successfully updated adminRights");
         } else {
