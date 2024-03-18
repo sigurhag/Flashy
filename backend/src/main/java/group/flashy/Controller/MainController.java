@@ -191,10 +191,15 @@ public class MainController {
     }
 
     @PostMapping("/isFavourited")
-    public ResponseEntity<Boolean> isFavourited(@RequestBody String setID) {
-        boolean success = false;
-        success = userService.isFavourited(setID);
-        return ResponseEntity.ok(success);
+    public ResponseEntity<ArrayList<Boolean>> isFavourited(@RequestBody List<Map<String, String>> sets) {
+        ArrayList<Boolean> liked = new ArrayList<>();
+        for(Map<String, String> set: sets) {
+            String setID = set.get("setID");
+            boolean success = userService.isFavourited(setID);
+            liked.add(success);
+        }
+        System.out.println(liked);
+        return ResponseEntity.ok(liked);
     }
 
     @PostMapping("/fetchSet")
@@ -204,7 +209,8 @@ public class MainController {
     }
 
     @PostMapping("/fetchCards")
-    public ResponseEntity<ArrayList<Card>> fetchCard(@RequestBody String setID) {
+    public ResponseEntity<ArrayList<Card>> fetchCard(@RequestBody Map<String, String> requestBody) {
+        String setID = requestBody.get("setID");
         ArrayList<Card> cards = userService.getCards(setID);
         return ResponseEntity.ok(cards);
     }

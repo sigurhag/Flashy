@@ -21,7 +21,6 @@ const Card = (props) => {
 
     const handleRemove = async () => {
         console.log("Removed pressed")
-        console.log(setID)
         try {
             const response = await axios.post("http://localhost:3500/flash/removeSet", 
                {setID}

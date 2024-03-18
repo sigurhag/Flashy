@@ -21,6 +21,7 @@ import group.flashy.Admin;
 import group.flashy.Card;
 import group.flashy.Set;
 import group.flashy.User;
+import netscape.javascript.JSObject;
 
 @Service
 public class UserService {
@@ -162,9 +163,9 @@ public class UserService {
         String deleteFromUserQuery = "DELETE FROM user WHERE userID = ?";
         String deleteSetsQuery = "DELETE FROM set WHERE userID = ?";
         String deleteCardsQuery = "DELETE FROM card WHERE setID IN (SELECT setID FROM set WHERE userID = ?)";
-    
+
         Connection connection = null;
-    
+
         try {
             connection = DriverManager.getConnection(JDBC_URL);
             PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
@@ -172,36 +173,36 @@ public class UserService {
             PreparedStatement deleteFromUserStatement = connection.prepareStatement(deleteFromUserQuery);
             PreparedStatement deleteSetsStatement = connection.prepareStatement(deleteSetsQuery);
             PreparedStatement deleteCardsStatement = connection.prepareStatement(deleteCardsQuery);
-    
+
             connection.setAutoCommit(false);
-    
+
             // Fetch user details
             selectStatement.setString(1, userID);
             ResultSet resultSet = selectStatement.executeQuery();
-    
+
             if (resultSet.next()) {
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
                 String email = resultSet.getString("email");
-    
+
                 // Delete sets and cards associated with the user
                 deleteCardsStatement.setString(1, userID);
                 deleteCardsStatement.executeUpdate();
-    
+
                 deleteSetsStatement.setString(1, userID);
                 deleteSetsStatement.executeUpdate();
-    
+
                 // Insert into admin table
                 addAdminStatement.setString(1, userID);
                 addAdminStatement.setString(2, username);
                 addAdminStatement.setString(3, password);
                 addAdminStatement.setString(4, email);
                 addAdminStatement.executeUpdate();
-    
+
                 // Delete user from user table
                 deleteFromUserStatement.setString(1, userID);
                 deleteFromUserStatement.executeUpdate();
-    
+
                 // Commit transaction
                 connection.commit();
                 return true;
@@ -226,8 +227,6 @@ public class UserService {
         }
         return false;
     }
-    
-    
 
     public ArrayList<Set> getMySets() {
         ArrayList<Set> mySets = new ArrayList<>();
@@ -237,7 +236,6 @@ public class UserService {
             preparedStatement.setString(1, LoggedInUserID);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            
             while (resultSet.next()) {
                 String setID = resultSet.getString("setID");
                 String userID = resultSet.getString("userID");
@@ -281,12 +279,12 @@ public class UserService {
     public ArrayList<Set> getFavorites() {
         ArrayList<Set> myFavorites = new ArrayList<>();
         String query = "SELECT s.*, u.username " +
-                       "FROM Favourite AS f " +
-                       "INNER JOIN `Set` AS s ON f.setID = s.setID " +
-                       "INNER JOIN user AS u ON s.userID = u.userID " +
-                       "WHERE f.userID = ?";
+                "FROM Favourite AS f " +
+                "INNER JOIN `Set` AS s ON f.setID = s.setID " +
+                "INNER JOIN user AS u ON s.userID = u.userID " +
+                "WHERE f.userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, LoggedInUserID);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -305,7 +303,6 @@ public class UserService {
         }
         return myFavorites;
     }
-    
 
     // This method takes in changes username of LoggedInUser
     public boolean changeUsername(String newUsername) {
@@ -411,9 +408,7 @@ public class UserService {
         return false;
     }
 
-    public Set getSet(String setIDObject) {
-        JSONObject jsonObject = new JSONObject(setIDObject);
-        String setID = jsonObject.getString("setID");
+    public Set getSet(String setID) {
         String query = "SELECT s.*, u.username FROM `Set` AS s INNER JOIN user AS u ON (s.userID=u.userID)WHERE setID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -435,9 +430,7 @@ public class UserService {
         return null;
     }
 
-    public ArrayList<Card> getCards(String setIDObject) {
-        JSONObject jsonObject = new JSONObject(setIDObject);
-        String setID = jsonObject.getString("setID");
+    public ArrayList<Card> getCards(String setID) {
         ArrayList<Card> cards = new ArrayList<>();
         String query = "SELECT * FROM card WHERE setID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
@@ -505,8 +498,11 @@ public class UserService {
         }
     }
 
-    public boolean favoriteSet(String setID) {
+    public boolean favoriteSet(String setIDObject) {
         String userID = LoggedInUserID;
+        JSONObject jsonObject = new JSONObject(setIDObject);
+        String setID = jsonObject.getString("setID");
+        System.out.println(setID);
         String query = "INSERT INTO Favourite (userID, setID) VALUES (?, ?)";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -517,18 +513,24 @@ public class UserService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        return false;
     }
 
-    public boolean isFavourited(String setID) {
+    public boolean isFavourited(String setIDObject) {
         String userID = LoggedInUserID;
-        String query = "SELECT 1 FROM Favourite WHERE userID = ? AND setID = ?";
+        JSONObject jsonObject = new JSONObject(setIDObject);
+        String setID = jsonObject.getString("setID");
+        String query = "SELECT COUNT(*) FROM Favourite WHERE userID = ? AND setID = ?";
+
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, userID);
             preparedStatement.setString(2, setID);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return resultSet.next();
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -34,9 +34,11 @@ const CardList = ({ set, isDarkMode, category }) => {
           if(adminResponse.data) {
             setAdmin(true)
           } 
-          const likedResponse = await axios.post("http://localhost:3500/flash/isFavourited", {params: {setID : set.setID}});
+          const likedResponse = await axios.post("http://localhost:3500/flash/isFavourited", {set});
           if(likedResponse.data) {
             setFavouriteColor('#FFA5A5');
+          } else{
+            console.log("failed to fetch liked sets")
           }
         } catch (error) {
           console.error("An unexpected error occured: ", error);
@@ -59,6 +61,7 @@ const CardList = ({ set, isDarkMode, category }) => {
               key={i}
               name={item.setname}
               owner={ownerDisplay}
+              setID={item.setID}
               size={item.size}
               theme={item.theme}
               favourite={!admin && favouriteBtn}

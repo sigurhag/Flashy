@@ -35,19 +35,19 @@ const EditPage = ({isDarkMode}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const setResponse = await axios.post("http://localhost:3500/flash/fetchSet", { setID });
+        const setResponse = await axios.post("http://localhost:3500/flash/fetchSet",{setID });
         if (setResponse.data) {
           setTitle(setResponse.data.setName)
           setCategory(setResponse.data.theme)
         }
 
-        const cardResponse = await axios.post("http://localhost:3500/flash/fetchCards", { setID });
+        const cardResponse = await axios.post("http://localhost:3500/flash/fetchCards", {setID });
+        
         if (cardResponse.data) {
           const cardInfo = cardResponse.data.map(card => ({
             question: card.question,
             answer: card.answer
           }));
-          console.log(cardInfo)
           setQuestions(cardInfo);
         }
       } catch (error) {
