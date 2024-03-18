@@ -102,7 +102,7 @@ const Profile = ({ user = {}, isDarkMode }) => {
       </div>
       <div className="flex flex-column  pa3" style={{ width: "500px", marginTop: '15%', padding:'5% 5% 2% 5%', borderRadius: '70px', backgroundColor: isDarkMode ? "#124a8b" : "#FFEFC5"}}>
         <h2 className="f3 ">Username: {userInfo[0]}</h2>
-        <h2 className="f3 mb5 ">E-mail: {userInfo[1]}</h2>   
+        <h2 className="f3 mb4 ">E-mail: {userInfo[1]}</h2>   
         <GeneralButton text={"Change username"} onClick={handleChangeUsername}/>
         <GeneralButton text={"Change email"} onClick={handleChangeEmail}/>
         <GeneralButton text={"Change password"} onClick={handleChangePassword}/>
