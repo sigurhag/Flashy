@@ -3,8 +3,16 @@ import { useLocation } from 'react-router-dom';
 import Card from './Card';
 import Searchbar from '../Searchbar';
 import axios from 'axios';
+import Icon from './Icon';
+import { faHeart, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
-const CardList = ({ set, edit, favourite, remove, category, isDarkMode }) => {
+
+const CardList = ({ set, isDarkMode, category }) => {
+    const removeBtn = <Icon icon={faTrash} color={'white'} onHoverColor={'grey'}/> /* Delete skal kun komme opp for admin */
+    const [favoriteColor, setFavouriteColor] = useState('white');
+    const favouriteBtn = <Icon icon={faHeart} color={favoriteColor} onHoverColor={'#FFA5A5'}/>
+    const editBtn = <Icon icon={faPenToSquare} color={'white'} onHoverColor={'#34B8F0'}/> /* Må fikse sånn at edit kun kommer opp på egne sett */
+    
     const [admin, setAdmin] = useState(false);
     const [filteredSets, setFilteredSets] = useState(set); // Adjusted for "set" data
     const [searchQuery, setSearchQuery] = useState('');
@@ -24,7 +32,13 @@ const CardList = ({ set, edit, favourite, remove, category, isDarkMode }) => {
         try {
           const adminResponse = await axios.get("http://localhost:3500/flash/adminRights");
           if(adminResponse.data) {
-            setAdmin(true);
+            setAdmin(true)
+          } 
+          const likedResponse = await axios.post("http://localhost:3500/flash/isFavourited", {set});
+          if(likedResponse.data) {
+            setFavouriteColor('#FFA5A5');
+          } else{
+            console.log("failed to fetch liked sets")
           }
         } catch (error) {
           console.error("An unexpected error occured: ", error);
@@ -47,11 +61,13 @@ const CardList = ({ set, edit, favourite, remove, category, isDarkMode }) => {
               key={i}
               name={item.setname}
               owner={ownerDisplay}
+              setID={item.setID}
               size={item.size}
               theme={item.theme}
-              favourite={favourite}
+              favourite={!admin && favouriteBtn}
               isDarkMode={isDarkMode}
-              {...admin && {remove, edit}}
+              remove={admin && removeBtn}
+                  edit={admin && editBtn}
             />
         );
       })}

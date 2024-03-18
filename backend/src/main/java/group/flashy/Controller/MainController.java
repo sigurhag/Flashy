@@ -3,6 +3,7 @@ package group.flashy.Controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.json.JSONObject;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,12 +20,12 @@ import group.flashy.Admin;
 import group.flashy.Card;
 import group.flashy.Service.CardService;
 import group.flashy.Service.UserService;
+import netscape.javascript.JSObject;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/flash")
 public class MainController {
-
     private final UserService userService;
     private final CardService cardService;
 
@@ -146,12 +147,9 @@ public class MainController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/updateAdmin")
-    public ResponseEntity<String> updateAdmin(@RequestBody Map<String, String> credentials) {
-        String username = credentials.get("username");
-        String password = credentials.get("password");
-        String email = credentials.get("email");
-        boolean isValid = userService.updateAdmin(UserService.LoggedInUserID, username, password, email);
+    @PostMapping("/updateAdmin")
+    public ResponseEntity<String> updateAdmin(@RequestBody String userID) {
+        boolean isValid = userService.updateAdmin(userID);
         if (isValid) {
             return ResponseEntity.ok("Successfully updated adminRights");
         } else {
@@ -187,6 +185,19 @@ public class MainController {
         return ResponseEntity.ok(success);
     }
 
+    @PostMapping("/favouriteSet")
+    public ResponseEntity<Boolean> likeSet(@RequestBody String setID) {
+        boolean success = false;
+        success = userService.favoriteSet(setID);
+        return ResponseEntity.ok(success);
+    }
+
+    @PostMapping("/isFavourited")
+    public ResponseEntity<Boolean> isFavourited(@RequestBody String setID) {
+        boolean isFavourited = userService.isFavourited(setID);
+        return ResponseEntity.ok(isFavourited);
+    }
+
     @PostMapping("/fetchSet")
     public ResponseEntity<Set> fetchSet(@RequestBody String setID) {
         Set setInfo = userService.getSet(setID);
@@ -194,7 +205,8 @@ public class MainController {
     }
 
     @PostMapping("/fetchCards")
-    public ResponseEntity<ArrayList<Card>> fetchCard(@RequestBody String setID) {
+    public ResponseEntity<ArrayList<Card>> fetchCard(@RequestBody Map<String, String> requestBody) {
+        String setID = requestBody.get("setID");
         ArrayList<Card> cards = userService.getCards(setID);
         return ResponseEntity.ok(cards);
     }

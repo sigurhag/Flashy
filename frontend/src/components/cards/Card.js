@@ -4,24 +4,29 @@ import axios from 'axios';
 
 const Card = (props) => {
     const {name, owner, setID, size, theme, edit, favourite, remove, isDarkMode} = props;
-    console.log(props);
 
     const navigate = useNavigate();
 
-    const handleFavourite = (event) => {
+    const handleFavourite = async() => {
         console.log("Favourite was pressed!");
+        try {
+            const response = await axios.post("http://localhost:3500/flash/favouriteSet",{setID})
+        if(response.data) {
+            console.log("liked set successfully")
+            } 
+        } catch (error) {
+            console.log(error)
+        } 
     }
 
     const handleRemove = async () => {
         console.log("Removed pressed")
-        console.log(setID)
         try {
             const response = await axios.post("http://localhost:3500/flash/removeSet", 
                {setID}
             )
             if(response.data) {
                 console.log("set removed successfully")
-                window.location.reload()
             }
         } catch (error) {
             console.log(error)
