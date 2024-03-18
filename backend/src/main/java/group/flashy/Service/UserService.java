@@ -280,9 +280,13 @@ public class UserService {
 
     public ArrayList<Set> getFavorites() {
         ArrayList<Set> myFavorites = new ArrayList<>();
-        String query = "SELECT s.*, u.username FROM `Set` AS s INNER JOIN user AS u ON (s.userID=u.userID) WHERE setID IN (SELECT setID FROM s WHERE s.userID = ?)";
+        String query = "SELECT s.*, u.username " +
+                       "FROM Favourite AS f " +
+                       "INNER JOIN `Set` AS s ON f.setID = s.setID " +
+                       "INNER JOIN user AS u ON s.userID = u.userID " +
+                       "WHERE f.userID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
-                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, LoggedInUserID);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -301,6 +305,7 @@ public class UserService {
         }
         return myFavorites;
     }
+    
 
     // This method takes in changes username of LoggedInUser
     public boolean changeUsername(String newUsername) {

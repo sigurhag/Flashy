@@ -4,17 +4,15 @@ import axios from 'axios';
 
 const Card = (props) => {
     const {name, owner, setID, size, theme, edit, favourite, remove, isDarkMode} = props;
-    console.log(props);
 
     const navigate = useNavigate();
 
     const handleFavourite = async() => {
         console.log("Favourite was pressed!");
         try {
-            const response = await axios.post("http://localhost:3500/flash//favouriteSet",{setID})
+            const response = await axios.post("http://localhost:3500/flash/favouriteSet",{setID})
         if(response.data) {
             console.log("liked set successfully")
-            window.location.reload()
             } 
         } catch (error) {
             console.log(error)
@@ -30,7 +28,6 @@ const Card = (props) => {
             )
             if(response.data) {
                 console.log("set removed successfully")
-                window.location.reload()
             }
         } catch (error) {
             console.log(error)

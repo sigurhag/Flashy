@@ -116,6 +116,7 @@ const EditPage = ({isDarkMode}) => {
   };
 
   return (
+    <div className={isDarkMode ? 'dark-mode' : ''}>
     <div className='flex flex-column items-center' style={{ marginTop: '27vh' }}>
       <div className='flex flex-column items-center fixed-top-middle'>
         <h1 className='f1 mt3 mb1'>FLASHY</h1>
@@ -137,6 +138,7 @@ const EditPage = ({isDarkMode}) => {
         <Button text={"Add question"} icon={faPlus} onClick={handleAddQuestion} />
         <Button text={"Save updates!"} icon={faCheck} onClick={handleSavePress} />
       </div>
+    </div>
     </div>
   );
 };

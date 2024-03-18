@@ -7,7 +7,7 @@ import Icon from './Icon';
 import { faHeart, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 
-const CardList = ({ set }) => {
+const CardList = ({ set, isDarkMode, category }) => {
     const removeBtn = <Icon icon={faTrash} color={'white'} onHoverColor={'grey'}/> /* Delete skal kun komme opp for admin */
     const [favoriteColor, setFavouriteColor] = useState('white');
     const favouriteBtn = <Icon icon={faHeart} color={favoriteColor} onHoverColor={'#FFA5A5'}/>
@@ -61,7 +61,7 @@ const CardList = ({ set }) => {
               owner={ownerDisplay}
               size={item.size}
               theme={item.theme}
-              favourite={favouriteBtn}
+              favourite={!admin && favouriteBtn}
               isDarkMode={isDarkMode}
               remove={admin && removeBtn}
                   edit={admin && editBtn}

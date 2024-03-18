@@ -5,7 +5,7 @@ import UserProfileIcon from '../components/profile/UserProfileIcon';
 import Dropdown from '../components/makeset/Dropdown';
 import axios from 'axios';
 
-const Homepage = () => {
+const Homepage = ({isDarkMode}) => {
   const [category, setCategory] = useState('all');
   const [todaysTheme, setTodaysTheme] = useState('');
   
@@ -110,6 +110,7 @@ const Homepage = () => {
           <CardList 
             set={set} 
             isDarkMode={isDarkMode}
+            category={category}
           />
         </div>
       </div>
