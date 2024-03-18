@@ -1,5 +1,6 @@
 package group.flashy.Controller;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -186,7 +187,7 @@ public class MainController {
     }
 
     @PostMapping("/favouriteSet")
-    public ResponseEntity<Boolean> likeSet(@RequestBody String setID) {
+    public ResponseEntity<Boolean> favouriteSet(@RequestBody String setID) {
         boolean success = false;
         success = userService.favoriteSet(setID);
         return ResponseEntity.ok(success);
@@ -194,6 +195,7 @@ public class MainController {
 
     @PostMapping("/isFavourited")
     public ResponseEntity<Boolean> isFavourited(@RequestBody String setID) {
+        System.out.println(setID);
         boolean isFavourited = userService.isFavourited(setID);
         return ResponseEntity.ok(isFavourited);
     }
