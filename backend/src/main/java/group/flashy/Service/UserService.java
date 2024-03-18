@@ -408,7 +408,9 @@ public class UserService {
         return false;
     }
 
-    public Set getSet(String setID) {
+    public Set getSet(String setIDObject) {
+        JSONObject jsonObject = new JSONObject(setIDObject);
+        String setID = jsonObject.getString("setID");
         String query = "SELECT s.*, u.username FROM `Set` AS s INNER JOIN user AS u ON (s.userID=u.userID)WHERE setID = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -419,9 +421,8 @@ public class UserService {
                 String theme = resultSet.getString("theme");
                 String setName = resultSet.getString("setname");
                 int likes = resultSet.getInt("likes");
-                String owner = resultSet.getString("owner");
                 int size = resultSet.getInt("size");
-                Set set = new Set(setID, setName, theme, userID, likes, size, owner);
+                Set set = new Set(setID, setName, theme, userID, likes, size);
                 return set;
             }
         } catch (SQLException e) {

@@ -28,6 +28,14 @@ public class Set {
         this.userID = userID;
         this.likes = likes; 
     }
+    public Set(String setID, String setname, String theme, String userID, int likes, int size) {
+        this.setID = setID;
+        this.setname = setname;
+        this.theme = theme;
+        this.userID = userID;
+        this.likes = likes; 
+        this.size = size;
+    }
 
     public Set(String setID, String setname, String theme, String userID, int likes, int size, String owner) {
         this.setID = setID;
