@@ -5,7 +5,7 @@ import GeneralButton from '../components/GeneralButton';
 import axios from "axios";
 import UserList from '../components/profile/UserList';
 
-const Profile = ({ user = {} }) => {
+const Profile = ({ user = {}, isDarkMode }) => {
   const { username, email } = user;
   const [userInfo, setUserInfo] = useState([]);
   const [AdminRights, setAdminRights] = useState(false);
@@ -91,16 +91,18 @@ const Profile = ({ user = {} }) => {
   };
 
   return (
+    <div className={isDarkMode ? 'dark-mode' : ''}>
     <div className='flex flex-column justify-center items-center'>   
-      <UserProfileIcon />
-      <Sidebar />
-      <div className='tc mb4 fixed-top-middle'>
+      <UserProfileIcon isDarkMode={isDarkMode}/>
+      <Sidebar isDarkMode={isDarkMode}/>
+      <div className={'flex flex-column items-center fixed-top-middle ' + (isDarkMode ? 'dark-mode' : '')}>
+
         <h1 className='f1 mt3 mb1'>FLASHY</h1>
         <h2 className='f2 mt1'>My profile</h2>      
       </div>
-      <div className="flex flex-column  pa3 bg-color-card" style={{ width: "500px", marginTop: '15%', padding:'5% 5% 2% 5%', borderRadius: '70px' }}>
+      <div className="flex flex-column  pa3" style={{ width: "500px", marginTop: '15%', padding:'5% 5% 2% 5%', borderRadius: '70px', backgroundColor: isDarkMode ? "#124a8b" : "#FFEFC5"}}>
         <h2 className="f3 ">Username: {userInfo[0]}</h2>
-        <h2 className="f3 mb5 ">E-mail: {userInfo[1]}</h2>  
+        <h2 className="f3 mb5 ">E-mail: {userInfo[1]}</h2>   
         <GeneralButton text={"Change username"} onClick={handleChangeUsername}/>
         <GeneralButton text={"Change email"} onClick={handleChangeEmail}/>
         <GeneralButton text={"Change password"} onClick={handleChangePassword}/>
@@ -111,6 +113,7 @@ const Profile = ({ user = {} }) => {
           <UserList />  
       </div>
       )}
+    </div>
     </div>
   );
 };
