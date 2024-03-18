@@ -23,7 +23,7 @@ const Searchpage = ({isDarkMode}) => {
           user: set.userID,
           size: set.size,
           likes: set.likes,
-          owner: set.owner
+          owner: set.setOwner
         }));
         setSet(setInfo)
       } else {
@@ -50,12 +50,12 @@ const Searchpage = ({isDarkMode}) => {
     	</div>
     <div className='flex flex-column justify-center items-center' style={{marginTop: '25vh'}}>
       	<div className='w-70 '>
-          <CardList 
-              set={set} 
-              remove={removeBtn} 
-              favourite={favouriteBtn}
-              isDarkMode={isDarkMode}
-            />
+        <CardList 
+            set={set} 
+            remove={removeBtn} 
+            favourite={favouriteBtn}
+            isDarkMode={isDarkMode}
+          />
         </div>
     </div>
   </div>
