@@ -3,6 +3,7 @@ package group.flashy.Controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.json.JSONObject;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,6 +20,7 @@ import group.flashy.Admin;
 import group.flashy.Card;
 import group.flashy.Service.CardService;
 import group.flashy.Service.UserService;
+import netscape.javascript.JSObject;
 
 @RestController
 @CrossOrigin
@@ -191,15 +193,9 @@ public class MainController {
     }
 
     @PostMapping("/isFavourited")
-    public ResponseEntity<ArrayList<Boolean>> isFavourited(@RequestBody List<Map<String, String>> sets) {
-        ArrayList<Boolean> liked = new ArrayList<>();
-        for(Map<String, String> set: sets) {
-            String setID = set.get("setID");
-            boolean success = userService.isFavourited(setID);
-            liked.add(success);
-        }
-        System.out.println(liked);
-        return ResponseEntity.ok(liked);
+    public ResponseEntity<Boolean> isFavourited(@RequestBody String setID) {
+        boolean isFavourited = userService.isFavourited(setID);
+        return ResponseEntity.ok(isFavourited);
     }
 
     @PostMapping("/fetchSet")
