@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Card = (props) => {
-    const {name, creator, setID, size, category, edit, favourite, remove, isDarkMode} = props;
+    const {name, owner, setID, size, theme, edit, favourite, remove, isDarkMode} = props;
     console.log(props);
 
     const navigate = useNavigate();
@@ -43,8 +43,8 @@ const Card = (props) => {
         <div className={'br4 pa1 ma2 grow tc flex flex-column items-center justify-center relative'} style={{ height: '200px', width: '300px', textDecoration: 'none', color: 'inherit', backgroundColor: isDarkMode ? '#124a8b' : '#FFEFC5', paddingTop: '20px', paddingBottom: '20px'}}>           
             <div onClick={handleCardPressed} >
                 <h2 style={{ marginBottom: '1%', marginTop: '20px' }}>{name}</h2>
-                <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{creator}</h3>
-                <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{category}</h3>
+                <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{owner}</h3>
+                <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{theme}</h3>
                 <h3 style={{ marginBottom: '20px', marginTop: '1%' }}>{size} cards</h3>
             </div>
             <div className='absolute top-0 right-0 pa2'>

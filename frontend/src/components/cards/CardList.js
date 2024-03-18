@@ -43,16 +43,16 @@ const CardList = ({ set, edit, favourite, remove, category, isDarkMode }) => {
       {filteredSets.map((item, i) => {
         const ownerDisplay = item.owner ? item.owner : 'Unknown';
         return (
-          <Card
-            key={i}
-            name={item.setname} 
-            owner={ownerDisplay}
-            size={item.size} 
-            category={item.category} 
-            favourite={favourite}
-            {...admin && {edit, remove}} 
-            isDarkMode={isDarkMode}
-          />
+            <Card
+              key={i}
+              name={item.setname}
+              owner={ownerDisplay}
+              size={item.size}
+              theme={item.theme}
+              favourite={favourite}
+              isDarkMode={isDarkMode}
+              {...admin && {remove, edit}}
+            />
         );
       })}
       </div>
