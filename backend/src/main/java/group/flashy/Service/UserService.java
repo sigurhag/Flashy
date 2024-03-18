@@ -118,6 +118,7 @@ public class UserService {
                     String emailResult = resultSet.getString("email");
                     userInfo.add(usernameResult);
                     userInfo.add(emailResult);
+                    userInfo.add(userIDResult);
                 }
             }
         } catch (SQLException e) {
