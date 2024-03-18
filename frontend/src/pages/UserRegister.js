@@ -1,9 +1,9 @@
 import React from "react";
 import RegistrationForm from "../components/registration/RegistrationForm";
 
-const Registration = ({ cards }) => {
+const Registration = ({isDarkMode}) => {
     return (
-      <div>
+      <div className={isDarkMode ? 'dark-mode' : ''}>
           <RegistrationForm />
       </div>
     );

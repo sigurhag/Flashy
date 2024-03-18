@@ -3,7 +3,7 @@ import {CSSTransition} from 'react-transition-group';
 import {useEffect, useState} from "react";
 
 
-function FlippableCard({ front, back, showFront: propShowFront, onClickHard }) {
+function FlippableCard({ front, back, showFront: propShowFront, onClickHard, isDarkMode }) {
     const [showFront, setShowFront] = useState(propShowFront);
 
     useEffect(() => {
@@ -22,6 +22,7 @@ function FlippableCard({ front, back, showFront: propShowFront, onClickHard }) {
                     back={back} 
                     onClick={() => setShowFront((v) => !v)}
                     onClickHard={onClickHard}
+                    isDarkMode={isDarkMode}
                 />
             </CSSTransition>
         </div>

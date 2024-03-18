@@ -7,7 +7,7 @@ import UserProfileIcon from '../components/profile/UserProfileIcon';
 import Dropdown from '../components/makeset/Dropdown';
 import axios from 'axios';
 
-const Homepage = () => {
+const Homepage = ({isDarkMode}) => {
   const favouriteBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'#FFA5A5'}/>
   const removeBtn = <Icon icon={faTrash} color={'white'} onHoverColor={'grey'}/> /* Delete skal kun komme opp for admin */
   const editBtn = <Icon icon={faPenToSquare} color={'white'} onHoverColor={'#34B8F0'}/> /* Må fikse sånn at edit kun kommer opp på egne sett */
@@ -15,7 +15,6 @@ const Homepage = () => {
   
   const [category, setCategory] = useState('all');
   const [todaysTheme, setTodaysTheme] = useState('');
-  const [sets, setSets] = useState([]);
   
   const categories = [
     {label: 'All', value: 'all'},
@@ -101,24 +100,28 @@ const Homepage = () => {
 
   useEffect(() => {
     getSets();
-    
   }, []);
 
-
   return (
-    <div>
-      <Sidebar />
-      <UserProfileIcon />
-      <div className='flex flex-column items-center fixed-top-middle'>
+    <div className={isDarkMode ? 'dark-mode' : ''}>
+      <Sidebar isDarkMode={isDarkMode}/>
+      <UserProfileIcon isDarkMode={isDarkMode}/>
+      <div className={'flex flex-column items-center fixed-top-middle ' + (isDarkMode ? 'dark-mode' : '')}>
         <h2 className='f2  mt3 mb1'>Welcome to</h2>      
         <h1 className='f1 mt1 mb3 '>FLASHY</h1>
       </div>
-      <div className='flex flex-column items-center'
-      style={{marginTop: '25vh'}}>
+      <div className='flex flex-column items-center' style={{marginTop: '25vh'}}>
         <h1>Todays theme: {todaysTheme}</h1>
-        <h1><Dropdown label="Filter: " options={categories} value={category} onChange={handleCategoryChange} backgroundColor={'#FFEFC5'}/></h1>
+        <h1><Dropdown label="Filter: " options={categories} value={category} onChange={handleCategoryChange} backgroundColor={'#FFEFC5'} backgroundColorDark={'#124a8b'} isDarkMode={isDarkMode}/></h1>
         <div className='w-70'>
-          <CardList set={set} remove={removeBtn} edit={editBtn} favourite={favouriteBtn}/>
+          <CardList 
+            set={set} 
+            remove={removeBtn} 
+            edit={editBtn} 
+            favourite={favouriteBtn}
+            category={category}
+            isDarkMode={isDarkMode}
+          />
         </div>
       </div>
     </div>

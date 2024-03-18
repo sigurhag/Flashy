@@ -5,17 +5,17 @@ import CreateSet from '../components/makeset/CreateSet';
 
 
 
-const MakeSetPage = ({ cards }) => {
+const MakeSetPage = ({isDarkMode}) => {
   return (
-    <div>
-      <UserProfileIcon />
-      <Sidebar />
-      <div className='flex flex-column items-center fixed-top-middle'>
+    <div className={isDarkMode ? 'dark-mode' : ''}>
+      <UserProfileIcon isDarkMode={isDarkMode}/>
+      <Sidebar isDarkMode={isDarkMode}/>
+      <div className={'flex flex-column items-center fixed-top-middle ' + (isDarkMode ? 'dark-mode' : '')}>
         <h1 className='f1 mt3 mb1'>FLASHY</h1>
         <h2 className='f2 mt1'>Create set</h2>      
       </div>
-      <div className='flex flex-column items-center' style={{marginTop: '27vh'}}>
-          <CreateSet />
+      <div className='flex flex-column items-center' style={{ marginTop: '27vh' }}>
+        <CreateSet isDarkMode={isDarkMode}/>
       </div>
     </div>
 

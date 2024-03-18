@@ -7,7 +7,7 @@ import Button from "../components/makeset/Buttons";
 import Icon from "../components/cards/Icon";
 import axios from 'axios';
 
-const EditPage = () => {
+const EditPage = ({isDarkMode}) => {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [questions, setQuestions] = useState([{ question: '', answer: '' }]);

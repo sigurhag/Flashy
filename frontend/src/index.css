@@ -4,7 +4,7 @@ body {
   color: #00489C;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #FCD060;
+  background-color: #fbca4e;
   position: relative;
 
 }
@@ -17,12 +17,16 @@ body {
   font-style: normal;
 }
 
+.bg-color-card {
+  background-color:#FFEFC5
+}
+
 .bg-color-sidebar {
   background-color: #34B8F0;
 }
 
 .font-color {
-  color: #00489C
+  color: #00489C;
 }
 
 .sidebar-fixed {
@@ -60,11 +64,27 @@ body {
   z-index: 1000;
 }
 
-.make-set-fixed {
+.dark-mode-fixed {
   position: fixed;
-  bottom: 250px;
+  bottom: 0;
   right: 3%;
   padding: 10px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding-top: 2%;
+  border-top-right-radius: 90px;
+  border-top-left-radius: 90px;
+  width:-webkit-fit-content;
+  width:-moz-fit-content;
+  width:120px;
+  z-index: 1000;
+}
+
+.make-set-fixed {
+  position: fixed;
+  right: 3%;
+  bottom: 40%;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
@@ -88,7 +108,6 @@ body {
   width:-moz-fit-content;
   width:120px;
   z-index: 1000;
-
 }
 
 .fixed-top-middle {
@@ -97,7 +116,7 @@ body {
   width: 100%;
   z-index: 500;
   height: 30%;
-  background: linear-gradient(to bottom, #FCD060, #FCD060 55%, transparent);
+  background: linear-gradient(to bottom, #fbca4e, #fbca4e 55%, transparent);
 }
 
 .fixed-top-middle h1{
@@ -117,7 +136,6 @@ body {
   padding-left: 20vw;
 }
 
-
 .card-list {
   display: flex;
   flex-wrap: wrap;
@@ -134,8 +152,8 @@ body {
 
 .bg-color-card {
   transform-style: preserve-3d;
-  height: 170px;
-  width: 250px;
+  height: 100%;
+  width: 100%;
   position: relative; 
   background-color:#FFEFC5;
 }
@@ -156,9 +174,6 @@ body {
 
   /*Alignment*/
   position: absolute; 
-}
-
-.card-front{
 }
 
 .card-back {
@@ -213,14 +228,14 @@ body {
 
 .icon {
 	color: #00489C;
-	background-color: #FCD060;
+	background-color: #fbca4e;
 	padding: 8px 16px;
 	  
 } 
 
 .icon:hover {
 	color: #00489C;
-	background-color: #FCD060;
+	background-color: #fbca4e;
 }
 
 .progress-bar{
@@ -240,5 +255,35 @@ body {
 }
 
 .input-reset::placeholder {
-  color: rgba(0, 72, 156, 0.6);
+  color: rgba(0, 73, 156, 0.868);
+}
+
+.dark-mode{
+  background-color: #00244d;
+  color: #f6c42e;
+  ;
+}
+
+.fixed-top-middle.dark-mode {
+  background: linear-gradient(to bottom, #002957, #002957 55%, transparent);
+  color: #f6c42e;
+}
+
+.bg-color-card.dark-mode{
+  background-color: #124a8b;
+
+}
+
+.bg-color-sidebar.dark-mode {
+  background-color: #002957;
+}
+
+/* App.css or another relevant stylesheet */
+
+.input-placeholder-light::placeholder {
+  color: #00489C; 
+}
+
+.input-placeholder-dark::placeholder {
+  color: #f6c42e;
 }
