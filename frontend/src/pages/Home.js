@@ -7,6 +7,7 @@ import axios from 'axios';
 
 const Homepage = () => {
   const [category, setCategory] = useState('all');
+  const [todaysTheme, setTodaysTheme] = useState('');
   
   const categories = [
     {label: 'All', value: 'all'},
@@ -26,19 +27,51 @@ const Homepage = () => {
     {label: 'Other', value: 'other'},
   ]
 
-  const handleCategoryChange = value => setCategory(value);
+  const handleCategoryChange = async (value) => {
+    setCategory(value);
+    if (value !== 'all') {
+      await getSetsFromTheme(value);
+    } else {
+      await getSets();
+    }
+  };
   const[set, setSet] = useState([])
 
-  useEffect(() => {
-    const getSets = async() => {
-      try {
+  const getSets = async() => {
+    try {
+      const response = await axios.get("http://localhost:3500/flash/mostpopular");
+      if (response.data) {
+        const setInfo = response.data.map((set) => ({
+          setID: set.setID,
+          setname: set.setName,
+          theme: set.theme, 
+          user: set.userID,
+          size: set.size,
+          likes: set.likes,
+          owner: set.owner
+        }));
+        setSet(setInfo)
+      } else {
+        console.log('Error fetching users');
+      }
+    } catch (error) {
+      console.error("An unexpected error occured: ", error);
+    };
+  };
+  
+  const getSetsFromTheme = async(theme) => {
+    try {
         const response = await axios.get("http://localhost:3500/flash/mostpopular");
         if (response.data) {
-          const setInfo = response.data.map((set) => ({
+          const filteredSets = response.data.filter(set => set.theme === theme);
+          const setInfo = filteredSets.map((set) => ({
             setID: set.setID,
             setname: set.setName,
             theme: set.theme, 
             user: set.userID,
+            size: set.size,
+            likes: set.likes,
+            owner: set.owner
           }));
           setSet(setInfo)
         } else {
@@ -48,25 +81,42 @@ const Homepage = () => {
         console.error("An unexpected error occured: ", error);
       };
     };
+
+  const getTodaysTheme = () => {
+    const dayOfWeek = new Date().getDay();
+    return categories[dayOfWeek + 1].label;
+  };
+
+  useEffect(() => {
+    setTodaysTheme(getTodaysTheme());
+  }, []);
+
+  useEffect(() => {
     getSets();
-  },[set])
+  }, []);
+
   return (
-    <div>
-      <Sidebar />
-      <UserProfileIcon />
-      <div className='flex flex-column items-center fixed-top-middle'>
+    <div className={isDarkMode ? 'dark-mode' : ''}>
+      <Sidebar isDarkMode={isDarkMode}/>
+      <UserProfileIcon isDarkMode={isDarkMode}/>
+      <div className={'flex flex-column items-center fixed-top-middle ' + (isDarkMode ? 'dark-mode' : '')}>
         <h2 className='f2  mt3 mb1'>Welcome to</h2>      
         <h1 className='f1 mt1 mb3 '>FLASHY</h1>
       </div>
-      <div className='flex flex-column items-center'
-      style={{marginTop: '25vh'}}>
-        <h1><Dropdown label="Filter: " options={categories} value={category} onChange={handleCategoryChange} backgroundColor={'#FFEFC5'}/></h1>
+      <div className='flex flex-column items-center' style={{marginTop: '25vh'}}>
+        <h1>Todays theme: {todaysTheme}</h1>
+        <h1><Dropdown label="Filter: " options={categories} value={category} onChange={handleCategoryChange} backgroundColor={'#FFEFC5'} backgroundColorDark={'#124a8b'} isDarkMode={isDarkMode}/></h1>
         <div className='w-70'>
+          <CardList 
+            set={set} 
+            isDarkMode={isDarkMode}
+          />
         </div>
-        <CardList set={set}/>
       </div>
     </div>
   );
-};
+}
+
+
 
 export default Homepage;

@@ -1,7 +1,7 @@
 import React from 'react';
 import LogInForm from '../components/login/LogInForm';
 
-const LogIn = ({ cards }) => {
+const LogIn = () => {
   return (
     <div>
         <LogInForm />

@@ -3,15 +3,15 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
-const SetBtn = ({text}) => {
+const SetBtn = ({text, isDarkMode}) => {
   const [isHovered, setIsHovered] = useState(false);
   const hoverStyle = {
-      color: '#00489C',
-      transform: 'scale(1.05)',
-      transition: 'transform 0.4s, color 0.4s'
+    color: isDarkMode ? '#f6c42e' : '#00489C',
+    transform: 'scale(1.05)',
+    transition: 'transform 0.4s, color 0.4s'
   };
   return (
-      <div className='bg-color-sidebar make-set-fixed'>
+      <div style={{backgroundColor: isDarkMode ? "#155daf" : "#34B8F0"}} className=' make-set-fixed'>
         <Link
             to="/makeSet"
             className=" flex flex-column items-center nav-links"

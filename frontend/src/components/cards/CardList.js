@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Card from './Card';
 import Searchbar from '../Searchbar';
 import axios from 'axios';
@@ -13,8 +14,19 @@ const CardList = ({ set }) => {
     const editBtn = <Icon icon={faPenToSquare} color={'white'} onHoverColor={'#34B8F0'}/> /* Må fikse sånn at edit kun kommer opp på egne sett */
     
     const [admin, setAdmin] = useState(false);
+    const [filteredSets, setFilteredSets] = useState(set); // Adjusted for "set" data
+    const [searchQuery, setSearchQuery] = useState('');
+    const location = useLocation();
 
-   
+    useEffect(() => {
+        const filtered = set.filter(item =>
+            (item.setname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            item.owner?.toLowerCase().includes(searchQuery.toLowerCase())) &&
+            (!category || category === 'all' || item.category?.toLowerCase() === category.toLowerCase()) 
+        );
+        setFilteredSets(filtered);
+    }, [searchQuery, category, set]);
+
     useEffect(() => {
       const fetchData = async() => {
         try {
@@ -28,30 +40,38 @@ const CardList = ({ set }) => {
           }
         } catch (error) {
           console.error("An unexpected error occured: ", error);
-        };
+        }
       };
       fetchData();
-    },)
+    }, []);
+
     
     return (
-        <div className='flex flex-column justify-center '>
-          <div style={{ width: '1000%', maxWidth: '1000px' }}>
-          </div>
-          <div className="card-list">
-          {set.map((set, i) => (
-                <Card
-                  key={i}
-                  setID={set.setID}
-                  name={set.setname}
-                  creator={set.userID}
-                  theme={set.theme}
-                  favourite={favouriteBtn}
-                  remove={admin && removeBtn}
+      <div className='flex flex-column items-center'>
+      {location.pathname !== "/favourites" && (
+        <Searchbar text="What do you want to learn today?" onSearch={setSearchQuery} isDarkMode={isDarkMode}/>
+      )}
+      <div className="card-list">
+      {filteredSets.map((item, i) => {
+        const ownerDisplay = item.owner ? item.owner : 'Unknown';
+        return (
+            <Card
+              key={i}
+              name={item.setname}
+              owner={ownerDisplay}
+              size={item.size}
+              theme={item.theme}
+              favourite={favouriteBtn}
+              isDarkMode={isDarkMode}
+              remove={admin && removeBtn}
                   edit={admin && editBtn}
-                />
-              ))}
-          </div>
-        </div>
-      );
-}
+            />
+        );
+      })}
+      </div>
+  </div>
+);
+    
+};
+
 export default CardList;

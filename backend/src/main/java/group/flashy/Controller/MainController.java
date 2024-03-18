@@ -76,7 +76,7 @@ public class MainController {
         return ResponseEntity.ok(myFavorites);
     }
 
-    @GetMapping("/mostpopular")
+    @GetMapping("/mostpopular") // Used for both all sets and getSetsFromTheme in Home.js
     public ResponseEntity<ArrayList<Set>> getMostPopular() {
         ArrayList<Set> mostPopular = userService.getMostPopular();
         return ResponseEntity.ok(mostPopular);

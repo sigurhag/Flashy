@@ -5,13 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 
-const UserProfileIcon = ({ user = {} }) => {
+const UserProfileIcon = ({ user = {}, isDarkMode }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { username, email } = user;
   const [userInfo, setUserInfo] = useState([]);
 
   const hoverStyle = {
-      color: '#00489C',
+    color: isDarkMode ? '#f6c42e' : '#00489C',
       transform: 'scale(1.05)',
       transition: 'transform 0.4s, color 0.4s'
   };
@@ -34,7 +34,7 @@ const UserProfileIcon = ({ user = {} }) => {
       getUserData();
     }, [username])
   return (
-    <div className='bg-color-sidebar user-icon-fixed'>
+    <div style={{backgroundColor: isDarkMode ? "#1163c1" : "#34B8F0"}}  className=' user-icon-fixed'>
       <Link
           to="/profile"
           className="flex flex-column items-center nav-links"
@@ -44,7 +44,7 @@ const UserProfileIcon = ({ user = {} }) => {
       >
           <FontAwesomeIcon
               icon={faUser}
-              color="#FFFFFF"
+              color= "#FFFFFF"
               size="3x"
               style={isHovered ? hoverStyle : {}}
           />
