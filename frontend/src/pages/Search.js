@@ -20,7 +20,7 @@ const Searchpage = ({isDarkMode}) => {
           setID: set.setID,
           setname: set.setName,
           theme: set.theme, 
-          user: set.userID,
+          userID: set.userID,
           size: set.size,
           likes: set.likes,
           owner: set.owner

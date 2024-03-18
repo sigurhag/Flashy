@@ -52,6 +52,12 @@ public class MainController {
         }
     }
 
+    @GetMapping("/loggedInUserID")
+    public ResponseEntity<String> getLoggedInUserID() {
+        String loggedInUserID = UserService.LoggedInUserID;
+        return ResponseEntity.ok(loggedInUserID);
+    }
+
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Map<String, String> credentials) {
         String username = credentials.get("username");
@@ -195,7 +201,6 @@ public class MainController {
 
     @PostMapping("/isFavourited")
     public ResponseEntity<Boolean> isFavourited(@RequestBody String setID) {
-        System.out.println(setID);
         boolean isFavourited = userService.isFavourited(setID);
         return ResponseEntity.ok(isFavourited);
     }

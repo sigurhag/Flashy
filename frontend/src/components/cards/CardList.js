@@ -13,6 +13,7 @@ const CardList = ({ set, isDarkMode, category }) => {
     const editBtn = <Icon icon={faPenToSquare} color={'white'} onHoverColor={'#34B8F0'}/>; /* Må fikse sånn at edit kun kommer opp på egne sett */
     
     const [admin, setAdmin] = useState(false);
+    const [loggedInUserID, setLoggedInUserID] = useState();
     const [filteredSets, setFilteredSets] = useState(set); // Adjusted for "set" data
     const [searchQuery, setSearchQuery] = useState('');
     const location = useLocation();
@@ -24,6 +25,12 @@ const CardList = ({ set, isDarkMode, category }) => {
                 if (adminResponse.data) {
                     setAdmin(true);
                 } 
+                const loggedInUserResponse = await axios.get("http://localhost:3500/flash/loggedInUserID");
+                if(loggedInUserResponse.data) {
+                    setLoggedInUserID(loggedInUserResponse.data);
+                }
+                console.log(loggedInUserID)
+
                 const favoriteColorsData = {};
                 for (const item of set) {
                     const setID = item.setID;
@@ -45,6 +52,7 @@ const CardList = ({ set, isDarkMode, category }) => {
             (!category || category === 'all' || item.category?.toLowerCase() === category.toLowerCase()) 
         );
         setFilteredSets(filtered);
+        console.log(filteredSets)
     }, [searchQuery, category, set]);
 
     return (
@@ -56,6 +64,7 @@ const CardList = ({ set, isDarkMode, category }) => {
                 {filteredSets.map((item, i) => {
                     const ownerDisplay = item.owner ? item.owner : 'Unknown';
                     const favouriteBtn = <Icon icon={faHeart} color={favoriteColor[item.setID]} onHoverColor={'#FFA5A5'}/>;
+                    const isOwner = item.userID === loggedInUserID;
                     return (
                         <Card
                             key={i}
@@ -67,8 +76,8 @@ const CardList = ({ set, isDarkMode, category }) => {
                             favourite={!admin && favouriteBtn}
                             favoriteColor={favoriteColor[item.setID]}
                             isDarkMode={isDarkMode}
-                            remove={admin && removeBtn}
-                            edit={admin && editBtn}
+                            remove={(admin || isOwner) && removeBtn}
+                            edit={(admin || isOwner) && editBtn}
                         />
                     );
                 })}
