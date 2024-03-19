@@ -144,7 +144,6 @@ const EditPage = ({isDarkMode}) => {
         </div>
     </div>
     </div>
-    </div>
   );
 };
 
