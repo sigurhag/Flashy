@@ -1,5 +1,6 @@
 package group.flashy.Controller;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,12 @@ public class MainController {
         } else {
             return ResponseEntity.badRequest().body("Invalid Username or password");
         }
+    }
+
+    @GetMapping("/loggedInUserID")
+    public ResponseEntity<String> getLoggedInUserID() {
+        String loggedInUserID = UserService.LoggedInUserID;
+        return ResponseEntity.ok(loggedInUserID);
     }
 
     @PostMapping("/register")
@@ -186,7 +193,7 @@ public class MainController {
     }
 
     @PostMapping("/favouriteSet")
-    public ResponseEntity<Boolean> likeSet(@RequestBody String setID) {
+    public ResponseEntity<Boolean> favouriteSet(@RequestBody String setID) {
         boolean success = false;
         success = userService.favoriteSet(setID);
         return ResponseEntity.ok(success);

@@ -1,9 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const Card = (props) => {
-    const {name, owner, setID, size, theme, edit, favourite, remove, isDarkMode} = props;
+    const {name, owner, setID, size, theme, edit, favourite, favouriteColor, remove, isDarkMode} = props;
 
     const navigate = useNavigate();
 
@@ -53,7 +54,7 @@ const Card = (props) => {
                 <h3 style={{ marginBottom: '20px', marginTop: '1%' }}>{size} cards</h3>
             </div>
             <div className='absolute top-0 right-0 pa2'>
-                <span onClick={handleFavourite}>{favourite}</span>
+                <span onClick={handleFavourite} style={{ color: favouriteColor }}>{favourite}</span>
             </div>
             <div className='flex flex-row absolute bottom-0 right-0 pa2'>
                 <span onClick={handleRemove}>{remove}</span>

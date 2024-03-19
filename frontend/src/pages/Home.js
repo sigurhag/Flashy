@@ -9,6 +9,7 @@ const Homepage = ({isDarkMode}) => {
   const [category, setCategory] = useState('all');
   const [todaysTheme, setTodaysTheme] = useState('');
   
+  
   const categories = [
     {label: 'All', value: 'all'},
     {label: 'Art', value: 'art'},
@@ -45,7 +46,7 @@ const Homepage = ({isDarkMode}) => {
           setID: set.setID,
           setname: set.setName,
           theme: set.theme, 
-          user: set.userID,
+          userID: set.userID,
           size: set.size,
           likes: set.likes,
           owner: set.setOwner
@@ -68,7 +69,7 @@ const Homepage = ({isDarkMode}) => {
             setID: set.setID,
             setname: set.setName,
             theme: set.theme, 
-            user: set.userID,
+            userID: set.userID,
             size: set.size,
             likes: set.likes,
             owner: set.owner
