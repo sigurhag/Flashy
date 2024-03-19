@@ -1,27 +1,33 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const Card = (props) => {
-    const {name, owner, setID, size, theme, edit, favourite, remove, isDarkMode} = props;
-    console.log(props);
+    const {name, owner, setID, size, theme, edit, favourite, favouriteColor, remove, isDarkMode} = props;
 
     const navigate = useNavigate();
 
-    const handleFavourite = (event) => {
+    const handleFavourite = async() => {
         console.log("Favourite was pressed!");
+        try {
+            const response = await axios.post("http://localhost:3500/flash/favouriteSet",{setID})
+        if(response.data) {
+            console.log("liked set successfully")
+            } 
+        } catch (error) {
+            console.log(error)
+        } 
     }
 
     const handleRemove = async () => {
         console.log("Removed pressed")
-        console.log(setID)
         try {
             const response = await axios.post("http://localhost:3500/flash/removeSet", 
                {setID}
             )
             if(response.data) {
                 console.log("set removed successfully")
-                window.location.reload()
             }
         } catch (error) {
             console.log(error)
@@ -48,7 +54,7 @@ const Card = (props) => {
                 <h3 style={{ marginBottom: '20px', marginTop: '1%' }}>{size} cards</h3>
             </div>
             <div className='absolute top-0 right-0 pa2'>
-                <span onClick={handleFavourite}>{favourite}</span>
+                <span onClick={handleFavourite} style={{ color: favouriteColor }}>{favourite}</span>
             </div>
             <div className='flex flex-row absolute bottom-0 right-0 pa2'>
                 <span onClick={handleRemove}>{remove}</span>
