@@ -138,7 +138,7 @@ const EditPage = ({isDarkMode}) => {
                 </div>
             ))}
         <div className="flex flex-row justify-center question-box ma3">
-          <Button text={"Returnm"} icon={faArrowLeft} onClick={handleReturnPress} isDarkMode={isDarkMode}/>
+          <Button text={"Previous page"} icon={faArrowLeft} onClick={handleReturnPress} isDarkMode={isDarkMode}/>
           <Button text={"Add question"} icon={faPlus} onClick={handleAddQuestion} isDarkMode={isDarkMode}/>
           <Button text={"Save updates!"} icon={faCheck} onClick={handleSavePress} isDarkMode={isDarkMode}/>
         </div>
