@@ -189,8 +189,6 @@ public class Set {
     }
     
 
-    
-
     @Override
     public String toString() {
         return "Set [setID=" + setID + ", setname=" + setname + ", size=" + size + ", theme=" + theme + ", userID="
@@ -199,6 +197,15 @@ public class Set {
 
 
     public static void main(String[] args) {
+        
+        //Set sett = new Set("Garn", "fritid", "7a425088-0f23-448a-a5dd-9829d8821041", 2);
+        //sett.saveSetToDatabase();
+
+        //String id = sett.getSetID();
+        //sett.deleteSet(id);
+
+       //sett.updateSetInfo("setname", "Kaker");
+        
     }
 }
 

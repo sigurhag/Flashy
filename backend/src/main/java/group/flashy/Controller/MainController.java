@@ -1,6 +1,7 @@
 package group.flashy.Controller;
 
 import java.io.Console;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -155,8 +156,11 @@ public class MainController {
     }
 
     @PostMapping("/updateAdmin")
-    public ResponseEntity<String> updateAdmin(@RequestBody String userID) {
-        boolean isValid = userService.updateAdmin(userID);
+    public ResponseEntity<String> updateAdmin(@RequestBody Map<String, String> credentials)throws SQLException{
+        String username = credentials.get("username");
+        String password = credentials.get("password");
+        String email = credentials.get("email");
+        boolean isValid = userService.updateAdmin(UserService.LoggedInUserID, username, password, email);
         if (isValid) {
             return ResponseEntity.ok("Successfully updated adminRights");
         } else {

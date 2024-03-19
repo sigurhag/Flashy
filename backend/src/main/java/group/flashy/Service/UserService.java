@@ -158,73 +158,59 @@ public class UserService {
         return allUsers;
     }
 
-    public boolean updateAdmin(String userID) {
-        String selectQuery = "SELECT * FROM user WHERE userID = ?";
-        String addAdminQuery = "INSERT INTO admin (adminID, username, password, email) VALUES (?, ?, ?, ?)";
-        String deleteFromUserQuery = "DELETE FROM user WHERE userID = ?";
-        String deleteSetsQuery = "DELETE FROM set WHERE userID = ?";
-        String deleteCardsQuery = "DELETE FROM card WHERE setID IN (SELECT setID FROM set WHERE userID = ?)";
-
+    
+    public boolean updateAdmin(String userID, String username, String password, String email) throws SQLException{
         Connection connection = null;
-
         try {
             connection = DriverManager.getConnection(JDBC_URL);
-            PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
-            PreparedStatement addAdminStatement = connection.prepareStatement(addAdminQuery);
-            PreparedStatement deleteFromUserStatement = connection.prepareStatement(deleteFromUserQuery);
-            PreparedStatement deleteSetsStatement = connection.prepareStatement(deleteSetsQuery);
-            PreparedStatement deleteCardsStatement = connection.prepareStatement(deleteCardsQuery);
+            connection.setAutoCommit(false); //disable auto-commit for transaction
 
-            connection.setAutoCommit(false);
-
-            // Fetch user details
-            selectStatement.setString(1, userID);
-            ResultSet resultSet = selectStatement.executeQuery();
-
-            if (resultSet.next()) {
-                String username = resultSet.getString("username");
-                String password = resultSet.getString("password");
-                String email = resultSet.getString("email");
-
-                // Delete sets and cards associated with the user
-                deleteCardsStatement.setString(1, userID);
-                deleteCardsStatement.executeUpdate();
-
-                deleteSetsStatement.setString(1, userID);
-                deleteSetsStatement.executeUpdate();
-
-                // Insert into admin table
-                addAdminStatement.setString(1, userID);
-                addAdminStatement.setString(2, username);
-                addAdminStatement.setString(3, password);
-                addAdminStatement.setString(4, email);
-                addAdminStatement.executeUpdate();
-
-                // Delete user from user table
-                deleteFromUserStatement.setString(1, userID);
-                deleteFromUserStatement.executeUpdate();
-
-                // Commit transaction
-                connection.commit();
-                return true;
+            deleteFavourite(connection, userID);
+            ArrayList<String> setIDs = getMySetIDs(connection, userID);
+            if (setIDs != null){
+                for (String setid : setIDs){
+                    deleteCard(connection, setid);
+                }
             }
-        } catch (SQLException e) {
+            else{
+                System.out.println("No set found associated with user: " + userID);
+            }
+            deleteSet(connection, userID); //må gjøres til slutt!
+
+            String addQuery = "insert into admin values (?, ?, ?, ?)";
+            String deleteQuery = "delete from user where userID = ?";
+            
+            PreparedStatement addStatement = connection.prepareStatement(addQuery);
+            PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery);
+            addStatement.setString(1, userID);
+            addStatement.setString(2, username);
+            addStatement.setString(3, password);
+            addStatement.setString(4, email);
+
+            int addResult = addStatement.executeUpdate();
+            if (addResult > 0) {
+                deleteStatement.setString(1, userID);
+                int deleteResult = deleteStatement.executeUpdate();
+                if (deleteResult > 0) {
+                    connection.commit(); //commits changes, happens if both are successful
+                    return true;
+                } else{
+                    connection.rollback(); // Rollback if deletion fails
+                    System.out.println("Failed to delete existing user for admin update");
+                } 
+            }
+            else{
+                connection.rollback(); // Rollback if insertion fails
+                System.out.println("Failed to add new admin record");
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
-            try {
-                if (connection != null) {
-                    connection.rollback();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        }
+        finally{
+            // Ensure auto-commit is re-enabled for future operations
+            connection.setAutoCommit(true);
+            connection.close();
         }
         return false;
     }
@@ -237,6 +223,7 @@ public class UserService {
             preparedStatement.setString(1, LoggedInUserID);
             ResultSet resultSet = preparedStatement.executeQuery();
 
+            
             while (resultSet.next()) {
                 String setID = resultSet.getString("setID");
                 String userID = resultSet.getString("userID");
@@ -565,7 +552,78 @@ public class UserService {
         return false;
     }
 
+    public ArrayList<String> getMySetIDs (Connection connection, String userID){
+        String setIDQuery = "SELECT setID FROM `Set` WHERE userID = ?";
+        try (PreparedStatement setIDStatement = connection.prepareStatement(setIDQuery)){
+            setIDStatement.setString(1, userID);
+            ResultSet resultSet = setIDStatement.executeQuery();
+            ArrayList<String> setIDs = new ArrayList<>();
+            while (resultSet.next()) {
+                String setID = resultSet.getString("setID");
+                setIDs.add(setID);
+            } 
+            return setIDs;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void deleteSet(Connection connection, String userID){
+        String query = "DELETE FROM `Set` WHERE userID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, userID);
+            int rowsDeleted = preparedStatement.executeUpdate();
+            //rowsDeleted checks how many rows we have deleted, can use this to confirm that it the operations is a success
+
+            if (rowsDeleted == 0){
+                System.out.println("No sets found for deletion with userID: " + userID);
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+    }
+
+    public void deleteCard(Connection connection, String setID){
+        String query = "DELETE FROM Card WHERE setID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, setID);
+            int rowsDeleted = preparedStatement.executeUpdate();
+            //rowsDeleted checks how many rows we have deleted, can use this to confirm that it the operations is a success
+            if (rowsDeleted == 0){
+                System.out.println("No cards found for deletion with setID: " + setID);
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+    }
+
+    public void deleteFavourite(Connection connection, String userID){
+        String query = "DELETE FROM Favourite WHERE userID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setString(1, userID);
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            if(rowsDeleted == 0){
+                System.out.println("No favourite found for deletion with userID:" + userID);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+    }
+
+
     public static void main(String[] args) {
-        UserService test = new UserService(null);
+        /*UserService test = new UserService(null);
+
+        try {
+            test.updateAdmin("7a425088-0f23-448a-a5dd-9829d8821041","gurings","guroerkul","guro@stud.ntnu.no");
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       */
     }
 }
