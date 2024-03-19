@@ -110,7 +110,7 @@ const Profile = ({ user = {}, isDarkMode }) => {
       {AdminRights && (
       <div className='mt4'>
         <h2 style={{marginBottom: '1%'}}>Handle admin access</h2>
-          <UserList />  
+          <UserList isDarkMode={isDarkMode}/>  
       </div>
       )}
     </div>
