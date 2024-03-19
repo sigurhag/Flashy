@@ -46,14 +46,14 @@ const CardList = ({ set, isDarkMode, category }) => {
     }, [set]);
 
     useEffect(() => {
-        const filtered = set.filter(item =>
-            (item.setname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.owner?.toLowerCase().includes(searchQuery.toLowerCase())) &&
-            (!category || category === 'all' || item.category?.toLowerCase() === category.toLowerCase()) 
-        );
-        setFilteredSets(filtered);
-        console.log(filteredSets)
+      const filtered = set.filter(item =>
+          (item.setname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.owner?.toLowerCase().includes(searchQuery.toLowerCase())) &&
+          (!category || category === 'all' || item.theme?.toLowerCase() === category.toLowerCase()) 
+      );
+      setFilteredSets(filtered);
     }, [searchQuery, category, set]);
+  
 
     return (
         <div className='flex flex-column items-center'>
@@ -63,7 +63,7 @@ const CardList = ({ set, isDarkMode, category }) => {
             <div className="card-list">
                 {filteredSets.map((item, i) => {
                     const ownerDisplay = item.owner ? item.owner : 'Unknown';
-                    const favouriteBtn = <Icon icon={faHeart} color={favoriteColor[item.setID]} onHoverColor={'#FFA5A5'}/>;
+                    const favouriteBtn = <Icon icon={faHeart} color={favoriteColors[setID]} onHoverColor={'#FFA5A5'}/>;
                     const isOwner = item.userID === loggedInUserID;
                     return (
                         <Card

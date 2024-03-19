@@ -28,15 +28,14 @@ const Homepage = ({isDarkMode}) => {
     {label: 'Other', value: 'other'},
   ]
 
-  const handleCategoryChange = async (value) => {
+  const handleCategoryChange = (value) => {
     setCategory(value);
-    if (value !== 'all') {
-      await getSetsFromTheme(value);
-    } else {
-      await getSets();
-    }
+    console.log(value);
   };
+  
+
   const[set, setSet] = useState([])
+  console.log(set)
 
   const getSets = async() => {
     try {
@@ -59,6 +58,15 @@ const Homepage = ({isDarkMode}) => {
       console.error("An unexpected error occured: ", error);
     };
   };
+
+  useEffect(() => {
+    if (category === 'all') {
+      getSets();
+    } else {
+      getSetsFromTheme(category);
+    }
+  }, [category]); 
+  
   
   const getSetsFromTheme = async(theme) => {
     try {
@@ -72,7 +80,7 @@ const Homepage = ({isDarkMode}) => {
             userID: set.userID,
             size: set.size,
             likes: set.likes,
-            owner: set.owner
+            owner: set.setOwner
           }));
           setSet(setInfo)
         } else {

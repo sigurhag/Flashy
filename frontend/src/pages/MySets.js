@@ -29,7 +29,8 @@ const MySetspage = ({sets, isDarkMode}) => {
             size : set.size,
             like : set.likes,
             setID : set.setID,
-            userID : set.userID
+            userID : set.userID,
+            owner: set.setOwner,
           }));
           
           setSet(userInfo)
