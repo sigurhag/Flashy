@@ -15,26 +15,33 @@ const Favouritespage = ({ sets, isDarkMode}) => {
   const[set, setSet] = useState([]);
 
   useEffect(() => {
-    const getSets = async() => {
+    const getSets = async () => {
       try {
         const response = await axios.get("http://localhost:3500/flash/favorites");
         if (response.data) {
-          const setInfo = response.data.map((set) => ({
+          
+          const userInfo = response.data.map((set) => ({
             setname: set.setName,
             theme: set.theme, 
-            user: set.userID,
+            size : set.size,
+            like : set.likes,
+            setID : set.setID,
+            userID : set.userID,
             owner: set.setOwner,
           }));
-          setSet(setInfo)
+          
+          setSet(userInfo)
+        
         } else {
-          console.log('Error fetching users');
+          console.log('Error fetching my sets');
         }
       } catch (error) {
-        console.error("An unexpected error occured: ", error);
-      };
-    }
+        console.error("An unexpected error occurred: ", error);
+      }
+    };
+  
     getSets();
-  }, [sets])
+  }, [sets]);
   
   return (
     <div className={isDarkMode ? 'dark-mode' : ''}>
@@ -45,7 +52,7 @@ const Favouritespage = ({ sets, isDarkMode}) => {
         <h2 className='f2 mt1'>Favourites</h2>      
       </div>
       <div className='flex flex-column items-center'
-      style={{marginTop: '25vh'}}>
+      style={{marginTop: '27vh'}}>
         <div className='w-70'>
           <CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn} isDarkMode={isDarkMode}/>
         </div>
