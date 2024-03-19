@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
 import {faChevronLeft, faChevronRight, faL} from '@fortawesome/free-solid-svg-icons'
@@ -6,33 +7,49 @@ import FlippableCard from '../components/cards/FlippableCard.js';
 import ArrowButton from '../components/cards/ArrowButton.js';
 import ProgressBar from '../components/cards/ProgressBar.js';
 import GeneralButton from '../components/GeneralButton.js'
+import { useParams } from 'react-router-dom';
+import axios from "axios";
 
 
 const CardViewPage = () => {
-  
-  const cardSet =   
-  {
-    id: 1,
-    name: 'Midterm',
-    theme: 'Science',
-    length: 34,
-    creator: 'Geir',
-    questions: [
-      ["Q1 mark as hard", "A1"], 
-      ['Q2', 'A2'], 
-      ['Q3 mark as hard', 'A3'], 
-      ['Q4', 'A4'], 
-      ['Q5', 'A5'], 
-      ['Q6', 'A6']]
-    }
+
+    const { cardID } = useParams()
+    const [cardSet, setCardSet] = useState(null);
+    const location = useLocation();
+    console.log(location)
+    const { name } = location.state || {};
+
+  useEffect(() => {
+    console.log("PLEASE WORK")
+    const fetchCardData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3500/flash/getset/${cardID}`);
+        const cardInfo = response.data.map((card) => ({
+            question: card.question,
+            answer: card.answer,
+            cardid: card.cardID,
+            setid: card.setID,
+            isdifficult: card.isDifficult
+        }));
+        setCardSet(cardInfo);
+        console.log(cardSet);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (cardID) fetchCardData();
+  }, [cardID]);
+
+
+    console.log(cardSet);
     
     const [currentIndex, setCurrentIndex] = useState(0);
     const [hardQuestions, setHardQuestions] = useState([]);
-    const [completedCards, setCompletedCards] = useState(new Array(cardSet.questions.length).fill(false));
+    const [completedCards, setCompletedCards] = useState(new Array(cardSet?.length).fill(false)); //useState([]);
     const [showFront, setShowFront] = useState(true);
     const [initialPassCompleted, setInitialPassCompleted] = useState(false);
 
-    const progress = ((completedCards.filter(Boolean).length + (initialPassCompleted ? hardQuestions.length : 0)) / (cardSet.questions.length + hardQuestions.length)) * 100;
+    const progress = ((completedCards.filter(Boolean).length + (initialPassCompleted ? hardQuestions.length : 0)) / (cardSet?.length + hardQuestions.length)) * 100;
 
 	const [isFinished, setIsFinished] = useState(false); // New state to track completion
 
@@ -56,7 +73,7 @@ const CardViewPage = () => {
             setHardQuestions([...hardQuestions]);
         } else {
 
-            if (nextIndex >= cardSet.questions.length) {
+            if (nextIndex >= cardSet.length) {
                 nextIndex = 0;
                 if (!hardQuestions.length) {
                     setIsFinished(true); 
@@ -84,11 +101,18 @@ const CardViewPage = () => {
     };
 
     const handlePrev = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + cardSet.questions.length) % cardSet.questions.length);
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + cardSet.length) % cardSet.length);
         setShowFront(true);
     };
 
-    const handleGoAgain = () => {};
+    const handleGoAgain = () => {
+        setCurrentIndex(0);
+        setHardQuestions([]);
+        setCompletedCards(new Array(cardSet?.length).fill(false));
+        setInitialPassCompleted(false);
+        setIsFinished(false);
+        setShowFront(true);
+      };
     
     return (
       <div className='flex justify-center items-center '>
@@ -96,19 +120,26 @@ const CardViewPage = () => {
       <Sidebar />
       <div className='flex flex-column items-center fixed-top-middle'>
         <h1 className='f1 mt3 mb1'>FLASHY</h1>
-        <h2 className='f2 mt1'>Title</h2>   {/* Title needs to be collected from CardSet.title*/}  
+        <h2 className='f2 mt1'>{name || "Title"}</h2>   {/* Title needs to be collected from CardSet.title*/}  
       </div>
 	  <div className='flex flex-column items-center' style={{marginTop: '30vh'}}>
                 <ProgressBar progress={isFinished ? 100 : progress} />
                 {!isFinished ? (
                     <div className='flex flex-row justify-center items-center'>
 						<ArrowButton onClick={handlePrev} type={faChevronLeft} />
-					<FlippableCard 
+					<FlippableCard
+                    key={`card-${currentIndex}-${hardQuestions.includes(currentIndex)}`}
+                    front={cardSet?.[currentIndex]?.question}
+                    back={cardSet?.[currentIndex]?.answer}
+                    showFront={showFront}
+                    onClickHard={onClickHard}
+                    
+                    /*
 					key={`card-${currentIndex}-${hardQuestions.includes(currentIndex)}`}
 					front={cardSet.questions[currentIndex][0]}
 					back={cardSet.questions[currentIndex][1]}
 					showFront={showFront}
-					onClickHard={onClickHard}
+					onClickHard={onClickHard}*/
 					/>
 					<ArrowButton onClick={handleNext} type={faChevronRight} />
                     </div>

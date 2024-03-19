@@ -18,6 +18,7 @@ function QuestionCard({front, back, onClick, onClickHard}) {
             </div>
             <div className="card-front ">
                 <h3 className="tc absolute top-0 left-2">Question: </h3>{front}
+                <h4></h4>
             </div>
         </div>
 

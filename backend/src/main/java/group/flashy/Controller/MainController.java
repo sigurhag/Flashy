@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import group.flashy.Set;
 import group.flashy.User;
 import group.flashy.Admin;
+import group.flashy.Card;
 import group.flashy.Service.CardService;
 import group.flashy.Service.UserService;
 
@@ -26,10 +32,12 @@ public class MainController {
 
     private final UserService userService;
     private final CardService cardService;
+    private ObjectMapper objectMapper;
 
-    public MainController(UserService userService, CardService cardService) {
+    public MainController(UserService userService, CardService cardService, ObjectMapper objectMapper) {
         this.userService = userService;
         this.cardService = cardService;
+        this.objectMapper = objectMapper;
     }
     
     @GetMapping("/test")
@@ -78,7 +86,7 @@ public class MainController {
     @GetMapping("/mostpopular")
     public ResponseEntity<ArrayList<Set>> getMostPopular() {
         ArrayList<Set> mostPopular = userService.getMostPopular();
-        System.out.println("Retrieved sets: " + mostPopular.toString());
+        //System.out.println("Retrieved sets: " + mostPopular.toString());
         return ResponseEntity.ok(mostPopular);
     }
 
@@ -177,5 +185,20 @@ public class MainController {
             success = userService.saveCardToDatabase(question, answer);
         }
         return ResponseEntity.ok(success);
+    }
+
+    @GetMapping("/getset/{setid}")
+    public ResponseEntity<String> getCorrespondingSet(@PathVariable ("setid") String setID) {
+        ArrayList<Card> setCards = cardService.accessCard(setID);
+        System.out.println(setCards);
+        
+        try {
+            String json = objectMapper.writeValueAsString(setCards);
+            System.out.println(json);
+            return ResponseEntity.ok(json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

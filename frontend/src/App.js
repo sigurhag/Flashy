@@ -30,7 +30,7 @@ const App = () => {
                     <Route path="/mySets" element={<MySetspage cards={cards}/>} />
                     <Route path="/favourites" element={<Favouritespage cards={cards}/>} />
                     <Route path="/" element={<Welcome />} />
-                    <Route path="/cardview" element={<CardViewPage />}/>
+                    <Route path="/cardview/:cardID" element={<CardViewPage />}/>
                     <Route path="/profile" element={<Profile user={users} />} />
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/makeSet" element={<MakeSetPage />} />

@@ -14,12 +14,13 @@ const CardList = ({ set, edit, favourite, remove, category, like }) => {
           <div style={{ width: '100%', maxWidth: '1000px' }}>
           </div>
           <div className="card-list">
-          {set.map((set, i) => (
+          {set.map((item, i) => (
                 <Card
-                  key={i}
-                  name={set.setname}
-                  creator={set.userID}
-                  theme={set.theme}
+                  key={item.setid}
+                  id={item.setid}
+                  name={item.setname}
+                  creator={item.userID}
+                  theme={item.theme}
                   edit={edit}
                   favourite={favourite}
                   remove={remove}

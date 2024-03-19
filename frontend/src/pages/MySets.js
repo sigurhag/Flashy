@@ -22,13 +22,14 @@ const MySetspage = ({ sets }) => {
       try {
         const response = await axios.get("http://localhost:3500/flash/mysets");
         if (response.data) {
+          console.log(response.data);
           const userInfo = response.data.map((set) => ({
             setname: set.setName,
             theme: set.theme, 
-            user: set.userID
+            user: set.userID,
+            setid: set.setID
           }));
           setSet(userInfo)
-          console.log(set);
         } else {
           console.log('Error fetching my sets');
         }

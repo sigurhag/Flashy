@@ -37,13 +37,21 @@ public class Card {
         this.setID = setID;
     }
 
+    public Card(String setID, String question, String answer, boolean isDifficult, String cardID){
+        this.setID = setID;
+        this.question = question;
+        this.answer = answer;
+        this.isDifficult = isDifficult;
+        this.cardID = cardID;
+    }
+
     /**
      * Method for updating the difficulty of a question.
      *
      * @param difficult boolean on is difficult
      */
     public void changeDifficult(boolean difficult) {
-        updateCardInfo("difficult", difficult);
+        updateCardInfo("isDifficult", difficult);
     }
 
     /**
@@ -69,8 +77,9 @@ public class Card {
      *
      * @return the ID
      */
-    public int getCardID() {
-        return (int) getCardInfo("cardID");
+    public String getCardID() {
+        return cardID;
+        //return (String) getCardInfo("cardID");
     }
 
     /**
@@ -79,7 +88,8 @@ public class Card {
      * @return the question.
      */
     public String getQuestion() {
-        return (String) getCardInfo("question");
+        return question;
+        //return (String) getCardInfo("question");
     }
 
     /**
@@ -88,7 +98,8 @@ public class Card {
      * @return the answer
      */
     public String getAnswer() {
-        return (String) getCardInfo("answer");
+        return answer;
+        //return (String) getCardInfo("answer");
     }
 
     /**
@@ -96,8 +107,9 @@ public class Card {
      *
      * @return the setID
      */
-    public int getCardSetID() {
-        return (int) getCardInfo("setID");
+    public String getSetID() {
+        return setID;
+        //return (String) getCardInfo("setID");
     }
 
     /**
@@ -106,7 +118,8 @@ public class Card {
      * @return true or false on card is difficult
      */
     public boolean getIsDifficult() {
-        return (boolean) getCardInfo("Difficult");
+        return isDifficult;
+        //return (boolean) getCardInfo("isDifficult");
     }
 
     /**
@@ -165,7 +178,7 @@ public class Card {
             case "question":
                 this.question = (String) newValue;
                 break;
-            case "difficult":
+            case "isDifficult":
                 this.isDifficult = (boolean) newValue;
                 break;
                 case "setID":
