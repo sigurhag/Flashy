@@ -16,7 +16,6 @@ const CardViewPage = () => {
     const { cardID } = useParams()
     const [cardSet, setCardSet] = useState(null);
     const location = useLocation();
-    console.log(location)
     const { name } = location.state || {};
 
   useEffect(() => {
@@ -32,7 +31,6 @@ const CardViewPage = () => {
             isdifficult: card.isDifficult
         }));
         setCardSet(cardInfo);
-        console.log(cardSet);
       } catch (error) {
         console.error(error);
       }
@@ -40,8 +38,6 @@ const CardViewPage = () => {
     if (cardID) fetchCardData();
   }, [cardID]);
 
-
-    console.log(cardSet);
     
     const [currentIndex, setCurrentIndex] = useState(0);
     const [hardQuestions, setHardQuestions] = useState([]);

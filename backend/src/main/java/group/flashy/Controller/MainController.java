@@ -74,7 +74,6 @@ public class MainController {
     @GetMapping("/mysets")
     public ResponseEntity<ArrayList<Set>> getMySets() {
         ArrayList<Set> mySets = userService.getMySets();
-        System.out.println("Retrieved sets: " + mySets.toString());
         return ResponseEntity.ok(mySets);
     }
     @GetMapping("/favorites")
@@ -194,7 +193,6 @@ public class MainController {
         
         try {
             String json = objectMapper.writeValueAsString(setCards);
-            System.out.println(json);
             return ResponseEntity.ok(json);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
