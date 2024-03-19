@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -507,15 +508,36 @@ public class UserService {
         String userID = LoggedInUserID;
         JSONObject jsonObject = new JSONObject(setIDObject);
         String setID = jsonObject.getString("setID");
-        System.out.println(setID);
-        String query = "INSERT INTO Favourite (userID, setID) VALUES (?, ?)";
+        String addQuery = "INSERT INTO Favourite (userID, setID) VALUES (?, ?)";
+        String likeQuery = "UPDATE `Set` SET likes = likes +1 WHERE setID = ?";
+        String removeQuery = "DELETE FROM Favourite WHERE userID = ? AND setID = ?";
+        String unlikeQuery = "UPDATE `Set` SET likes = likes -1 WHERE setID = ?";
+
         try (Connection connection = DriverManager.getConnection(JDBC_URL);
-                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, userID);
-            preparedStatement.setString(2, setID);
-            int result = preparedStatement.executeUpdate();
-            return result > 0;
+                PreparedStatement addStatement = connection.prepareStatement(addQuery);
+                PreparedStatement likeStatement = connection.prepareStatement(likeQuery)) {
+            addStatement.setString(1, userID);
+            addStatement.setString(2, setID);
+            likeStatement.setString(1, setID);
+            int addResult = addStatement.executeUpdate();
+            int likeResult = likeStatement.executeUpdate();
+            return addResult > 0 && likeResult > 0;
+
         } catch (SQLException e) {
+            if (e instanceof SQLIntegrityConstraintViolationException) {
+                try (Connection connection2 = DriverManager.getConnection(JDBC_URL)) {
+                    PreparedStatement removeStatement = connection2.prepareStatement(removeQuery);
+                    PreparedStatement unlikeStatement = connection2.prepareStatement(unlikeQuery);
+                    removeStatement.setString(1, userID);
+                    removeStatement.setString(2, setID);
+                    unlikeStatement.setString(1, setID);
+                    int removeResult = removeStatement.executeUpdate();
+                    int unlikeResult = unlikeStatement.executeUpdate();
+                    return removeResult > 0 && unlikeResult > 0;
+                } catch (SQLException f) {
+                    f.printStackTrace();
+                }
+            }
             e.printStackTrace();
         }
         return false;
