@@ -41,6 +41,7 @@ const App = () => {
                     <Route path="/login" element={<LogIn isDarkMode={isDarkMode} />} />
                     <Route path="/makeSet" element={<MakeSetPage isDarkMode={isDarkMode} />} />
                     <Route path="/register" element={<UserRegister isDarkMode={isDarkMode} />} />
+                    <Route path='/edit' element={<EditPage isDarkMode={isDarkMode} />} />
                 </Routes>
             </div>
         </BrowserRouter>

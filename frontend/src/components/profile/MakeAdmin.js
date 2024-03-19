@@ -5,10 +5,7 @@ import GeneralButton from "../GeneralButton";
 const MakeAdmin = ({ username, email, password, userID, isDarkMode }) => {
     const handleClick = async () => {
         try {
-            const response = await axios.post("http://localhost:3500/flash/updateAdmin", {
-                username: username,
-                email: email,
-            });
+            const response = await axios.post("http://localhost:3500/flash/updateAdmin", {userID});
             if(response.data) {
                 console.log("Updated admin rights successfully")
             } else{
