@@ -63,7 +63,7 @@ const CardList = ({ set, isDarkMode, category }) => {
             <div className="card-list">
                 {filteredSets.map((item, i) => {
                     const ownerDisplay = item.owner ? item.owner : 'Unknown';
-                    const favouriteBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'#FFA5A5'}/>;
+                    const favouriteBtn = <Icon icon={faHeart} color={favoriteColorsData[setID]} onHoverColor={'#FFA5A5'}/>;
                     const isOwner = item.userID === loggedInUserID;
                     return (
                         <Card
