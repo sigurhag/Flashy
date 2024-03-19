@@ -208,6 +208,7 @@ public class User {
         }
     }
 
+
     
 
     @Override
@@ -222,5 +223,7 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
-           }
+        //User bruker = new User("gurings", "guroerkul", "guro@stud.ntnu.no");
+        //bruker.saveUserToDatabase();
+    }
 }

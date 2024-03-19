@@ -1,5 +1,6 @@
 package group.flashy.Controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -147,7 +148,7 @@ public class MainController {
     }
 
     @GetMapping("/updateAdmin")
-    public ResponseEntity<String> updateAdmin(@RequestBody Map<String, String> credentials) {
+    public ResponseEntity<String> updateAdmin(@RequestBody Map<String, String> credentials) throws SQLException {
         String username = credentials.get("username");
         String password = credentials.get("password");
         String email = credentials.get("email");
