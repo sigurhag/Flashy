@@ -44,7 +44,7 @@ const UserList = () => {
         <Searchbar text="Find user" onSearch={setSearchQuery} />
       </div>
       {filteredUsers.map((user, index) => (
-        <MakeAdmin key={index} username={user.username} email={user.email} password={user.password} />
+        <MakeAdmin key={index} user={user} />
       ))}
     </div>
   );

@@ -156,16 +156,10 @@ public class MainController {
     }
 
     @PostMapping("/updateAdmin")
-    public ResponseEntity<String> updateAdmin(@RequestBody Map<String, String> credentials)throws SQLException{
-        String username = credentials.get("username");
-        String password = credentials.get("password");
-        String email = credentials.get("email");
-        boolean isValid = userService.updateAdmin(UserService.LoggedInUserID, username, password, email);
-        if (isValid) {
-            return ResponseEntity.ok("Successfully updated adminRights");
-        } else {
-            return ResponseEntity.badRequest().body("Failed to update adminRights");
-        }
+    public ResponseEntity<Boolean> updateAdmin(@RequestBody Map<String, String> userInfo) throws SQLException {
+        System.out.println(userInfo);
+        boolean isValid = userService.updateAdmin(userInfo);
+        return ResponseEntity.ok(isValid);
     }
 
     @PostMapping("/addSet")
