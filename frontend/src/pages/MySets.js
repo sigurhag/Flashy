@@ -16,6 +16,7 @@ const MySetspage = ({sets, isDarkMode}) => {
   const likeBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'red'}/>
 
   const[set, setSet] = useState([]);
+  const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
     const getSets = async () => {
@@ -37,6 +38,11 @@ const MySetspage = ({sets, isDarkMode}) => {
         } else {
           console.log('Error fetching my sets');
         }
+        const adminResponse = await axios.get("http://localhost:3500/flash/adminRights");
+                if (adminResponse.data) {
+                    setAdmin(true);
+                }
+
       } catch (error) {
         console.error("An unexpected error occurred: ", error);
       }
@@ -50,7 +56,7 @@ const MySetspage = ({sets, isDarkMode}) => {
     <div className={isDarkMode ? 'dark-mode' : ''}>
       <UserProfileIcon isDarkMode={isDarkMode}/>
       <Sidebar isDarkMode={isDarkMode}/>
-      <SetBtn isDarkMode={isDarkMode}  text={"Create set"}/>
+      {!admin && <SetBtn isDarkMode={isDarkMode}  text={"Create set"}/>}
       <div className={'flex flex-column items-center fixed-top-middle ' + (isDarkMode ? 'dark-mode' : '')}>
         <h1 className='f1 mt3 mb1'>FLASHY</h1>
         <h2 className='f2 mt1'>My sets</h2>      
@@ -58,7 +64,12 @@ const MySetspage = ({sets, isDarkMode}) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '25vh'}}>
         <div className='w-70'>
-          <CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn} isDarkMode={isDarkMode}/>
+          {!admin && <CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn} isDarkMode={isDarkMode}/>}
+          {admin && (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+            <h1>This page is only accessible for users</h1>
+          </div>
+          )}
         </div>
       </div>
     </div>

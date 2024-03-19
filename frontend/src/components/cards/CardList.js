@@ -9,7 +9,7 @@ import { faHeart, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-ico
 
 const CardList = ({ set, isDarkMode, category }) => {
     const removeBtn = <Icon icon={faTrash} color={'white'} onHoverColor={'grey'}/>; /* Delete skal kun komme opp for admin */
-    const [favoriteColor, setFavoriteColor] = useState({}); // Initialize favoriteColor as an empty object
+    const [favoriteColor, setFavoriteColor] = useState({}); 
     const editBtn = <Icon icon={faPenToSquare} color={'white'} onHoverColor={'#34B8F0'}/>; /* Må fikse sånn at edit kun kommer opp på egne sett */
     
     const [admin, setAdmin] = useState(false);
