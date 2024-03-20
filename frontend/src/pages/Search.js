@@ -48,7 +48,7 @@ const Searchpage = ({isDarkMode}) => {
 			<h1 className='f1 mt3 mb1'>FLASHY</h1>
 			<h2 className='f2 mt1'>Search</h2>    
     	</div>
-    <div className='flex flex-column justify-center items-center' style={{marginTop: '25vh'}}>
+    <div className='flex flex-column justify-center items-center' style={{marginTop: '27vh'}}>
       	<div className='w-70 '>
         <CardList 
             set={set} 
