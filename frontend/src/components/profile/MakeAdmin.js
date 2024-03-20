@@ -25,7 +25,7 @@ const MakeAdmin = ({ user, isDarkMode }) => {
         <div className="flex flex-row justify-between items-center bg-color-card pa2 ma3" style={{borderRadius: '90px', backgroundColor: isDarkMode ? "#124a8b" : "#FFEFC5"}}>
             <div className="pl4">
                 <h2 className="mb1">{user.username}</h2>
-                <h3 className="mt1">{user.mail}</h3>
+                <h3 className="mt1">{user.email}</h3>
             </div>
             <div className="mr3">
                 <GeneralButton text={"Make admin"} onClick={handleClick}/>
