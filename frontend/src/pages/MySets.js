@@ -57,7 +57,7 @@ const MySetspage = ({sets, isDarkMode}) => {
         <h2 className='f2 mt1'>My sets</h2>      
       </div>
       <div className='flex flex-column items-center'
-      style={{marginTop: '25vh'}}>
+      style={{marginTop: '27vh'}}>
         <div className='w-70'>
           <CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn} isDarkMode={isDarkMode}/>
         </div>

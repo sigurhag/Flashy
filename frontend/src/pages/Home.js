@@ -37,7 +37,7 @@ const Homepage = ({isDarkMode}) => {
   const[set, setSet] = useState([])
   console.log(set)
 
-  const getSets = async() => {
+  const getSets = async () => {
     try {
       const response = await axios.get("http://localhost:3500/flash/mostpopular");
       if (response.data) {
@@ -50,14 +50,15 @@ const Homepage = ({isDarkMode}) => {
           likes: set.likes,
           owner: set.setOwner
         }));
-        setSet(setInfo)
+        setSet(setInfo);
       } else {
-        console.log('Error fetching users');
+        console.log('Error fetching sets');
       }
     } catch (error) {
-      console.error("An unexpected error occured: ", error);
-    };
+      console.error("An unexpected error occurred: ", error);
+    }
   };
+  
 
   useEffect(() => {
     if (category === 'all') {
