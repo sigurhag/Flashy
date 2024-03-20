@@ -12,6 +12,22 @@ const RegisterForm = () => {
     const navigate = useNavigate();
 
     const handleRegisterPress = async () => {
+        if (username.length < 7 || username.length > 20 ) {
+            alert("Username must be 7-20 characters long");
+            return;
+        }
+        if (email.length < 6 || !email.includes("@gmail.com") || !email.includes("@hotmail.com") || !email.includes("@stud.ntnu.no")) {
+            alert("Invalid email. Valid emails are @gmail.com, @hotmail.com and @stud.ntnu.no");
+            return;
+        }
+        if (password.length < 7) {
+            alert("Password must be 7 characters or longer");
+            return;
+        }
+        if (password !== password2) {
+            alert("Passwords must match");
+            return;
+        }
         try {
         const response = await axios.post("http://localhost:3500/flash/register", {
             username: username,

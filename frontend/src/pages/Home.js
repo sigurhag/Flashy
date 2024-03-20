@@ -28,17 +28,16 @@ const Homepage = ({isDarkMode}) => {
     {label: 'Other', value: 'other'},
   ]
 
-  const handleCategoryChange = async (value) => {
+  const handleCategoryChange = (value) => {
     setCategory(value);
-    if (value !== 'all') {
-      await getSetsFromTheme(value);
-    } else {
-      await getSets();
-    }
+    console.log(value);
   };
-  const[set, setSet] = useState([])
+  
 
-  const getSets = async() => {
+  const[set, setSet] = useState([])
+  console.log(set)
+
+  const getSets = async () => {
     try {
       const response = await axios.get("http://localhost:3500/flash/mostpopular");
       if (response.data) {
@@ -51,14 +50,24 @@ const Homepage = ({isDarkMode}) => {
           likes: set.likes,
           owner: set.setOwner
         }));
-        setSet(setInfo)
+        setSet(setInfo);
       } else {
-        console.log('Error fetching users');
+        console.log('Error fetching sets');
       }
     } catch (error) {
-      console.error("An unexpected error occured: ", error);
-    };
+      console.error("An unexpected error occurred: ", error);
+    }
   };
+  
+
+  useEffect(() => {
+    if (category === 'all') {
+      getSets();
+    } else {
+      getSetsFromTheme(category);
+    }
+  }, [category]); 
+  
   
   const getSetsFromTheme = async(theme) => {
     try {
@@ -72,7 +81,7 @@ const Homepage = ({isDarkMode}) => {
             userID: set.userID,
             size: set.size,
             likes: set.likes,
-            owner: set.owner
+            owner: set.setOwner
           }));
           setSet(setInfo)
         } else {

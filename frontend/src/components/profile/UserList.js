@@ -3,7 +3,7 @@ import MakeAdmin from './MakeAdmin';
 import Searchbar from '../Searchbar';
 import axios from 'axios';
 
-const UserList = () => {
+const UserList = ({isDarkMode}) => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState([]);
@@ -41,10 +41,10 @@ const UserList = () => {
   return (
     <div className="flex flex-column justify-center items-center">
       <div>
-        <Searchbar text="Find user" onSearch={setSearchQuery} />
+        <Searchbar text="Find user" onSearch={setSearchQuery} isDarkMode={isDarkMode} />
       </div>
       {filteredUsers.map((user, index) => (
-        <MakeAdmin key={index} user={user} />
+        <MakeAdmin key={index} user={user} isDarkMode={isDarkMode} />
       ))}
     </div>
   );

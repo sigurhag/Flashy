@@ -31,7 +31,8 @@ const MySetspage = ({sets, isDarkMode}) => {
             owner: set.setOwner,
             likes : set.likes,
             setID : set.setID,
-            userID : set.userID
+            userID : set.userID,
+            owner: set.setOwner,
           }));
           
           setSet(userInfo)
@@ -63,7 +64,7 @@ const MySetspage = ({sets, isDarkMode}) => {
         <h2 className='f2 mt1'>My sets</h2>      
       </div>
       <div className='flex flex-column items-center'
-      style={{marginTop: '25vh'}}>
+      style={{marginTop: '27vh'}}>
         <div className='w-70'>
           {!admin && <CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn} isDarkMode={isDarkMode}/>}
           {admin && (

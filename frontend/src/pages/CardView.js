@@ -32,20 +32,22 @@ const CardViewPage = ({ isDarkMode }) => {
   const [showFront, setShowFront] = useState(true);
   const [isHard, setIsHard] = useState(false);
 
-  const length = cardSet.questions.length;
-  const steplength = 100 / length;
-
   const calculateProgress = () => {
-    const completedCount = completedCards.filter(isCompleted => isCompleted).length;
+    const completedCount = completedCards.filter(completed => completed).length;
     const progress = (completedCount / cardSet.questions.length) * 100;
     return progress;
   };
-  
-  
 
-const handleNext = () => {
+  const handleNext = () => {
     setIsHard(false);
-    const nextIndex = currentIndex + 1;
+    let nextIndex = currentIndex + 1;
+
+    if (!hardQuestions.includes(currentIndex) || initialPassCompleted) {
+      const updatedCompletedCards = completedCards.slice(); 
+      updatedCompletedCards[currentIndex] = true; 
+      setCompletedCards(updatedCompletedCards); 
+    }
+
     if (!initialPassCompleted) {
       if (nextIndex < cardSet.questions.length) {
         setCurrentIndex(nextIndex);
@@ -57,7 +59,8 @@ const handleNext = () => {
           setCurrentIndex(hardQuestions[0]);
         }
       } 
-    } else {
+    } 
+    else {
       const nextHardIndex = hardQuestions.indexOf(currentIndex) + 1;
       if (nextHardIndex < hardQuestions.length) {
         setCurrentIndex(hardQuestions[nextHardIndex]);
@@ -121,7 +124,7 @@ const handleNext = () => {
             <Sidebar isDarkMode={isDarkMode} />
             <div className={'flex flex-column items-center fixed-top-middle ' + (isDarkMode ? 'dark-mode' : '')}>
                 <h1 className='f1 mt3 mb1'>FLASHY</h1>
-                <h2 className='f2 mt1'>{cardSet.name}</h2>   {/* Title needs to be collected from CardSet.title*/}  
+                <h2 className='f2 mt1'>{cardSet.name}</h2> 
             </div>
             <div className='flex flex-column items-center' style={{marginTop: '30vh'}}>
                         <ProgressBar progress={isFinished ? 100 : calculateProgress()} isDarkMode={isDarkMode}/>

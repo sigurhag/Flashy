@@ -6,12 +6,13 @@ import { faTrash, faPlus, faCheck, faArrowLeft } from '@fortawesome/free-solid-s
 import Button from "../components/makeset/Buttons";
 import Icon from "../components/cards/Icon";
 import axios from 'axios';
+import UserProfileIcon from '../components/profile/UserProfileIcon';
+import Sidebar from '../components/sidebar/Sidebar';
 
 const EditPage = ({isDarkMode}) => {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [questions, setQuestions] = useState([{ question: '', answer: '' }]);
-  const [card, setCard] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const { setID } = location.state;
@@ -55,7 +56,7 @@ const EditPage = ({isDarkMode}) => {
       }
     }
     fetchData();
-  }, [])
+  }, [setID])
 
   const handleReturnPress = () => {
     navigate(-1)
@@ -117,27 +118,30 @@ const EditPage = ({isDarkMode}) => {
 
   return (
     <div className={isDarkMode ? 'dark-mode' : ''}>
-    <div className='flex flex-column items-center' style={{ marginTop: '27vh' }}>
-      <div className='flex flex-column items-center fixed-top-middle'>
+      <UserProfileIcon isDarkMode={isDarkMode}/>
+      <Sidebar isDarkMode={isDarkMode}/>
+      <div className={'flex flex-column items-center fixed-top-middle ' + (isDarkMode ? 'dark-mode' : '')}>
         <h1 className='f1 mt3 mb1'>FLASHY</h1>
-        <h2 className='f2 mt1'>Edit set</h2>
+        <h2 className='f2 mt1'>Edit set</h2>      
       </div>
-      <div className="bg-color-card mb3 pa3 flex flex-column justify-center " style={{ borderRadius: '50px', width: "50%" }}>
-        <TextBox label={"Title: "} value={title} onChange={handleTitleChange} />
-        <Dropdown label={"Category: "} options={categories} value={category} onChange={handleCategoryChange} backgroundColor={'#EFD593'} />
-      </div>
-      {questions.map((c, index) => (
-        <div key={index} className="bg-color-card ba3 pa3 mb3" style={{ borderRadius: '50px', width: "50%" }}>
-          <TextBox label={"Question: "} value={c.question} onChange={(value) => handleQuestionChange(index, value)} />
-          <TextBox label={"Answer: "} value={c.answer} onChange={(value) => handleAnswerChange(index, value)} />
-          <div className="flex flex-column items-center"><Icon icon={faTrash} onClick={() => handleRemoveQuestion(index)} color={'#00489C;'} onHoverColor={'black'} /></div>
+      <div className='form flex flex-column items-center' style={{ marginTop: '27vh' }}>
+      <div className="mb3 pa3 flex flex-column justify-center " style={{borderRadius:'50px', backgroundColor: isDarkMode ? "#124a8b" : "#FFEFC5"}}>
+                <TextBox label={"Title: "} value={title} onChange={handleTitleChange} isDarkMode={isDarkMode}/>
+                {title.length === 20 && <p style={{ color: isDarkMode ? 'yellow' : 'red' }}>Title cannot exceed 20 characters.</p>}
+                <Dropdown label={"Category: "} options={categories} value={category} onChange={handleCategoryChange} backgroundColor={'#EFD593'} backgroundColorDark={'#175aa6'} isDarkMode={isDarkMode}/>
+            </div>
+            {questions.map((c, index) => (
+                <div key={index} className=" ba3 pa3 mb3" style={{borderRadius:'50px', backgroundColor: isDarkMode ? "#124a8b" : "#FFEFC5"}}>
+                    <TextBox label={"Question: "} value={c.question} onChange={(value) => handleQuestionChange(index, value)} isDarkMode={isDarkMode}/>
+                    <TextBox label={"Answer: "} value={c.answer} onChange={(value) => handleAnswerChange(index, value)} isDarkMode={isDarkMode}/>
+                    <div className="flex flex-column items-center"><Icon icon={faTrash} onClick={() => handleRemoveQuestion(index)} color={'#00489C;'} onHoverColor={'black'}/></div>
+                </div>
+            ))}
+        <div className="flex flex-row justify-center question-box ma3">
+          <Button text={"Previous page"} icon={faArrowLeft} onClick={handleReturnPress} isDarkMode={isDarkMode}/>
+          <Button text={"Add question"} icon={faPlus} onClick={handleAddQuestion} isDarkMode={isDarkMode}/>
+          <Button text={"Save updates!"} icon={faCheck} onClick={handleSavePress} isDarkMode={isDarkMode}/>
         </div>
-      ))}
-      <div className="flex flex-row justify-center question-box ma3">
-        <Button text={"return"} icon={faArrowLeft} onClick={handleReturnPress} />
-        <Button text={"Add question"} icon={faPlus} onClick={handleAddQuestion} />
-        <Button text={"Save updates!"} icon={faCheck} onClick={handleSavePress} />
-      </div>
     </div>
     </div>
   );
