@@ -16,7 +16,7 @@ const RegisterForm = () => {
             alert("Username must be 7-20 characters long");
             return;
         }
-        if (email.length < 6 || !email.includes("@gmail.com") || !email.includes("@hotmail.com") || !email.includes("@stud.ntnu.no")) {
+        if (email.length < 6 || !email.includes("@gmail.com" || "@hotmail.com" || "@stud.ntnu.no")) {
             alert("Invalid email. Valid emails are @gmail.com, @hotmail.com and @stud.ntnu.no");
             return;
         }
