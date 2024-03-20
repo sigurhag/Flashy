@@ -72,6 +72,7 @@ const CardList = ({ set, isDarkMode, category }) => {
                             owner={ownerDisplay}
                             setID={item.setID}
                             size={item.size}
+                            likes={item.likes}
                             theme={item.theme}
                             favourite={!admin && favouriteBtn}
                             favoriteColor={favoriteColor[item.setID]}

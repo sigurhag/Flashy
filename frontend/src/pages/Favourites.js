@@ -28,8 +28,10 @@ const Favouritespage = ({ sets, isDarkMode}) => {
           const setInfo = response.data.map((set) => ({
             setname: set.setName,
             theme: set.theme, 
+            size: set.size,
             user: set.userID,
-            setID: set.setID
+            setID: set.setID,
+            owner: set.setOwner
           }));
           setSet(setInfo)
         } else {

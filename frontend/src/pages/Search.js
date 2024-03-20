@@ -23,7 +23,7 @@ const Searchpage = ({isDarkMode}) => {
           userID: set.userID,
           size: set.size,
           likes: set.likes,
-          owner: set.owner
+          owner: set.setOwner
         }));
         setSet(setInfo)
       } else {
