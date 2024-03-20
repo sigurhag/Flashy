@@ -13,10 +13,16 @@ const Favouritespage = ({ sets, isDarkMode}) => {
   const likeBtn = <Icon icon={faHeart} color={'white'} onHoverColor={'red'}/>
 
   const[set, setSet] = useState([]);
+  const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
     const getSets = async () => {
       try {
+        const adminResponse = await axios.get("http://localhost:3500/flash/adminRights");
+                if (adminResponse.data) {
+                    setAdmin(true);
+                } 
+        
         const response = await axios.get("http://localhost:3500/flash/favorites");
         if (response.data) {
           
@@ -54,7 +60,12 @@ const Favouritespage = ({ sets, isDarkMode}) => {
       <div className='flex flex-column items-center'
       style={{marginTop: '27vh'}}>
         <div className='w-70'>
-          <CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn} isDarkMode={isDarkMode}/>
+          {!admin &&<CardList set={set} edit={editBtn} favourite={favouriteBtn} remove={removeBtn} like={likeBtn} isDarkMode={isDarkMode}/>}
+          {admin && (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+            <h1>This page is only accessible for users</h1>
+          </div>
+          )}
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 
 const Card = (props) => {
-    const {name, owner, setID, size, theme, edit, favourite, favouriteColor, remove, isDarkMode} = props;
+    const {name, owner, setID, size, likes, theme, edit, favourite, favouriteColor, remove, isDarkMode} = props;
 
     const navigate = useNavigate();
 
@@ -51,6 +51,7 @@ const Card = (props) => {
                 <h2 style={{ marginBottom: '1%', marginTop: '20px' }}>{name}</h2>
                 <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{owner}</h3>
                 <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{theme}</h3>
+                <h3 style={{ marginBottom: '1%', marginTop: '1%' }}>{likes} likes</h3>
                 <h3 style={{ marginBottom: '20px', marginTop: '1%' }}>{size} cards</h3>
             </div>
             <div className='absolute top-0 right-0 pa2'>

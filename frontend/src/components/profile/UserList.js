@@ -44,7 +44,7 @@ const UserList = ({isDarkMode}) => {
         <Searchbar text="Find user" onSearch={setSearchQuery} isDarkMode={isDarkMode} />
       </div>
       {filteredUsers.map((user, index) => (
-        <MakeAdmin key={index} username={user.username} email={user.email} password={user.password} isDarkMode={isDarkMode} />
+        <MakeAdmin key={index} user={user} isDarkMode={isDarkMode} />
       ))}
     </div>
   );
