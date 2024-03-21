@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import org.json.JSONObject;
 
+import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import group.flashy.Set;
 import group.flashy.User;
@@ -30,10 +35,12 @@ import netscape.javascript.JSObject;
 public class MainController {
     private final UserService userService;
     private final CardService cardService;
+    private ObjectMapper objectMapper;
 
-    public MainController(UserService userService, CardService cardService) {
+    public MainController(UserService userService, CardService cardService, ObjectMapper objectMapper) {
         this.userService = userService;
         this.cardService = cardService;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping("/test")
@@ -76,7 +83,6 @@ public class MainController {
     @GetMapping("/mysets")
     public ResponseEntity<ArrayList<Set>> getMySets() {
         ArrayList<Set> mySets = userService.getMySets();
-        System.out.println("Retrieved sets: " + mySets.toString());
         return ResponseEntity.ok(mySets);
     }
 
@@ -232,4 +238,17 @@ public class MainController {
         return ResponseEntity.ok(success);
     }
 
+
+    @GetMapping("/getset/{setid}")
+    public ResponseEntity<String> getCorrespondingSet(@PathVariable ("setid") String setID) {
+        ArrayList<Card> setCards = cardService.accessCard(setID);
+        System.out.println(setCards);
+        try {
+            String json = objectMapper.writeValueAsString(setCards);
+            return ResponseEntity.ok(json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

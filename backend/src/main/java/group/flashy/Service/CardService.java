@@ -72,4 +72,26 @@ public class CardService {
         }
         return true;
     }
+
+    public ArrayList<Card> accessCard(String setID) {
+        ArrayList<Card> correspondingCards = new ArrayList<Card>();
+        String query = "SELECT * FROM card WHERE setID =?";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL);
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, setID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            Card cardInst = new Card(setID,
+            resultSet.getString("question"),
+            resultSet.getString("answer"));
+            correspondingCards.add(cardInst);
+        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("HHELLLOOO");
+        }
+        return correspondingCards;
+    }
+
+
 }

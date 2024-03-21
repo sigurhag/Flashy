@@ -36,7 +36,7 @@ const App = () => {
                     <Route path="/favourites" element={<Favouritespage isDarkMode={isDarkMode} />} />
                     <Route path="/edit" element={<EditPage isDarkMode={isDarkMode} />} />
                     <Route path="/" element={<Welcome isDarkMode={isDarkMode} />} />
-                    <Route path="/cardview" element={<CardViewPage isDarkMode={isDarkMode} />} />
+                    <Route path="/cardview/:cardID" element={<CardViewPage isDarkMode={isDarkMode} />} />
                     <Route path="/profile" element={<Profile user={users} isDarkMode={isDarkMode} />} />
                     <Route path="/login" element={<LogIn isDarkMode={isDarkMode} />} />
                     <Route path="/makeSet" element={<MakeSetPage isDarkMode={isDarkMode} />} />
