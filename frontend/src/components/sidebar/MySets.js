@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 
-const MySets = () => {
+const MySets = ({ isDarkMode }) => {
     const [isHovered, setIsHovered] = useState(false);
     const hoverStyle = {
-        color: '#00489C',
+        color: isDarkMode ? '#f6c42e' : '#00489C',
         transform: 'scale(1.05)',
         transition: 'transform 0.4s, color 0.4s'
     };

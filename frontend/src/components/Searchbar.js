@@ -1,29 +1,26 @@
 import React, { useState } from 'react';
 
-const Searchbar = ({ text, onSearch }) => {
+const Searchbar = ({ text, onSearch, isDarkMode }) => {
   const handleChange = (e) => {
     const query = e.target.value.toLowerCase();
     if (onSearch) {
       onSearch(query);
     }
   };
-  
+
+  const placeholderClass = isDarkMode ? 'input-placeholder-dark' : 'input-placeholder-light';
+
   return (
-    <div className='ma4 flex justify-center'>
     <input
         type="text"
-        size={32}
-        className="input-reset ba pa3 mb2 grow font-color bg-transparent ba b--transparent"
-        style={{borderRadius: '90px', backgroundColor: '#FFEFC5', fontSize: '1.4rem', color: "#00489C" }}
+        size={40}
+        className={`input-reset ba pa3 mb2 grow bg-transparent ba b--transparent ${placeholderClass}`}
+        style={{borderRadius: '90px', backgroundColor: isDarkMode ? '#124a8b' : '#FFEFC5', color: isDarkMode ? '#f6c42e' : "#00489C",  fontSize: '1.4rem'}}
         placeholder={text}
         onChange={handleChange}
     />
-    <button type="submit" className="bg-transparent bn f4 pointer">
-    </button>
-    </div>
-
   );
 };
 
-
 export default Searchbar;
+

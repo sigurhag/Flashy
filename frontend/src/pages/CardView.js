@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
-import {faChevronLeft, faChevronRight, faL} from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import FlippableCard from '../components/cards/FlippableCard.js';
 import ArrowButton from '../components/cards/ArrowButton.js';
 import ProgressBar from '../components/cards/ProgressBar.js';
@@ -57,49 +57,78 @@ const CardViewPage = () => {
         }
     };
 
-    const handleNext = () => {
-        if (isFinished) return;
+  const handleNext = () => {
+    setIsHard(false);
+    let nextIndex = currentIndex + 1;
 
-        let nextIndex = currentIndex + 1;
+    if (!hardQuestions.includes(currentIndex) || initialPassCompleted) {
+      const updatedCompletedCards = completedCards.slice(); 
+      updatedCompletedCards[currentIndex] = true; 
+      setCompletedCards(updatedCompletedCards); 
+    }
 
-        if (initialPassCompleted && hardQuestions.length > 0) {
-
-            const nextHardIndex = hardQuestions.shift();
-            setCurrentIndex(nextHardIndex);
-            setHardQuestions([...hardQuestions]);
+    if (!initialPassCompleted) {
+      if (nextIndex < cardSet.questions.length) {
+        setCurrentIndex(nextIndex);
+      } else {
+        setInitialPassCompleted(true);
+        if (hardQuestions.length === 0) {
+          setIsFinished(true);
         } else {
-
-            if (nextIndex >= cardSet.length) {
-                nextIndex = 0;
-                if (!hardQuestions.length) {
-                    setIsFinished(true); 
-                    return; 
-                }
-            }
-            setCurrentIndex(nextIndex);
+          setCurrentIndex(hardQuestions[0]);
         }
-        
-		if (!completedCards[currentIndex]) {
-            const updatedCompletedCards = [...completedCards];
-            updatedCompletedCards[currentIndex] = true;
-            setCompletedCards(updatedCompletedCards);
+      } 
+    } 
+    else {
+      const nextHardIndex = hardQuestions.indexOf(currentIndex) + 1;
+      if (nextHardIndex < hardQuestions.length) {
+        setCurrentIndex(hardQuestions[nextHardIndex]);
+      } else {
+        setIsFinished(true);
+      }
+    }
+  
+    if (!hardQuestions.includes(currentIndex)) {
+      const updatedCompletedCards = [...completedCards];
+      updatedCompletedCards[currentIndex] = true;
+      setCompletedCards(updatedCompletedCards);
+    }
+  };
+
+  const onClickHard = () => {
+    if (!hardQuestions.includes(currentIndex) && !initialPassCompleted) {
+      setHardQuestions((prevHardQuestions) => [...prevHardQuestions, currentIndex]);
+      setIsHard(true);
+    }
+  };
+
+  const handlePrev = () => {
+    if (initialPassCompleted && hardQuestions.length > 0) {
+      const currentHardIndex = hardQuestions.indexOf(currentIndex);
+      if (currentHardIndex > 0) {
+        setCurrentIndex(hardQuestions[currentHardIndex - 1]);
+      } else {
+        if (currentHardIndex === 0 || hardQuestions.length === 0) {
+          setCurrentIndex(cardSet.questions.length - 1);
         }
+      }
+    } else {
+      if (currentIndex > 0) {
+        setCurrentIndex(currentIndex - 1);
+      } else {
+      }
+    }
+  };
+  
 
-        setShowFront(true);
-
-        updateInitialPassCompletion();
-    };
-
-	const onClickHard = () => {
-        if (!hardQuestions.includes(currentIndex) && !completedCards[currentIndex]) {
-            setHardQuestions(prev => [...prev, currentIndex]);
-        }
-    };
-
-    const handlePrev = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + cardSet.length) % cardSet.length);
-        setShowFront(true);
-    };
+  const handleGoAgain = () => {
+    setCurrentIndex(0);
+    setHardQuestions([]);
+    setCompletedCards(new Array(cardSet.questions.length).fill(false));
+    setInitialPassCompleted(false);
+    setIsFinished(false);
+    setShowFront(true);
+  };
 
     const handleGoAgain = () => {
         setCurrentIndex(0);
@@ -111,46 +140,40 @@ const CardViewPage = () => {
       };
     
     return (
-      <div className='flex justify-center items-center '>
-      <UserProfileIcon />
-      <Sidebar />
-      <div className='flex flex-column items-center fixed-top-middle'>
-        <h1 className='f1 mt3 mb1'>FLASHY</h1>
-        <h2 className='f2 mt1'>{name || "Title"}</h2>   {/* Title needs to be collected from CardSet.title*/}  
-      </div>
-	  <div className='flex flex-column items-center' style={{marginTop: '30vh'}}>
-                <ProgressBar progress={isFinished ? 100 : progress} />
-                {!isFinished ? (
-                    <div className='flex flex-row justify-center items-center'>
-						<ArrowButton onClick={handlePrev} type={faChevronLeft} />
-					<FlippableCard
-                    key={`card-${currentIndex}-${hardQuestions.includes(currentIndex)}`}
-                    front={cardSet?.[currentIndex]?.question}
-                    back={cardSet?.[currentIndex]?.answer}
-                    showFront={showFront}
-                    onClickHard={onClickHard}
-                    
-                    /*
-					key={`card-${currentIndex}-${hardQuestions.includes(currentIndex)}`}
-					front={cardSet.questions[currentIndex][0]}
-					back={cardSet.questions[currentIndex][1]}
-					showFront={showFront}
-					onClickHard={onClickHard}*/
-					/>
-					<ArrowButton onClick={handleNext} type={faChevronRight} />
-                    </div>
-                ) : (
-                    <div className='flex flex-column justify-center items-center'>
-                        <h2 className='f1 mb1'>Congrats!</h2>
-                        <h2 className='f2'>You have finished the set</h2>
-                        <GeneralButton text={"Go again"} onClick={handleGoAgain} />
-                    </div>
-                )}
-        </div>
+        <div className={isDarkMode ? 'dark-mode' : ''}>
+            <div className='flex justify-center items-center '>
+            <UserProfileIcon isDarkMode={isDarkMode} />
+            <Sidebar isDarkMode={isDarkMode} />
+            <div className={'flex flex-column items-center fixed-top-middle ' + (isDarkMode ? 'dark-mode' : '')}>
+                <h1 className='f1 mt3 mb1'>FLASHY</h1>
+                <h2 className='f2 mt1'>{cardSet.name}</h2> 
+            </div>
+            <div className='flex flex-column items-center' style={{marginTop: '30vh'}}>
+                        <ProgressBar progress={isFinished ? 100 : calculateProgress()} isDarkMode={isDarkMode}/>
+                        {!isFinished ? (
+                            <div className='flex flex-row justify-center items-center'>
+                                <ArrowButton onClick={handlePrev} type={faChevronLeft} isDarkMode={isDarkMode} />
+                                <FlippableCard 
+                                key={`card-${currentIndex}-${hardQuestions.includes(currentIndex)}`}
+                                front={cardSet.questions[currentIndex][0]}
+                                back={cardSet.questions[currentIndex][1]}
+                                showFront={showFront}
+                                onClickHard={onClickHard}
+                                isDarkMode={isDarkMode}
+                                />
+                                <ArrowButton onClick={handleNext} type={faChevronRight} isDarkMode={isDarkMode}/>
+                            </div>
+                        ) : (
+                            <div className='flex flex-column justify-center items-center'>
+                                <h2 className='f1 mb1'>Congrats!</h2>
+                                <h2 className='f2'>You have finished the set</h2>
+                                <GeneralButton text={"Go again"} onClick={handleGoAgain} />
+                            </div>
+                        )}
+                </div>
+            </div>
     </div>
   )
 }
 
 export default CardViewPage;
-
-

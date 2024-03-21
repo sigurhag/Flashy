@@ -1,4 +1,4 @@
-import React, { useState, setAnswer } from "react";
+import React, { useState } from "react";
 import TextBox from "./Textbox";
 import Dropdown from "./Dropdown";
 import { faTrash, faPlus , faCheck} from '@fortawesome/free-solid-svg-icons';
@@ -8,7 +8,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
-const CreateSet = () => {
+const CreateSet = ({isDarkMode}) => {
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const [questions, setQuestions] = useState([{ question: '', answer: '' }]);
@@ -62,7 +62,12 @@ const CreateSet = () => {
         }
     };
 
-    const handleTitleChange = value => setTitle(value);
+    const handleTitleChange = value => {
+        if(value.length <= 20) {
+            setTitle(value);
+        }
+    };
+
     const handleCategoryChange = value => setCategory(value);
     
     const handleAddQuestion = () => {
@@ -88,24 +93,24 @@ const CreateSet = () => {
 
     return(
         <div className="form flex flex-column justify-center">
-            <div className="bg-color-card mb3 pa3 flex flex-column justify-center " style={{borderRadius:'50px'}}>
-                <TextBox label={"Title: "} value={title} onChange={handleTitleChange}/>
-                <Dropdown label={"Category: "} options={categories} value={category} onChange={handleCategoryChange} backgroundColor={'#EFD593'}/>
+            <div className="mb3 pa3 flex flex-column justify-center " style={{borderRadius:'50px', backgroundColor: isDarkMode ? "#124a8b" : "#FFEFC5"}}>
+                <TextBox label={"Title: "} value={title} onChange={handleTitleChange} isDarkMode={isDarkMode}/>
+                {title.length === 20 && <p style={{ color: isDarkMode ? 'yellow' : 'red' }}>Title cannot exceed 20 characters.</p>}
+                <Dropdown label={"Category: "} options={categories} value={category} onChange={handleCategoryChange} backgroundColor={'#EFD593'} backgroundColorDark={'#175aa6'} isDarkMode={isDarkMode}/>
             </div>
             {questions.map((q, index) => (
-                <div key={index} className="bg-color-card ba3 pa3 mb3" style={{borderRadius:'50px'}}>
-                    <TextBox label={"Question: "} value={q.question} onChange={(value) => handleQuestionChange(index, value)}/>
-                    <TextBox label={"Answer: "} value={q.answer} onChange={(value) => handleAnswerChange(index, value)}/>
+                <div key={index} className=" ba3 pa3 mb3" style={{borderRadius:'50px', backgroundColor: isDarkMode ? "#124a8b" : "#FFEFC5"}}>
+                    <TextBox label={"Question: "} value={q.question} onChange={(value) => handleQuestionChange(index, value)} isDarkMode={isDarkMode}/>
+                    <TextBox label={"Answer: "} value={q.answer} onChange={(value) => handleAnswerChange(index, value)} isDarkMode={isDarkMode}/>
                     <div className="flex flex-column items-center"><Icon icon={faTrash} onClick={() => handleRemoveQuestion(index)} color={'#00489C;'} onHoverColor={'black'}/></div>
                 </div>
             ))}
             <div className="flex flex-row justify-center question-box ma3">
-                <Button text={"Add question"} icon={faPlus} onClick={handleAddQuestion}/>
-                <Button text={"I am finished!"} icon={faCheck} onClick={handleAddPress}/> 
+                <Button text={"Add question"} icon={faPlus} onClick={handleAddQuestion} isDarkMode={isDarkMode}/>
+                <Button text={"I am finished!"} icon={faCheck} onClick={handleAddPress} isDarkMode={isDarkMode}/> 
             </div>
-        </div>
+        </div>  
     );
 }
 
 export default CreateSet;
-

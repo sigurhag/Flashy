@@ -10,7 +10,7 @@ import java.util.UUID;
 public class User {
 
     // Field for database connection
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?username=generalUser&password=Flashy123";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase?user=generalUser&password=Flashy123";
     
     // Fields for Users
     private String userID;
@@ -209,6 +209,7 @@ public class User {
         }
     }
 
+
     
 
     @Override
@@ -223,5 +224,7 @@ public class User {
      * @param args
      */
     public static void main(String[] args) {
-           }
+        //User bruker = new User("gurings", "guroerkul", "guro@stud.ntnu.no");
+        //bruker.saveUserToDatabase();
+    }
 }

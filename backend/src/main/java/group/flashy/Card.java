@@ -37,12 +37,12 @@ public class Card {
         this.setID = setID;
     }
 
-    public Card(String setID, String question, String answer, boolean isDifficult, String cardID){
-        this.setID = setID;
+    public Card(String cardID, String question, String answer, String setID, Boolean isDifficult) {
+        this.cardID = cardID;
         this.question = question;
         this.answer = answer;
+        this.setID = setID;
         this.isDifficult = isDifficult;
-        this.cardID = cardID;
     }
 
     /**
@@ -50,27 +50,28 @@ public class Card {
      *
      * @param difficult boolean on is difficult
      */
-    public void changeDifficult(boolean difficult) {
+    /*public void changeDifficult(boolean difficult) {
         updateCardInfo("isDifficult", difficult);
-    }
+    }*/
 
     /**
      * Method for editing the answer to a question.
      *
      * @param answer The new answer to the question
      */
-    public void editAnswer(String answer) {
+    /* public void editAnswer(String answer) {
         updateCardInfo("answer", answer);
-    }
+    }*/
 
     /**
      * Method for editing the question on a card.
      *
      * @param question the new question
      */
-    public void editQuestion(String question) {
+    /*public void editQuestion(String question) {
         updateCardInfo("question", question);
-    }
+    }*/
+    
 
     /**
      * Method for retriving CardID of a card.
@@ -151,7 +152,7 @@ public class Card {
      */
     public void saveCardToDatabase() {
         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            String query = "INSERT INTO card (cardID, question, answer, setID, isDifficult) VALUES(?,?,?,?,?,?)";
+            String query = "INSERT INTO card (cardID, question, answer, setID, isDifficult) VALUES(?,?,?,?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, cardID);
                 preparedStatement.setString(2, question);
@@ -214,9 +215,22 @@ public class Card {
      * @param args the args of the method
      */
     public static void main(String[] args) {
-        String JDBC_URL = "jdbc:mysql://localhost:3306/flashyDatabase";
-        String username = "root";
+        Card kort1 = new Card("d29db219-e8c6-4a06-9d25-854854d99341", "Hvilken farger er grønn en blanding av?", "gul og blå");
+        Card kort2 = new Card("d29db219-e8c6-4a06-9d25-854854d99341", "Hvilken farger er oransje en blanding av?", "gul og rød");
+        Card kort3 = new Card("d29db219-e8c6-4a06-9d25-854854d99341", "Hvilken farger er lilla en blanding av?", "rød og blå");
+        //Card kort4 = new Card("df2f6263-3576-49fb-ac04-7b9e6699e5cb", "Hva heter permin sitt vanligste mohair garn?", "Angel");
+        //Card kort5 = new Card("997a8922-7883-4615-964b-f745204358d3", "Er pingviner søte?", "Ja");
 
+        /*kort1.saveCardToDatabase();
+        kort2.saveCardToDatabase();
+        kort3.saveCardToDatabase();
+        kort4.saveCardToDatabase();
+        kort5.saveCardToDatabase();*/
+
+        //String kortID = kort.getCardID();
+
+        //kort.deleteCard(kortID);
+        //kort.updateCardInfo("answer", "Oslo");
     }
         
 

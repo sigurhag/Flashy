@@ -3,7 +3,7 @@ import MakeAdmin from './MakeAdmin';
 import Searchbar from '../Searchbar';
 import axios from 'axios';
 
-const UserList = () => {
+const UserList = ({isDarkMode}) => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState([]);
@@ -11,9 +11,9 @@ const UserList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3500/flash/allUsers");
-        if (response.data) {
-          const userInfo = response.data.map((user) => ({
+        const Userresponse = await axios.get("http://localhost:3500/flash/allUsers");
+        if (Userresponse.data) {
+          const userInfo = Userresponse.data.map((user) => ({
             username: user.username,
             password: user.password,
             email: user.email,
@@ -41,10 +41,10 @@ const UserList = () => {
   return (
     <div className="flex flex-column justify-center items-center">
       <div>
-        <Searchbar text="Find user" onSearch={setSearchQuery} />
+        <Searchbar text="Find user" onSearch={setSearchQuery} isDarkMode={isDarkMode} />
       </div>
       {filteredUsers.map((user, index) => (
-        <MakeAdmin key={index} username={user.username} email={user.email} password={user.password} />
+        <MakeAdmin key={index} user={user} isDarkMode={isDarkMode} />
       ))}
     </div>
   );

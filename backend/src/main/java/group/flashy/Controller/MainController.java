@@ -1,8 +1,11 @@
 package group.flashy.Controller;
 
+import java.io.Console;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.json.JSONObject;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
@@ -24,12 +27,12 @@ import group.flashy.Admin;
 import group.flashy.Card;
 import group.flashy.Service.CardService;
 import group.flashy.Service.UserService;
+import netscape.javascript.JSObject;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/flash")
 public class MainController {
-
     private final UserService userService;
     private final CardService cardService;
     private ObjectMapper objectMapper;
@@ -39,7 +42,7 @@ public class MainController {
         this.cardService = cardService;
         this.objectMapper = objectMapper;
     }
-    
+
     @GetMapping("/test")
     public String testA() {
         return "IT is working, JSON?";
@@ -47,7 +50,7 @@ public class MainController {
 
     @PostMapping("/verify")
     public ResponseEntity<String> verifyLogin(@RequestBody Map<String, String> credentials) {
-        String username= credentials.get("username");
+        String username = credentials.get("username");
         String password = credentials.get("password");
         boolean isValid = userService.verifyLogIn(username, password);
         if (isValid) {
@@ -55,6 +58,12 @@ public class MainController {
         } else {
             return ResponseEntity.badRequest().body("Invalid Username or password");
         }
+    }
+
+    @GetMapping("/loggedInUserID")
+    public ResponseEntity<String> getLoggedInUserID() {
+        String loggedInUserID = UserService.LoggedInUserID;
+        return ResponseEntity.ok(loggedInUserID);
     }
 
     @PostMapping("/register")
@@ -76,21 +85,21 @@ public class MainController {
         ArrayList<Set> mySets = userService.getMySets();
         return ResponseEntity.ok(mySets);
     }
+
     @GetMapping("/favorites")
     public ResponseEntity<ArrayList<Set>> getMyFavorites() {
         ArrayList<Set> myFavorites = userService.getFavorites();
         return ResponseEntity.ok(myFavorites);
     }
 
-    @GetMapping("/mostpopular")
+    @GetMapping("/mostpopular") // Used for both all sets and getSetsFromTheme in Home.js
     public ResponseEntity<ArrayList<Set>> getMostPopular() {
         ArrayList<Set> mostPopular = userService.getMostPopular();
-        //System.out.println("Retrieved sets: " + mostPopular.toString());
         return ResponseEntity.ok(mostPopular);
     }
 
     @GetMapping("/search/{searchword}")
-    public ResponseEntity<ArrayList<Set>> searchFor(@PathVariable ("searchword") String searchWord) {
+    public ResponseEntity<ArrayList<Set>> searchFor(@PathVariable("searchword") String searchWord) {
         ArrayList<Set> result = cardService.searchEngine(searchWord);
         return ResponseEntity.ok(result);
     }
@@ -102,7 +111,7 @@ public class MainController {
     }
 
     @PostMapping("/changeEmail")
-    public ResponseEntity<String> changeEmail(@RequestBody Map<String, String> changes){
+    public ResponseEntity<String> changeEmail(@RequestBody Map<String, String> changes) {
         String newEmail = changes.get("newEmail");
 
         boolean success = userService.changeEmail(newEmail);
@@ -115,7 +124,7 @@ public class MainController {
     }
 
     @PostMapping("/changePassword")
-    public ResponseEntity<String> changePassword(@RequestBody Map<String, String> changes){
+    public ResponseEntity<String> changePassword(@RequestBody Map<String, String> changes) {
         String newPassword = changes.get("newPassword");
 
         boolean success = userService.changePassword(newPassword);
@@ -126,8 +135,9 @@ public class MainController {
             return ResponseEntity.badRequest().body("Failed to change password");
         }
     }
+
     @PostMapping("/changeUsername")
-    public ResponseEntity<String> changeUsername(@RequestBody Map<String, String> changes){
+    public ResponseEntity<String> changeUsername(@RequestBody Map<String, String> changes) {
         String newUsername = changes.get("newUsername");
 
         boolean success = userService.changeUsername(newUsername);
@@ -151,19 +161,12 @@ public class MainController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/updateAdmin")
-    public ResponseEntity<String> updateAdmin(@RequestBody Map<String, String> credentials) {
-        String username = credentials.get("username");
-        String password = credentials.get("password");
-        String email = credentials.get("email");
-        boolean isValid = userService.updateAdmin(UserService.LoggedInUserID, username, password, email);
-        if (isValid) {
-            return ResponseEntity.ok("Successfully updated adminRights");
-        } else {
-            return ResponseEntity.badRequest().body("Failed to update adminRights");
-        }
+    @PostMapping("/updateAdmin")
+    public ResponseEntity<Boolean> updateAdmin(@RequestBody Map<String, String> userInfo) throws SQLException {
+        System.out.println(userInfo);
+        boolean isValid = userService.updateAdmin(userInfo);
+        return ResponseEntity.ok(isValid);
     }
-
 
     @PostMapping("/addSet")
     public ResponseEntity<Boolean> addSet(@RequestBody Map<String, String> setInfo) {
@@ -185,6 +188,56 @@ public class MainController {
         }
         return ResponseEntity.ok(success);
     }
+
+    @PostMapping("/removeSet")
+    public ResponseEntity<Boolean> removeSet(@RequestBody String setID) {
+        boolean success = false;
+        success = userService.removeSet(setID);
+        return ResponseEntity.ok(success);
+    }
+
+    @PostMapping("/favouriteSet")
+    public ResponseEntity<Boolean> favouriteSet(@RequestBody String setID) {
+        boolean success = false;
+        success = userService.favoriteSet(setID);
+        return ResponseEntity.ok(success);
+    }
+
+    @PostMapping("/isFavourited")
+    public ResponseEntity<Boolean> isFavourited(@RequestBody String setID) {
+        boolean isFavourited = userService.isFavourited(setID);
+        return ResponseEntity.ok(isFavourited);
+    }
+
+    @PostMapping("/fetchSet")
+    public ResponseEntity<Set> fetchSet(@RequestBody String setID) {
+        Set setInfo = userService.getSet(setID);
+        return ResponseEntity.ok(setInfo);
+    }
+
+    @PostMapping("/fetchCards")
+    public ResponseEntity<ArrayList<Card>> fetchCard(@RequestBody Map<String, String> requestBody) {
+        String setID = requestBody.get("setID");
+        ArrayList<Card> cards = userService.getCards(setID);
+        return ResponseEntity.ok(cards);
+    }
+
+    @PostMapping("/updateSet")
+    public ResponseEntity<Boolean> updateSet(@RequestBody Map<String, String> setInfo) {
+        String setID = setInfo.get("setID");
+        String title = setInfo.get("title");
+        int size = Integer.parseInt(setInfo.get("size"));
+        String theme = setInfo.get("category");
+        boolean isValid = userService.updateSet(setID, title, size, theme);
+        return ResponseEntity.ok(isValid);
+    }
+
+    @PostMapping("/updateCard")
+    public ResponseEntity<Boolean> updateCards(@RequestBody List<Map<String, String>> cardInfo, String setID) {
+        Boolean success = userService.updateCards(cardInfo, setID);
+        return ResponseEntity.ok(success);
+    }
+
 
     @GetMapping("/getset/{setid}")
     public ResponseEntity<String> getCorrespondingSet(@PathVariable ("setid") String setID) {
