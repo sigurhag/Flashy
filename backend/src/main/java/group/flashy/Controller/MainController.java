@@ -243,7 +243,6 @@ public class MainController {
     public ResponseEntity<String> getCorrespondingSet(@PathVariable ("setid") String setID) {
         ArrayList<Card> setCards = cardService.accessCard(setID);
         System.out.println(setCards);
-        
         try {
             String json = objectMapper.writeValueAsString(setCards);
             return ResponseEntity.ok(json);
