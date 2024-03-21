@@ -11,18 +11,19 @@ import { useParams } from 'react-router-dom';
 import axios from "axios";
 
 
-const CardViewPage = () => {
+const CardViewPage = ( { isDarkMode } ) => {
 
-    const { cardID } = useParams()
+    //const { setID } = useParams()
     const [cardSet, setCardSet] = useState(null);
     const location = useLocation();
-    const { name } = location.state || {};
+    const { name, setID } = location.state || {}
 
   useEffect(() => {
     console.log("PLEASE WORK")
+    console.log(setID)
     const fetchCardData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3500/flash/getset/${cardID}`);
+        const response = await axios.get(`http://localhost:3500/flash/getset/${setID}`);
         const cardInfo = response.data.map((card) => ({
             question: card.question,
             answer: card.answer,
@@ -35,8 +36,8 @@ const CardViewPage = () => {
         console.error(error);
       }
     };
-    if (cardID) fetchCardData();
-  }, [cardID]);
+    if (setID) fetchCardData();
+  }, [setID]);
 
     
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -44,6 +45,7 @@ const CardViewPage = () => {
     const [completedCards, setCompletedCards] = useState(new Array(cardSet?.length).fill(false)); //useState([]);
     const [showFront, setShowFront] = useState(true);
     const [initialPassCompleted, setInitialPassCompleted] = useState(false);
+    const [isHard, setIsHard] = useState(false);
 
     const progress = ((completedCards.filter(Boolean).length + (initialPassCompleted ? hardQuestions.length : 0)) / (cardSet?.length + hardQuestions.length)) * 100;
 
@@ -57,6 +59,13 @@ const CardViewPage = () => {
         }
     };
 
+    const calculateProgress = () => {
+        const completedCount = completedCards.filter(completed => completed).length;
+        const progress = (completedCount / cardSet?.length) * 100;
+        return progress;
+      };
+    
+
   const handleNext = () => {
     setIsHard(false);
     let nextIndex = currentIndex + 1;
@@ -68,7 +77,7 @@ const CardViewPage = () => {
     }
 
     if (!initialPassCompleted) {
-      if (nextIndex < cardSet.questions.length) {
+      if (nextIndex < cardSet?.length) {
         setCurrentIndex(nextIndex);
       } else {
         setInitialPassCompleted(true);
@@ -109,7 +118,7 @@ const CardViewPage = () => {
         setCurrentIndex(hardQuestions[currentHardIndex - 1]);
       } else {
         if (currentHardIndex === 0 || hardQuestions.length === 0) {
-          setCurrentIndex(cardSet.questions.length - 1);
+          setCurrentIndex(cardSet?.length - 1);
         }
       }
     } else {
@@ -120,15 +129,6 @@ const CardViewPage = () => {
     }
   };
   
-
-  const handleGoAgain = () => {
-    setCurrentIndex(0);
-    setHardQuestions([]);
-    setCompletedCards(new Array(cardSet.questions.length).fill(false));
-    setInitialPassCompleted(false);
-    setIsFinished(false);
-    setShowFront(true);
-  };
 
     const handleGoAgain = () => {
         setCurrentIndex(0);
@@ -146,7 +146,7 @@ const CardViewPage = () => {
             <Sidebar isDarkMode={isDarkMode} />
             <div className={'flex flex-column items-center fixed-top-middle ' + (isDarkMode ? 'dark-mode' : '')}>
                 <h1 className='f1 mt3 mb1'>FLASHY</h1>
-                <h2 className='f2 mt1'>{cardSet.name}</h2> 
+                <h2 className='f2 mt1'>{name || "Title"}</h2> 
             </div>
             <div className='flex flex-column items-center' style={{marginTop: '30vh'}}>
                         <ProgressBar progress={isFinished ? 100 : calculateProgress()} isDarkMode={isDarkMode}/>
@@ -155,8 +155,8 @@ const CardViewPage = () => {
                                 <ArrowButton onClick={handlePrev} type={faChevronLeft} isDarkMode={isDarkMode} />
                                 <FlippableCard 
                                 key={`card-${currentIndex}-${hardQuestions.includes(currentIndex)}`}
-                                front={cardSet.questions[currentIndex][0]}
-                                back={cardSet.questions[currentIndex][1]}
+                                front={cardSet?.[currentIndex]?.question}
+                                back={cardSet?.[currentIndex]?.answer}
                                 showFront={showFront}
                                 onClickHard={onClickHard}
                                 isDarkMode={isDarkMode}
