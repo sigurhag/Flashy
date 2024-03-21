@@ -32,8 +32,6 @@ const CardViewPage = ( { isDarkMode } ) => {
             isdifficult: card.isDifficult
         }));
         setCardSet(cardInfo);
-        console.log(cardInfo[0].answer)
-        console.log("helllloooo")
       } catch (error) {
         console.error(error);
       }
