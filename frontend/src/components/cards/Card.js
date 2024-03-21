@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 
 const Card = (props) => {
-    const {name, owner, setID, size, likes, theme, edit, favourite, favouriteColor, remove, isDarkMode} = props;
+    const { name, owner, setID, size, likes, theme, edit, favourite, favouriteColor, remove, isDarkMode } = props;
 
     const navigate = useNavigate();
 
@@ -41,9 +41,9 @@ const Card = (props) => {
     }
 
     const handleCardPressed = () => {
-        navigate("/cardview")
+        console.log(setID)
+        navigate(`/cardview/${setID}`, { state: { name, setID } });
     }
-
 
     return (
         <div className={'br4 pa1 ma2 grow tc flex flex-column items-center justify-center relative'} style={{ height: '200px', width: '300px', textDecoration: 'none', color: 'inherit', backgroundColor: isDarkMode ? '#124a8b' : '#FFEFC5', paddingTop: '20px', paddingBottom: '20px'}}>           
