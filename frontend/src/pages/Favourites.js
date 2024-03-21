@@ -30,7 +30,7 @@ const Favouritespage = ({ sets, isDarkMode}) => {
             setname: set.setName,
             theme: set.theme, 
             size : set.size,
-            like : set.likes,
+            likes : set.likes,
             setID : set.setID,
             userID : set.userID,
             owner: set.setOwner,
