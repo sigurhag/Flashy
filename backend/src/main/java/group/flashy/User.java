@@ -47,6 +47,7 @@ public class User {
         this.email = username;
     }
     
+
     /**
      * Method to validate username.
      *

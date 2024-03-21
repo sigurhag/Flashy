@@ -1,42 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Sidebar from '../components/sidebar/Sidebar';
 import UserProfileIcon from '../components/profile/UserProfileIcon';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import FlippableCard from '../components/cards/FlippableCard.js';
 import ArrowButton from '../components/cards/ArrowButton.js';
 import ProgressBar from '../components/cards/ProgressBar.js';
-import GeneralButton from '../components/GeneralButton.js';
+import GeneralButton from '../components/GeneralButton.js'
+import { useParams } from 'react-router-dom';
+import axios from "axios";
 
-const CardViewPage = ({ isDarkMode }) => {
-  const cardSet = {
-    id: 1,
-    name: 'Midterm',
-    theme: 'Science',
-    length: 34,
-    creator: 'Geir',
-    questions: [
-      ["Q1 hard", "A1"],
-      ['Q2', 'A2'],
-      ['Q3 hard', 'A3'],
-      ['Q4', 'A4'],
-      ['Q5', 'A5'],
-      ['Q6', 'A6']
-    ]
-  };
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [hardQuestions, setHardQuestions] = useState([]);
-  const [completedCards, setCompletedCards] = useState(new Array(cardSet.questions.length).fill(false));
-  const [initialPassCompleted, setInitialPassCompleted] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
-  const [showFront, setShowFront] = useState(true);
-  const [isHard, setIsHard] = useState(false);
+const CardViewPage = () => {
 
-  const calculateProgress = () => {
-    const completedCount = completedCards.filter(completed => completed).length;
-    const progress = (completedCount / cardSet.questions.length) * 100;
-    return progress;
-  };
+    const { cardID } = useParams()
+    const [cardSet, setCardSet] = useState(null);
+    const location = useLocation();
+    const { name } = location.state || {};
+
+  useEffect(() => {
+    console.log("PLEASE WORK")
+    const fetchCardData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3500/flash/getset/${cardID}`);
+        const cardInfo = response.data.map((card) => ({
+            question: card.question,
+            answer: card.answer,
+            cardid: card.cardID,
+            setid: card.setID,
+            isdifficult: card.isDifficult
+        }));
+        setCardSet(cardInfo);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (cardID) fetchCardData();
+  }, [cardID]);
+
+    
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [hardQuestions, setHardQuestions] = useState([]);
+    const [completedCards, setCompletedCards] = useState(new Array(cardSet?.length).fill(false)); //useState([]);
+    const [showFront, setShowFront] = useState(true);
+    const [initialPassCompleted, setInitialPassCompleted] = useState(false);
+
+    const progress = ((completedCards.filter(Boolean).length + (initialPassCompleted ? hardQuestions.length : 0)) / (cardSet?.length + hardQuestions.length)) * 100;
+
+	const [isFinished, setIsFinished] = useState(false); // New state to track completion
+
+    const updateInitialPassCompletion = () => {
+        const allSeen = completedCards.every(Boolean);
+        setInitialPassCompleted(allSeen);
+        if (allSeen && hardQuestions.length === 0) {
+            setIsFinished(true);
+        }
+    };
 
   const handleNext = () => {
     setIsHard(false);
@@ -111,12 +130,15 @@ const CardViewPage = ({ isDarkMode }) => {
     setShowFront(true);
   };
 
-    console.log('currentIndex', currentIndex);
-    console.log('hardQuestions', hardQuestions);
-    console.log('completedCards', completedCards);
-    console.log('initialPassCompleted', initialPassCompleted);
-    console.log('isFinished', isFinished);
-
+    const handleGoAgain = () => {
+        setCurrentIndex(0);
+        setHardQuestions([]);
+        setCompletedCards(new Array(cardSet?.length).fill(false));
+        setInitialPassCompleted(false);
+        setIsFinished(false);
+        setShowFront(true);
+      };
+    
     return (
         <div className={isDarkMode ? 'dark-mode' : ''}>
             <div className='flex justify-center items-center '>

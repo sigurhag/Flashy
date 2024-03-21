@@ -37,6 +37,16 @@ public class Set {
         this.size = size;
     }
 
+    
+    public Set(String setID, String setname, String theme, String userID, int likes) {
+        this.setID = setID;
+        this.setname = setname;
+        this.size = 0;
+        this.theme = theme;
+        this.userID = userID;
+        this.likes = likes; 
+    }
+
     public Set(String setID, String setname, String theme, String userID, int likes, int size, String owner) {
         this.setID = setID;
         this.setname = setname;
@@ -46,6 +56,8 @@ public class Set {
         this.size = size;
         this.owner = owner;
     }
+
+
 
 
     //Getters
@@ -127,7 +139,7 @@ public class Set {
      
     public void addCardToSet(Card card) {
             // Validate that the provided setID exists in the Set table
-    boolean setExists = validateSetExists(card.getCardSetID());
+    boolean setExists = validateSetExists(card.getSetID());
     
     if (!setExists) {
         System.err.println("Error: The specified setID does not exist.");
@@ -136,7 +148,7 @@ public class Set {
     try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
         String cardInsertQuery = "INSERT INTO card (setID) VALUES (?)";
             try (PreparedStatement cardStatement = connection.prepareStatement(cardInsertQuery)) {
-                cardStatement.setString(1, card.getCardSetID()); // Sets setID for the card to the provided setID
+                cardStatement.setString(1, card.getSetID()); // Sets setID for the card to the provided setID
                 cardStatement.executeUpdate();
             }
         } 

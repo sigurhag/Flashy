@@ -79,7 +79,8 @@ public class Card {
      * @return the ID
      */
     public String getCardID() {
-        return (String) getCardInfo("cardID");
+        return cardID;
+        //return (String) getCardInfo("cardID");
     }
 
     /**
@@ -88,7 +89,8 @@ public class Card {
      * @return the question.
      */
     public String getQuestion() {
-        return (String) getCardInfo("question");
+        return question;
+        //return (String) getCardInfo("question");
     }
 
     /**
@@ -97,7 +99,8 @@ public class Card {
      * @return the answer
      */
     public String getAnswer() {
-        return (String) getCardInfo("answer");
+        return answer;
+        //return (String) getCardInfo("answer");
     }
 
     /**
@@ -105,8 +108,9 @@ public class Card {
      *
      * @return the setID
      */
-    public String getCardSetID() {
-        return (String) getCardInfo("setID");
+    public String getSetID() {
+        return setID;
+        //return (String) getCardInfo("setID");
     }
 
     /**
@@ -115,7 +119,8 @@ public class Card {
      * @return true or false on card is difficult
      */
     public boolean getIsDifficult() {
-        return (boolean) getCardInfo("isDifficult");
+        return isDifficult;
+        //return (boolean) getCardInfo("isDifficult");
     }
 
     /**
@@ -174,7 +179,7 @@ public class Card {
             case "question":
                 this.question = (String) newValue;
                 break;
-            case "difficult":
+            case "isDifficult":
                 this.isDifficult = (boolean) newValue;
                 break;
                 case "setID":
